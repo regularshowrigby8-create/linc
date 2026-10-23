@@ -265,75 +265,106 @@
 .lh-badge {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
-  padding: var(--space-1) var(--space-3);
-  border-radius: var(--radius-pill);
-  border: 1px solid transparent;
+  gap: 6px;
+  padding: 2px 8px;
+  border-radius: var(--radius-tag);
+  border: 1px solid var(--color-border);
+  background: var(--color-surface);
+  color: var(--color-ink);
   font-size: var(--text-label);
   line-height: var(--text-label-leading);
-  font-weight: var(--weight-bold);
+  font-weight: var(--weight-medium);
   white-space: nowrap;
 }
 
-.lh-badge--neutral {
-  background: var(--color-canvas-sunken);
-  color: var(--color-ink-muted);
-  border-color: var(--color-border);
+.lh-badge__mark {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+  width: 13px;
+  height: 13px;
+  color: var(--color-disabled);
 }
 
-.lh-badge--success {
-  background: var(--color-success-surface);
+.lh-badge__text {
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+/* The mark carries the status. The label stays in plain ink. */
+.lh-badge--success .lh-badge__mark {
   color: var(--color-success);
-  border-color: var(--color-success);
 }
 
-.lh-badge--warning {
-  background: var(--color-warning-surface);
+.lh-badge--warning .lh-badge__mark {
   color: var(--color-warning);
-  border-color: var(--color-warning);
 }
 
-.lh-badge--danger {
-  background: var(--color-danger-surface);
+.lh-badge--danger .lh-badge__mark {
   color: var(--color-danger);
-  border-color: var(--color-danger);
 }
 
-.lh-badge--information {
-  background: var(--color-information-surface);
+.lh-badge--information .lh-badge__mark {
   color: var(--color-information);
-  border-color: var(--color-information);
 }
 
-.lh-badge--hive {
-  background: var(--color-hive-surface);
+.lh-badge--hive .lh-badge__mark {
   color: var(--color-hive-deep);
-  border-color: var(--color-hive-deep);
 }
 
+.lh-badge__dot {
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: currentColor;
+}
+
+.lh-badge__ring {
+  width: 9px;
+  height: 9px;
+  border-radius: var(--radius-pill);
+  border: 1.5px solid currentColor;
+}
+
+/* A chip is interactive, so it may take the accent when it is hovered. */
 .lh-chip {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-2);
-  padding: var(--space-1) var(--space-2) var(--space-1) var(--space-3);
+  gap: var(--space-1);
+  padding: var(--space-1) var(--space-1) var(--space-1) var(--space-2);
   border: 1px solid var(--color-border);
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-tag);
   background: var(--color-surface);
+  color: var(--color-ink);
   font-size: var(--text-caption);
+  line-height: var(--text-caption-leading);
+  font-weight: var(--weight-medium);
+  transition:
+    border-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out);
+}
+
+.lh-chip:hover {
+  border-color: var(--color-border-strong);
 }
 
 .lh-chip__remove {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
-  height: 28px;
+  width: 22px;
+  height: 22px;
   border: 0;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-tag);
   background: transparent;
   color: var(--color-ink-muted);
-  font-size: var(--text-h3);
+  font-size: 15px;
+  line-height: 1;
   cursor: pointer;
+  transition:
+    background var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out);
 }
 
 .lh-chip__remove:hover {
@@ -346,10 +377,11 @@
   align-items: center;
   justify-content: center;
   border-radius: var(--radius-pill);
-  background: var(--color-hive-surface);
-  border: 1px solid var(--color-hive-deep);
-  color: var(--color-hive-deep);
-  font-weight: var(--weight-bold);
+  background: var(--color-canvas-sunken);
+  border: 1px solid var(--color-border);
+  color: var(--color-ink);
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.01em;
   flex: 0 0 auto;
 }
 
@@ -376,6 +408,10 @@
   background: var(--color-surface);
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
+}
+
+/* Only things that genuinely float carry the shadow. */
+.lh-card--raised {
   box-shadow: var(--shadow-card);
 }
 
@@ -777,8 +813,10 @@
 }
 
 .lh-listing__title {
-  font-size: var(--text-h3);
-  line-height: var(--text-h3-leading);
+  font-size: var(--text-title);
+  line-height: var(--text-title-leading);
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.01em;
 }
 
 .lh-listing__description {
@@ -894,13 +932,21 @@
   gap: var(--space-3);
 }
 
+.lh-request__title {
+  font-size: var(--text-title);
+  line-height: var(--text-title-leading);
+  font-weight: var(--weight-semibold);
+  letter-spacing: -0.01em;
+}
+
 .lh-request__reason {
   padding: var(--space-3);
-  border-left: 3px solid var(--color-information);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-control);
   background: var(--color-canvas);
-  border-radius: 0 var(--radius-control) var(--radius-control) 0;
   font-size: var(--text-caption);
   line-height: var(--text-caption-leading);
+  color: var(--color-ink);
 }
 
 .lh-request__actions,
@@ -1016,10 +1062,10 @@
 
 .lh-workspace__eyebrow {
   font-size: var(--text-label);
-  font-weight: var(--weight-bold);
+  font-weight: var(--weight-semibold);
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: var(--color-ink-muted);
 }
 
 .lh-workspace__query {
@@ -1549,24 +1595,41 @@
 
 .lh-eyebrow {
   display: inline-flex;
-  padding: var(--space-1) var(--space-3);
-  border-radius: var(--radius-pill);
-  background: var(--color-hive-surface);
-  color: var(--color-hive-deep);
+  align-items: center;
+  gap: var(--space-2);
+  color: var(--color-ink-muted);
   font-size: var(--text-label);
   line-height: var(--text-label-leading);
-  font-weight: var(--weight-bold);
-  letter-spacing: 0.04em;
+  font-weight: var(--weight-semibold);
+  letter-spacing: 0.06em;
   text-transform: uppercase;
 }
 
+.lh-eyebrow::before {
+  content: '';
+  width: 8px;
+  height: 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-hive);
+}
+
+/* A large headline carries its own weight through its size, not through a
+   heavy typeface. */
 .lh-display {
   margin: 0;
-  font-size: var(--text-h1);
-  line-height: var(--text-h1-leading);
-  font-weight: var(--weight-bold);
-  letter-spacing: -0.02em;
+  font-size: var(--text-display);
+  line-height: var(--text-display-leading);
+  font-weight: var(--weight-medium);
+  letter-spacing: -0.03em;
   color: var(--color-ink);
+  text-wrap: balance;
+}
+
+/* Section headings in the marketing surfaces follow the same restraint. */
+.lh-landing__sectionhead .lh-h2,
+.lh-carousel__head .lh-h2 {
+  font-weight: var(--weight-medium);
+  letter-spacing: -0.02em;
 }
 
 .lh-landing__lead {
@@ -1657,7 +1720,6 @@
   overflow: hidden;
   border-radius: var(--radius-card);
   background: var(--color-surface);
-  box-shadow: var(--shadow-card);
   transition:
     transform var(--motion-fast) var(--ease-out),
     box-shadow var(--motion-fast) var(--ease-out);
@@ -2331,7 +2393,7 @@
   border-radius: var(--radius-card);
   background: var(--color-surface);
   overflow: hidden;
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow-lift);
 }
 
 .lh-tour__screenbar {
@@ -2437,9 +2499,9 @@
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 34px;
-  height: 34px;
-  border-radius: var(--radius-pill);
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-tag);
   background: var(--color-canvas-sunken);
   color: var(--color-ink-muted);
 }
@@ -2484,13 +2546,18 @@
 .lh-profilehero__badge {
   display: inline-flex;
   align-items: center;
-  gap: var(--space-1);
-  padding: var(--space-1) var(--space-3);
-  border-radius: var(--radius-pill);
-  background: var(--accent-surface);
+  gap: 5px;
+  padding: 2px 8px;
+  border-radius: var(--radius-tag);
+  border: 1px solid var(--accent-line);
+  background: var(--color-surface);
   color: var(--accent);
   font-size: var(--text-label);
-  font-weight: var(--weight-bold);
+  font-weight: var(--weight-medium);
+}
+
+.lh-profilehero__badge svg {
+  color: var(--accent);
 }
 
 .lh-avatarchoice {

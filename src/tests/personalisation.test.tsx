@@ -155,6 +155,29 @@ describe('progressive disclosure', () => {
   });
 });
 
+describe('status labels', () => {
+  beforeEach(() => window.localStorage.clear());
+
+  it('shows a verification label with a status mark and plain text', () => {
+    renderApp('/app/customer');
+
+    const label = screen.getAllByText('Business (demo)')[0];
+    expect(label).toBeInTheDocument();
+    // The label text sits in its own span, so it can stay in plain ink while
+    // the mark next to it carries the status.
+    expect(label).toHaveClass('lh-badge__text');
+    expect(label.closest('.lh-badge')).toBeInTheDocument();
+  });
+
+  it('marks a pending label differently from a checked one', () => {
+    renderApp('/app/customer');
+    const checked = screen.getAllByText('Business (demo)')[0].closest('.lh-badge');
+    const pending = screen.getAllByText('Qualification (pending)')[0].closest('.lh-badge');
+    expect(checked?.className).toContain('lh-badge--success');
+    expect(pending?.className).toContain('lh-badge--warning');
+  });
+});
+
 describe('product tour on the landing page', () => {
   beforeEach(() => window.localStorage.clear());
 

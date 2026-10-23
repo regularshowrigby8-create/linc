@@ -107,6 +107,42 @@ describe('design token discipline', () => {
     const a11y = read(join(styleDir, 'a11y.css'));
     expect(a11y).toContain('prefers-reduced-motion');
   });
+
+  it('draws tags as quiet labels rather than coloured bubbles', () => {
+    const components = read(join(styleDir, 'components.css'));
+    const badge = components.slice(
+      components.indexOf('.lh-badge {'),
+      components.indexOf('.lh-badge__mark'),
+    );
+    // A tight radius, a neutral hairline and a plain surface.
+    expect(badge).toContain('var(--radius-tag)');
+    expect(badge).toContain('border: 1px solid var(--color-border)');
+    expect(badge).toContain('background: var(--color-surface)');
+    // No filled, saturated background and no saturated border.
+    expect(badge).not.toMatch(
+      /background:\s*var\(--color-(success|warning|danger|information)-surface\)/,
+    );
+    expect(badge).not.toMatch(
+      /border-color:\s*var\(--color-(success|warning|danger|information)\)/,
+    );
+  });
+
+  it('does not hang a coloured bar off a content block', () => {
+    const components = read(join(styleDir, 'components.css'));
+    // A written reason is content. It gets a border, not a colour strip.
+    const reason = components.slice(
+      components.indexOf('.lh-request__reason {'),
+      components.indexOf('.lh-request__actions'),
+    );
+    expect(reason).not.toMatch(/border-left:\s*\d+px solid var\(--color-/);
+  });
+
+  it('keeps content cards flat, with the shadow only on floating surfaces', () => {
+    const components = read(join(styleDir, 'components.css'));
+    const start = components.indexOf('.lh-card {');
+    const card = components.slice(start, components.indexOf('}', start));
+    expect(card).not.toContain('box-shadow');
+  });
 });
 
 describe('payment and currency safety', () => {

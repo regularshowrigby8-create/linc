@@ -51,7 +51,7 @@ export const RequestCard = ({
     <Card as="article" className="lh-request">
       <div className="lh-spread">
         <div className="lh-stack-sm">
-          <h3 className="lh-h3">{listingTitle ?? 'Connection request'}</h3>
+          <h3 className="lh-h3 lh-request__title">{listingTitle ?? 'Connection request'}</h3>
           <p className="lh-caption">
             {direction === 'sent' ? 'To' : 'From'} {counterpartyName} ·{' '}
             {formatRelative(request.createdAt)}
