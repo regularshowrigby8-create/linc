@@ -1,4 +1,4 @@
-import type { AppState, Listing, Workspace } from '@/data/types';
+import type { AccentName, AppState, Listing, Workspace } from '@/data/types';
 import type { StoreState } from '@/state/actions';
 
 export const WORKSPACE_ORDER: Workspace[] = [
@@ -28,6 +28,33 @@ export const WORKSPACE_ACCENT_VAR: Record<Workspace, string> = {
   collaboration: 'var(--workspace-collaboration)',
   supply: 'var(--workspace-supply)',
 };
+
+/** The accent name each workspace carries. */
+export const WORKSPACE_ACCENT: Record<Workspace, AccentName> = {
+  customer: 'blue',
+  qualification: 'green',
+  collaboration: 'violet',
+  supply: 'amber',
+};
+
+/** The accent each primary navigation area carries. */
+export const NAV_ACCENT = {
+  home: 'blue',
+  requests: 'coral',
+  messages: 'teal',
+  profile: 'plum',
+} as const satisfies Record<string, AccentName>;
+
+/** Every accent a member can choose, with the name shown in the picker. */
+export const ACCENT_CHOICES: { name: AccentName; label: string }[] = [
+  { name: 'amber', label: 'Amber' },
+  { name: 'blue', label: 'Blue' },
+  { name: 'teal', label: 'Teal' },
+  { name: 'green', label: 'Green' },
+  { name: 'coral', label: 'Coral' },
+  { name: 'violet', label: 'Violet' },
+  { name: 'plum', label: 'Plum' },
+];
 
 export const WORKSPACE_HOME_ROUTE: Record<Workspace, string> = {
   customer: '/app/customer',
@@ -83,6 +110,100 @@ export const selectPendingRequestCount = (state: StoreState, userId: string): nu
 
 export const selectVerificationStateFor = (state: StoreState, workspace: Workspace) =>
   state.app.user?.verificationByWorkspace[workspace] ?? 'not_started';
+
+export interface Achievement {
+  id: string;
+  label: string;
+  /** What the member did to earn it. */
+  detail: string;
+  state: 'earned' | 'locked';
+  /** How far along the member is, 0 to 1. Locked achievements show this. */
+  progress: number;
+}
+
+/**
+ * Badges earned from what the member has actually done in the prototype.
+ * Every value is derived from the mock store, so the list is deterministic
+ * and never claims something that did not happen.
+ */
+export const selectAchievements = (state: StoreState): Achievement[] => {
+  const user = state.app.user;
+  const userId = user?.id ?? '';
+  const sent = state.app.requests.filter((request) => request.senderId === userId);
+  const accepted = state.app.requests.filter(
+    (request) =>
+      (request.receiverId === userId || request.senderId === userId) &&
+      request.state === 'accepted',
+  );
+  const openThreads = state.app.threads.filter((thread) => thread.canMessage);
+  const comparedQuotes = state.app.quotes.filter((quote) => quote.state !== 'draft');
+  const partnerCount = state.app.collaborations.filter(
+    (collaboration) =>
+      collaboration.agreementState === 'terms_accepted' ||
+      collaboration.agreementState === 'scheduled' ||
+      collaboration.agreementState === 'in_progress',
+  ).length;
+
+  const earned = [
+    {
+      id: 'first-request',
+      label: 'First request',
+      detail: 'You sent your first request to a provider.',
+      done: sent.length >= 1,
+      progress: Math.min(1, sent.length),
+    },
+    {
+      id: 'accepted',
+      label: 'Handshake',
+      detail: 'A request you sent was accepted.',
+      done: accepted.length >= 1,
+      progress: Math.min(1, accepted.length),
+    },
+    {
+      id: 'conversation',
+      label: 'In conversation',
+      detail: 'You opened a live conversation with someone.',
+      done: openThreads.length >= 1,
+      progress: Math.min(1, openThreads.length),
+    },
+    {
+      id: 'shortlist',
+      label: 'Shortlist',
+      detail: 'You saved three listings for later.',
+      done: state.app.savedListingIds.length >= 3,
+      progress: Math.min(1, state.app.savedListingIds.length / 3),
+    },
+    {
+      id: 'routes',
+      label: 'Route reader',
+      detail: 'You compared a supply quote from a supplier.',
+      done: comparedQuotes.length >= 1,
+      progress: Math.min(1, comparedQuotes.length),
+    },
+    {
+      id: 'partner',
+      label: 'Partnership',
+      detail: 'You agreed terms with a partner.',
+      done: partnerCount >= 1,
+      progress: Math.min(1, partnerCount),
+    },
+    {
+      id: 'demo',
+      label: 'Demo checked',
+      detail: 'You walked through the demo verification.',
+      done: state.app.verificationDemo.demoVerified,
+      progress: state.app.verificationDemo.demoVerified ? 1 : 0,
+    },
+  ];
+
+  return earned.map((item) => ({
+    id: item.id,
+    label: item.label,
+    detail: item.detail,
+    state: item.done ? 'earned' : 'locked',
+    progress: item.done ? 1 : item.progress,
+  }));
+};
 
 /** Workspace label for a workspace the user has not registered yet. */
 export const selectWorkspaceDisplayName = (workspace: Workspace): string =>

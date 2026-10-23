@@ -36,7 +36,6 @@ export const SupplyWorkspacePage = () => {
     <>
       <WorkspaceShell
         workspace="supply"
-        accent={config.accent}
         title={config.title}
         purpose={config.purpose}
         searchValue={browser.search}

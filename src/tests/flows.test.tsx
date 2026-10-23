@@ -9,10 +9,11 @@ describe('landing page', () => {
   it('shows the hero and the four workspaces', () => {
     renderApp('/');
     expect(screen.getByRole('heading', { name: /find the right connection/i })).toBeInTheDocument();
-    expect(screen.getByText('Customer Service')).toBeInTheDocument();
-    expect(screen.getByText('Qualification / Jobs')).toBeInTheDocument();
-    expect(screen.getByText('Collaboration')).toBeInTheDocument();
-    expect(screen.getByText('Supply')).toBeInTheDocument();
+    const workspaces = within(screen.getByRole('region', { name: /linkhive workspaces/i }));
+    expect(workspaces.getByText('Customer Service')).toBeInTheDocument();
+    expect(workspaces.getByText('Qualification / Jobs')).toBeInTheDocument();
+    expect(workspaces.getByText('Collaboration')).toBeInTheDocument();
+    expect(workspaces.getByText('Supply')).toBeInTheDocument();
   });
 
   it('states that payments are not available', () => {
@@ -209,7 +210,10 @@ describe('customer service workspace', () => {
     expect(
       await screen.findByRole('heading', { name: /sports massage for runners/i }),
     ).toBeInTheDocument();
-    expect(screen.getByText(/what is not included/i)).toBeInTheDocument();
+
+    // The detail is behind a control, so it is opened before it is checked.
+    await user.click(screen.getByRole('button', { name: /what is included and how it works/i }));
+    expect(screen.getByText(/^Not included$/i)).toBeInTheDocument();
   });
 });
 

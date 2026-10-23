@@ -26,7 +26,6 @@ export const CustomerWorkspacePage = () => {
     <>
       <WorkspaceShell
         workspace="customer"
-        accent={config.accent}
         title={config.title}
         purpose={config.purpose}
         searchValue={browser.search}

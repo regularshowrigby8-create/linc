@@ -10,6 +10,8 @@ import {
 } from 'react';
 import type {
   AppState,
+  AccentName,
+  AvatarStyle,
   Collaboration,
   CollaborationCategory,
   ConnectionRequest,
@@ -25,6 +27,7 @@ import type {
   ServiceCategory,
   ServiceType,
   SupplyQuote,
+  ThemePreference,
   User,
   Workspace,
 } from '@/data/types';
@@ -43,6 +46,7 @@ import {
   setActiveWorkspace,
   setNotification,
   setPending,
+  setPreferences,
   setReportStatus,
   setRequestState,
   setResetNotice,
@@ -82,6 +86,13 @@ export const createInitialState = (): StoreState => ({
       result: null,
       demoVerified: false,
       auditEvents: [],
+    },
+    preferences: {
+      theme: 'system',
+      accent: 'amber',
+      headline: 'Service provider',
+      avatarStyle: 'initials',
+      navCollapsed: false,
     },
   },
   pending: [],
@@ -295,9 +306,14 @@ const reducer = (state: StoreState, action: StoreAction): StoreState => {
         },
       };
 
+    case 'set_preferences':
+      return {
+        ...state,
+        app: { ...state.app, preferences: { ...state.app.preferences, ...action.patch } },
+      };
+
     case 'push_toast':
       return { ...state, toasts: [...state.toasts, action.toast] };
-
     case 'dismiss_toast':
       return { ...state, toasts: state.toasts.filter((toast) => toast.id !== action.id) };
 
@@ -461,6 +477,13 @@ export interface StoreActions {
   requestAlternative: (quoteId: string) => Promise<ActionResult>;
   selectQuote: (quoteId: string) => Promise<ActionResult>;
   setNotificationChannel: (channel: NotificationChannel, enabled: boolean) => Promise<ActionResult>;
+  /** Saves the member's own display preferences. */
+  setTheme: (theme: ThemePreference) => Promise<ActionResult>;
+  setAccent: (accent: AccentName) => Promise<ActionResult>;
+  setHeadline: (headline: string) => Promise<ActionResult>;
+  setAvatarStyle: (style: AvatarStyle) => Promise<ActionResult>;
+  /** Collapses or expands the desktop rail. */
+  setNavCollapsed: (collapsed: boolean) => Promise<ActionResult>;
   runVerificationDemoStep: (
     step: 'document' | 'selfie' | 'result' | 'manual_review' | 'complete',
   ) => Promise<ActionResult>;
@@ -1053,6 +1076,66 @@ export const ActionsProvider = ({ children }: { children: ReactNode }) => {
           },
           'Notification preference saved.',
         );
+      },
+
+      async setTheme(theme) {
+        return run(
+          'preference:theme',
+          () => {
+            dispatch(setPreferences({ theme }));
+            return { ok: true, data: undefined };
+          },
+          theme === 'system'
+            ? 'Appearance follows your device setting.'
+            : theme === 'dark'
+              ? 'Dark appearance on.'
+              : 'Light appearance on.',
+        );
+      },
+
+      async setAccent(accent) {
+        return run(
+          'preference:accent',
+          () => {
+            dispatch(setPreferences({ accent }));
+            return { ok: true, data: undefined };
+          },
+          'Your accent colour is updated.',
+        );
+      },
+
+      async setHeadline(headline) {
+        return run(
+          'preference:headline',
+          () => {
+            const trimmed = headline.trim();
+            if (trimmed.length === 0) return { ok: false, error: 'Write what you do.' };
+            if (trimmed.length > 60) {
+              return { ok: false, error: 'Keep your headline under 60 characters.' };
+            }
+            dispatch(setPreferences({ headline: trimmed }));
+            return { ok: true, data: undefined };
+          },
+          'Your headline is updated.',
+        );
+      },
+
+      async setAvatarStyle(style) {
+        return run(
+          'preference:avatar',
+          () => {
+            dispatch(setPreferences({ avatarStyle: style }));
+            return { ok: true, data: undefined };
+          },
+          'Your avatar is updated.',
+        );
+      },
+
+      async setNavCollapsed(collapsed) {
+        return run('preference:nav', () => {
+          dispatch(setPreferences({ navCollapsed: collapsed }));
+          return { ok: true, data: undefined };
+        });
       },
 
       async runVerificationDemoStep(step) {

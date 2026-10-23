@@ -1,9 +1,12 @@
 import type { ReactNode } from 'react';
+import type { AccentName } from '@/data/types';
 
 export interface TabItem {
   id: string;
   label: string;
   count?: number;
+  /** Each tab can carry its own accent, so the reader knows what changed. */
+  accent?: AccentName;
 }
 
 interface TabsProps {
@@ -28,6 +31,7 @@ export const Tabs = ({ items, activeId, onChange, ariaLabel, children }: TabsPro
             aria-selected={active}
             aria-controls={`tabpanel-${item.id}`}
             tabIndex={active ? 0 : -1}
+            data-accent={item.accent}
             className={`lh-tabs__tab${active ? ' lh-tabs__tab--active' : ''}`}
             onClick={() => onChange(item.id)}
           >

@@ -334,6 +334,26 @@ export interface DemoVerificationState {
   auditEvents: AuditEvent[];
 }
 
+/** Light, dark, or follow the operating system. */
+export type ThemePreference = 'light' | 'dark' | 'system';
+
+/** The accent colours a member can choose for their own profile. */
+export type AccentName = 'blue' | 'teal' | 'green' | 'amber' | 'coral' | 'violet' | 'plum';
+
+/** Abstract avatar treatments. Portraits are never shown. */
+export type AvatarStyle = 'initials' | 'blocks' | 'rings';
+
+export interface ProfilePreferences {
+  theme: ThemePreference;
+  /** Accent used across the member's own profile surfaces. */
+  accent: AccentName;
+  /** What the member does, in their own words. Shown under their name. */
+  headline: string;
+  avatarStyle: AvatarStyle;
+  /** Whether the desktop rail is reduced to icons. */
+  navCollapsed: boolean;
+}
+
 export interface AppState {
   user: User | null;
   registered: boolean;
@@ -347,4 +367,5 @@ export interface AppState {
   activeWorkspace: Workspace;
   notifications: NotificationSettings;
   verificationDemo: DemoVerificationState;
+  preferences: ProfilePreferences;
 }

@@ -7,6 +7,59 @@ semantic versioning once the prototype graduates to a live product.
 
 ---
 
+## [0.3.0] — 2026-10-24
+
+Overhauled the interface so it reads as a live product: less on every screen, colour that means
+something, motion that explains itself, a profile worth personalising, and a dark mode.
+
+### Added
+
+- **Light, dark and system colour modes.** One set of token names serves both modes, the choice
+  is stored with the rest of the mock state, and an inline script sets the mode before the first
+  paint so the page never flashes the wrong colours.
+- **Seven accents.** `teal`, `coral` and `violet` were added next to the existing palette, joined
+  by `plum`. A surface declares its accent with `data-accent`, so colour is scoped rather than
+  scattered.
+- **An accent for every area.** Each workspace, each primary navigation item and each request
+  state tab has its own accent.
+- **`Disclosure`**, a progressive disclosure control. Secondary listing facts, the account summary
+  and the included and excluded lists now sit behind it instead of filling the screen.
+- **`Reveal`**, a scroll reveal that gives up and shows the content when the browser cannot observe
+  intersections or when the reader has asked for reduced motion.
+- **`CardCarousel`**, a snapping track of cards with arrow controls.
+- **`ProductTour`**, an interactive preview on the landing page. It runs on the same store the app
+  runs on, so it shows real listings, prices and verification badges rather than a picture.
+- **`ThemeSwitch` and `AccentPicker`**, used on the landing page, in the account drawer and on the
+  profile.
+- **A profile worth personalising**: an accent, an abstract mark in one of three treatments, a
+  free-text headline, and seven badges.
+- **Badges** derived from what a member has actually done. Locked badges show how close they are.
+- **A collapsible, bottom-anchored desktop rail.** The workspace and its switch control stay at the
+  top, the four navigation areas anchor to the bottom, and the rail collapses to icons on demand.
+- **Twenty one new tests**, including an audit that keeps every raw colour inside `tokens.css`.
+
+### Changed
+
+- Listing cards and listing detail pages now show only what a person acts on. Everything else
+  costs one click.
+- The coloured strip down the left of every workspace header is gone. The workspace is marked by
+  an icon, its name in the accent colour, and an action button in that colour.
+- The "how it works" section is a horizontal carousel of four cards, not a row of three identical
+  ones.
+- The hero animates in reading order and carries two slow gradients that drift behind the text.
+  Nothing else loops for decoration.
+- The desktop rail keeps its navigation at the bottom and the workspace at the top.
+- 115 tests across six suites.
+
+### Fixed
+
+- The profile headline could not be cleared, because an empty draft fell back to the saved value
+  instead of becoming an empty string.
+- A raw `rgba` value in the focus styles and the overlay scrim moved into `tokens.css`, where the
+  design system says raw colour belongs.
+
+---
+
 ## [0.2.0] — 2026-10-23
 
 Refined the prototype into a consumer product surface, and prepared it for deployment.

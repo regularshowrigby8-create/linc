@@ -184,6 +184,82 @@ the build rules require for fake admin data.
 unaffected: the five mandated labels stay verbatim, unavailable capabilities stay disabled with an
 explanation, and no screen implies that a money or identity feature is live.
 
+### D-019 — Two colour modes share one set of token names
+
+`tokens.css` defines every colour once. `:root` holds the light values and
+`[data-theme='dark']` overrides the same names. No component knows which mode is active, and no
+component carries a second set of colours for dark mode.
+
+The preference is `light`, `dark` or `system`, and it lives in the central store with everything
+else. A short inline script in `index.html` reads the stored preference and sets the attribute on
+`<html>` before the first paint, so the page never flashes the wrong mode. `system` follows the
+operating system and keeps following it while the page is open.
+
+### D-020 — The accent palette was extended with three new hues
+
+`teal`, `coral` and `violet` were added next to the existing navy, amber, blue and green, and
+`plum` joins them, giving seven accents. The original twelve colours in `DESIGN-SYSTEM.md` are
+unchanged and still carry every status meaning. The new hues are accents only: they never stand
+in for success, warning, danger or a verification state.
+
+This extends the design system rather than replacing it. The addition was recorded here because the
+specification fixes the core palette but does not forbid additional accents.
+
+### D-021 — Colour is scoped to surfaces, and only where it means something
+
+Any element can declare `data-accent="blue"` and everything inside it reads `--accent`,
+`--accent-surface` and `--accent-line`. This replaced scattered inline colours with one rule set.
+
+Colour is only used where it carries meaning: a status, a workspace, the area you are in, or the
+action belonging to that area. Anything a person cannot act on, and anything that is not a status,
+is left in neutral ink. The coloured left strip that used to mark every workspace header was
+removed for this reason. The workspace is now marked by an icon, a name in the accent colour, and
+an action button in that colour.
+
+### D-022 — Anything a person cannot act on sits behind a disclosure
+
+`Disclosure` is a button with `aria-expanded`, a panel that is `inert` while it is closed, and a
+grid-row transition so the panel grows rather than jumps. Secondary listing facts, the account
+summary on the profile, and the included and excluded lists on a listing detail page are all
+behind it.
+
+The rule applied throughout: if a person cannot act on it and would not need it at a glance, it
+does not take up space on the surface.
+
+### D-023 — Motion has to explain something
+
+Every animation answers a question. The hero elements arrive in reading order, sections rise as
+they are scrolled to, the preview panel slides when the workspace changes, a badge progress bar
+fills, and the hero carries two slow gradients that drift behind the text. Nothing loops for
+decoration and nothing animates on a timer the reader did not cause.
+
+`prefers-reduced-motion: reduce` switches all of it off, and the scroll reveal falls back to
+showing the content immediately. The reveal also gives up and shows everything if the browser
+cannot observe intersections.
+
+Research on artificial-looking sites was used to decide what to avoid: the purple-to-blue
+gradient, the three identical feature cards, the repeated uppercase eyebrow, the coloured left
+border, the same fade-up on every section, gradient text on a headline, glassmorphism, invented
+statistics and testimonials. None of those appear.
+
+### D-024 — The landing page preview runs on the real mock data
+
+`ProductTour` reads the same store the app reads and shows real listings, real prices and real
+verification badges. It is not a picture of a product. Each workspace tab has its own accent, and
+the action opens the real workspace.
+
+This is the "advertisement" the page needed: it shows the product working rather than describing
+it in three identical cards.
+
+### D-025 — Badges are derived, never stored
+
+`selectAchievements` reads the store and works out what a member has actually done, so a badge
+cannot be claimed that was not earned. Locked badges show a progress bar, which tells the member
+what to do next.
+
+A member's own preferences, their accent and their headline are stored, because those are
+choices rather than facts.
+
 ---
 
 ## 3. Open decisions
@@ -258,6 +334,14 @@ The tiles are abstract geometry. Real photography of real suppliers would be the
 for a live product, but it needs a decision on where the imagery comes from, who supplies it, how
 it is licensed, and what happens when a supplier has no photo. Until then, abstract tiles are the
 honest choice.
+
+### OPEN_DECISION-12 — Should a member's accent be free choice?
+
+A member can pick any of the seven accents for their own profile. The prototype does not check
+whether the colour clashes with a workspace accent, and it does not remember the choice per
+workspace. The decision is needed on whether the accent follows the member everywhere, whether it
+is limited to their profile surfaces, and what happens when a member picks a colour that reads
+poorly against a status badge.
 
 ---
 

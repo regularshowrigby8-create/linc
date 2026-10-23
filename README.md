@@ -69,7 +69,7 @@ src/
 ├── features/     One folder per screen or flow; composes components
 ├── data/         Types and deterministic mock fixtures
 ├── state/        Typed store, action creators, selectors, transitions
-├── styles/       Design tokens, reset, accessibility rules, components
+├── styles/       Design tokens, reset, accessibility rules, components, motion
 ├── utils/        Formatting, date and validation helpers
 └── tests/        Vitest suites
 public/
@@ -115,12 +115,39 @@ Tokens live in `src/styles/tokens.css` and are the only place raw colour values 
 - Focus ring: 3px `rgba(37,99,235,.28)` plus a 1px info border.
 - Motion 150–220ms ease-out, disabled under `prefers-reduced-motion`.
 
+### Colour modes and accents
+
+The same token names serve both colour modes. `:root` holds the light values and
+`[data-theme='dark']` overrides them, so no component knows which mode is active.
+
+A member picks **light**, **dark** or **system** from the landing page header, the account drawer
+or the profile. The choice is stored with the rest of the mock state, and an inline script in
+`index.html` applies it before the first paint.
+
+Seven accents sit alongside the core palette:
+
+| Accent  | Used for                          |
+| ------- | --------------------------------- |
+| `blue`  | Customer Service, Home            |
+| `teal`  | Messages, completed requests      |
+| `green` | Qualification / Jobs              |
+| `amber` | Supply, your own accent           |
+| `coral` | Requests, received requests        |
+| `violet`| Collaboration                      |
+| `plum`  | Profile, blocked requests         |
+
+A surface declares its accent with `data-accent`, and everything inside it reads `--accent`,
+`--accent-surface` and `--accent-line`. Colour is only used where it carries meaning: a status, a
+workspace, the area you are in, or the action belonging to that area.
+
 ### Responsive rules
 
 - **Mobile (375px):** 16px body side padding, 44px minimum tap targets, 16px card radius, 64px
   bottom navigation plus safe area, no horizontal overflow.
 - **Desktop (1440px):** content capped at 1200px, 240px navigation rail, primary column 640–760px,
   optional detail panel 320–360px.
+- The desktop rail keeps the workspace at the top and the four navigation areas at the bottom, and
+  collapses to a 76px icon rail on demand.
 
 ---
 
@@ -145,7 +172,7 @@ explanation.
 npm run test
 ```
 
-97 tests across five suites:
+115 tests across six suites:
 
 | Suite                   | Covers                                                              |
 | ----------------------- | ------------------------------------------------------------------- |
@@ -153,7 +180,8 @@ npm run test
 | `routeSmoke.test.tsx`   | All 18 routes render with the right heading and never hit the error boundary |
 | `transitions.test.tsx`  | Valid and invalid state transitions, double submit, persistence, corrupt-state recovery |
 | `flows.test.tsx`        | Registration, workspace selection, navigation, wizard, requests, messages, notifications |
-| `safety.test.tsx`       | No dead code, no file input, no camera, no payment or currency claims, and nothing development-only in the production bundle |
+| `safety.test.tsx`       | No dead code, no file input, no camera, no payment or currency claims, no raw colour outside `tokens.css`, and nothing development-only in the production bundle |
+| `personalisation.test.tsx` | Colour mode, the account appearance panel, badge states, the accent and mark pickers, disclosure behaviour, the product tour and the collapsing rail |
 
 A button is not considered done until its click behaviour is covered.
 

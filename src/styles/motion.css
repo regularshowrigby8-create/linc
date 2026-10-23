@@ -1,0 +1,231 @@
+/*
+ * Motion.
+ *
+ * Every animation here explains something: content arriving as you scroll,
+ * a panel swapping when you change workspace, a control confirming a press.
+ * Nothing loops for decoration alone, and the whole file is neutralised by
+ * the prefers-reduced-motion rule in a11y.css.
+ */
+
+@keyframes lh-enter {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes lh-fade {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes lh-slide-in {
+  from {
+    opacity: 0;
+    transform: translateX(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes lh-drift {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  50% {
+    transform: translate3d(2%, -3%, 0) scale(1.04);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+}
+
+@keyframes lh-drift-alt {
+  0% {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+  50% {
+    transform: translate3d(-3%, 2%, 0) scale(1);
+  }
+  100% {
+    transform: translate3d(0, 0, 0) scale(1.05);
+  }
+}
+
+@keyframes lh-grow {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes lh-pop {
+  0% {
+    transform: scale(0.85);
+    opacity: 0;
+  }
+  70% {
+    transform: scale(1.04);
+    opacity: 1;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+/* ---------------------------------------------------------- Entrances */
+
+/* Hero elements arrive in reading order, a beat apart. */
+.lh-enter {
+  animation: lh-enter var(--motion-enter) var(--ease-out) both;
+}
+
+.lh-enter--1 {
+  animation-delay: 40ms;
+}
+.lh-enter--2 {
+  animation-delay: 120ms;
+}
+.lh-enter--3 {
+  animation-delay: 200ms;
+}
+.lh-enter--4 {
+  animation-delay: 280ms;
+}
+
+/* Scroll reveal. The panel is readable without it. */
+.lh-reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition:
+    opacity var(--motion-enter) var(--ease-out),
+    transform var(--motion-enter) var(--ease-out);
+}
+
+.lh-reveal--shown {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.lh-reveal--step-1.lh-reveal--shown {
+  transition-delay: 0ms;
+}
+.lh-reveal--step-2.lh-reveal--shown {
+  transition-delay: var(--stagger-1);
+}
+.lh-reveal--step-3.lh-reveal--shown {
+  transition-delay: var(--stagger-2);
+}
+.lh-reveal--step-4.lh-reveal--shown {
+  transition-delay: var(--stagger-3);
+}
+
+/* ------------------------------------------------------------- Tour */
+
+/* Switching workspace swaps the preview, so the change is visible. */
+.lh-tour__panel {
+  animation: lh-slide-in var(--motion-slow) var(--ease-out) both;
+}
+
+.lh-tour__tab {
+  transition:
+    background var(--motion-fast) var(--ease-out),
+    border-color var(--motion-fast) var(--ease-out),
+    color var(--motion-fast) var(--ease-out);
+}
+
+.lh-tour__tab--active {
+  animation: lh-pop var(--motion-slow) var(--ease-out) both;
+}
+
+/* ------------------------------------------------------- Ambient wash */
+
+/* Two slow shapes behind the hero. They never cross the text. */
+.lh-landing__wash {
+  position: absolute;
+  inset: -12% -8% -12% -8%;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    radial-gradient(42% 38% at 22% 28%, var(--accent-hive-wash) 0%, transparent 70%),
+    radial-gradient(38% 42% at 78% 66%, var(--accent-teal-wash) 0%, transparent 72%);
+  animation: lh-drift 18s ease-in-out infinite;
+}
+
+.lh-landing__hero::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: radial-gradient(46% 44% at 74% 30%, var(--accent-violet-wash) 0%, transparent 72%);
+  animation: lh-drift-alt 22s ease-in-out infinite;
+}
+
+/* -------------------------------------------------------- Disclosure */
+
+/* The panel opens by growing its own row, so nothing jumps. */
+.lh-disclosure__panel {
+  display: grid;
+  grid-template-rows: 0fr;
+  transition: grid-template-rows var(--motion-slow) var(--ease-out);
+}
+
+.lh-disclosure--open .lh-disclosure__panel {
+  grid-template-rows: 1fr;
+}
+
+.lh-disclosure__content {
+  overflow: hidden;
+  min-height: 0;
+}
+
+.lh-disclosure__chevron {
+  transition: transform var(--motion-base) var(--ease-out);
+}
+
+.lh-disclosure--open .lh-disclosure__chevron {
+  transform: rotate(180deg);
+}
+
+/* -------------------------------------------------------- Progress */
+
+/* Achievement progress fills from the left as the member gets closer. */
+.lh-achievement__progress > span {
+  display: block;
+  height: 100%;
+  border-radius: var(--radius-pill);
+  background: var(--accent);
+  transform-origin: left center;
+  animation: lh-grow var(--motion-enter) var(--ease-out) both;
+}
+
+/* ---------------------------------------------------------- Carousel */
+
+.lh-carousel__track {
+  display: flex;
+  gap: var(--space-4);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-padding-left: var(--space-1);
+  padding-bottom: var(--space-2);
+  scrollbar-width: thin;
+}
+
+.lh-carousel__track > * {
+  scroll-snap-align: start;
+  flex: 0 0 min(320px, 82%);
+}

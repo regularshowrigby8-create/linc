@@ -12,7 +12,7 @@ Built from: `docs/linkhive-build-spec/` (21 files, branch `The-plan`)
 | Install          | `npm install`    | 270 packages                              |
 | Start            | `npm run dev`    | Vite on `0.0.0.0:5173`                    |
 | Build            | `npm run build`  | `tsc -b` clean, `dist/` built in ~2s      |
-| Test             | `npm run test`   | **97 passed / 97 total, 5 suites**        |
+| Test             | `npm run test`   | **115 passed / 115 total, 6 suites**      |
 | Type check       | `npm run typecheck` | Clean, strict mode                       |
 | Lint             | `npm run lint`   | Clean, 0 errors, 0 warnings               |
 | Format check     | `npm run format:check` | Clean                              |
@@ -321,6 +321,84 @@ The changes below serve that brief without weakening any honesty requirement.
 `src/tests/safety.test.tsx` greps the built bundle in `dist/assets/` and fails if it finds
 `Development result selector`, `preview purposes only`, `mock result:`, `mock checks`,
 `linkhive-build-spec` or `It does not`. CI builds before it tests, so the bundle always exists.
+
+
+---
+
+## 4c. Design overhaul (v0.3.0)
+
+The brief was that the site read as a static prototype: too much detail per section, no colour
+meaning, no motion, a profile with nothing to customise, and no light or dark mode. The work
+below is what changed, and why.
+
+### Information load
+
+| Area | Before | After | Why |
+| --- | --- | --- | --- |
+| Listing card | Five labelled facts always visible, plus badges, description and two actions | Title, byline, verification, price and the two actions on the surface; availability, response time, rating, field, opportunity and delivery details behind **More details** | A person cannot act on response time. It should cost one click, not a screen |
+| Listing detail | Five facts, three long sections and four buttons in one column | Title, byline, verification, description, price and the two primary actions; the rest behind **What is included and how it works**; report and block moved into the side panel | The side panel was repeating the name and location that were already on the card |
+| Profile | A flat list of account values | Hero with the member's accent and earned badges, a badge grid, a **Make it yours** panel, then verification, details and the unavailable features | The profile was a settings list. It is now a place a member arranges |
+| Workspace header | A coloured strip down the left edge of every header | A workspace mark, the workspace name in its accent, and an action button in that accent | The coloured strip was decoration, and it was on every page |
+
+### Colour
+
+Seven accents now exist as tokens: `blue`, `teal`, `green`, `amber`, `coral`, `violet` and `plum`.
+Each one is a set of three values, and a surface declares its accent with `data-accent`, so colour
+is scoped rather than scattered.
+
+| Where | Accent |
+| --- | --- |
+| Customer Service | blue |
+| Qualification / Jobs | green |
+| Collaboration | violet |
+| Supply | amber |
+| Home / Requests / Messages / Profile | blue / coral / teal / plum |
+| Request state tabs | coral, blue, green, teal, amber, coral, plum |
+
+Colour now only appears where it means something. Statuses keep their semantic colours,
+verification badges keep success and warning, and everything else is neutral ink. The
+`data-accent="true"` marker on `Card` was left as it was, because it means "this card has a
+workspace edge", which is a different thing from an accent name.
+
+### Motion
+
+| Animation | What it explains | Reduced motion |
+| --- | --- | --- |
+| Hero elements arrive in reading order | The page has a reading order | Off |
+| Sections rise as they are scrolled to | You have reached new content | Off, and the content is shown immediately |
+| The preview panel slides on change | The workspace changed | Off |
+| Two slow gradients drift behind the hero | The hero is alive without moving the text | Off |
+| Badge progress bars fill | How close a locked badge is | Off |
+| Buttons lift on hover, panels grow on open | A press or a change happened | Off, and the transition is instant |
+
+`prefers-reduced-motion: reduce` neutralises the whole of `motion.css`, and the scroll reveal
+gives up and renders the content when the browser cannot observe intersections.
+
+### Profile personalisation
+
+- **Accent**: seven colours, applied to the member's own surfaces.
+- **Mark**: three abstract treatments (initials, blocks, rings). Portraits are still never shown.
+- **Headline**: a free-text line, up to 60 characters, saved to the store.
+- **Badges**: seven, derived from what the member has actually done. Locked badges show progress.
+- **Appearance**: light, dark or system.
+
+### What the research changed
+
+The design was checked against the published tells of machine-generated interfaces before it was
+written, and the following were deliberately avoided: the purple-to-blue gradient, the three
+identical feature cards with icons, the uppercase eyebrow repeated above every heading, the
+coloured left border, the same fade-up on every section, gradient text on a headline,
+glassmorphism, boxes inside boxes, invented statistics, invented testimonials, fake faces, and
+em dashes used as the default separator. The "how it works" section is a horizontal carousel of
+four cards rather than a row of three.
+
+### Tests added
+
+Twenty one new tests across `src/tests/personalisation.test.tsx` and `src/tests/safety.test.tsx`:
+colour mode switching and persistence, the account drawer appearance panel, badge states, the
+accent picker, the mark picker, saving a headline, the exact future-feature labels, disclosure
+behaviour, the product tour tabs, the collapsing rail, and a new audit that keeps every raw
+colour inside `tokens.css`.
 
 
 ---

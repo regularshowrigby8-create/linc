@@ -29,7 +29,6 @@ export const QualificationWorkspacePage = () => {
     <>
       <WorkspaceShell
         workspace="qualification"
-        accent={config.accent}
         title={config.title}
         purpose={config.purpose}
         searchValue={browser.search}

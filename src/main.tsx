@@ -8,6 +8,7 @@ import { ActionsProvider, StoreProvider } from '@/state/store';
 import '@/styles/globals.css';
 import '@/styles/a11y.css';
 import '@/styles/components.css';
+import '@/styles/motion.css';
 
 const container = document.getElementById('root');
 if (!container) throw new Error('Root container is missing from index.html');

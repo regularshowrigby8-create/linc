@@ -12,13 +12,13 @@ import { selectListingById } from '@/state/selectors';
 import type { RequestAction } from '@/state/requestTransitions';
 
 const TABS = [
-  { id: 'received', label: 'Received' },
-  { id: 'sent', label: 'Sent' },
-  { id: 'accepted', label: 'Accepted' },
-  { id: 'completed', label: 'Completed' },
-  { id: 'closed', label: 'Expired' },
-  { id: 'reported', label: 'Reported' },
-  { id: 'blocked', label: 'Blocked' },
+  { id: 'received', label: 'Received', accent: 'coral' as const },
+  { id: 'sent', label: 'Sent', accent: 'blue' as const },
+  { id: 'accepted', label: 'Accepted', accent: 'green' as const },
+  { id: 'completed', label: 'Completed', accent: 'teal' as const },
+  { id: 'closed', label: 'Expired', accent: 'amber' as const },
+  { id: 'reported', label: 'Reported', accent: 'coral' as const },
+  { id: 'blocked', label: 'Blocked', accent: 'plum' as const },
 ];
 
 export const RequestsPage = () => {

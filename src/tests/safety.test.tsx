@@ -77,6 +77,38 @@ describe('dead-code and safety audit', () => {
   });
 });
 
+describe('design token discipline', () => {
+  const styleDir = join(SOURCE_ROOT, 'styles');
+  const styleFiles = readdirSync(styleDir).filter((file) => file.endsWith('.css'));
+
+  it('finds the stylesheets to audit', () => {
+    expect(styleFiles.length).toBeGreaterThan(2);
+  });
+
+  it('keeps every raw colour inside tokens.css', () => {
+    for (const file of styleFiles) {
+      if (file === 'tokens.css') continue;
+      const content = read(join(styleDir, file));
+      // Hex colours and raw rgb/rgba are only allowed in the token file.
+      expect(content, file).not.toMatch(/#[0-9a-fA-F]{3,8}\b/);
+      expect(content, file).not.toMatch(/rgba?\(/);
+    }
+  });
+
+  it('defines both colour modes and the accent set', () => {
+    const tokens = read(join(styleDir, 'tokens.css'));
+    expect(tokens).toContain("[data-theme='dark']");
+    for (const accent of ['blue', 'teal', 'green', 'amber', 'coral', 'violet', 'plum']) {
+      expect(tokens, accent).toContain(`--accent-${accent}:`);
+    }
+  });
+
+  it('keeps the reduced motion escape hatch in place', () => {
+    const a11y = read(join(styleDir, 'a11y.css'));
+    expect(a11y).toContain('prefers-reduced-motion');
+  });
+});
+
 describe('payment and currency safety', () => {
   it('uses the exact future-capability labels from the build specification', async () => {
     const { readFileSync: readSync } = await import('node:fs');

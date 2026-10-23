@@ -2,15 +2,26 @@
  * LinkHive design tokens.
  * Single source of colour, type, spacing, shape and motion values.
  * Raw values are only permitted inside this file. See docs/linkhive-build-spec/02-design/DESIGN-SYSTEM.md
+ *
+ * Two colour modes share one set of token names:
+ *   :root                 light mode
+ *   [data-theme='dark']   dark mode
+ * The theme attribute is written on <html> before first paint by the inline
+ * script in index.html, so there is no flash of the wrong mode.
  */
 
 :root {
-  /* ---- Colour ---- */
+  color-scheme: light;
+
+  /* ---- Core colour ---- */
   --color-ink: #14213d;
   --color-ink-muted: #536174;
   --color-canvas: #f7f8fa;
   --color-surface: #ffffff;
+  --color-surface-raised: #ffffff;
+  --color-surface-sunken: #eef1f5;
   --color-border: #e3e8ef;
+  --color-border-strong: #cfd7e3;
   --color-hive: #f2b84b;
   --color-hive-deep: #b87313;
   --color-success: #198754;
@@ -18,6 +29,7 @@
   --color-danger: #c0392b;
   --color-information: #2563eb;
   --color-disabled: #a7b0be;
+  --color-on-accent: #ffffff;
 
   /* Tinted surfaces derived from tokens for status chips. */
   --color-success-surface: #eaf6ef;
@@ -25,7 +37,49 @@
   --color-danger-surface: #fbecea;
   --color-information-surface: #eaf0fe;
   --color-hive-surface: #fdf4e0;
-  --color-canvas-sunken: #eef1f5;
+
+  /* ---- Accent palette ----
+   * Each accent is a full set: a solid colour for text and icons, a faint
+   * tint for surfaces, and a hairline for borders. Accents are only used on
+   * things a person can act on, or on the one thing a section is about.
+   */
+  --accent-blue: #2563eb;
+  --accent-blue-surface: #eaf0fe;
+  --accent-blue-line: #c3d5fb;
+
+  --accent-teal: #0e8c7f;
+  --accent-teal-surface: #e4f5f2;
+  --accent-teal-line: #b3e0d9;
+
+  --accent-green: #198754;
+  --accent-green-surface: #eaf6ef;
+  --accent-green-line: #b9e0cb;
+
+  --accent-amber: #b87313;
+  --accent-amber-surface: #fdf4e0;
+  --accent-amber-line: #f0d9a6;
+
+  --accent-coral: #d2542e;
+  --accent-coral-surface: #fdeee8;
+  --accent-coral-line: #f6cdb9;
+
+  --accent-violet: #6d4ac7;
+  --accent-violet-surface: #efeafa;
+  --accent-violet-line: #d5c6f2;
+
+  --accent-plum: #9c3a76;
+  --accent-plum-surface: #fbeaf3;
+  --accent-plum-line: #f0c9de;
+
+  /* Soft washes used behind the hero. Low opacity, never behind text. */
+  --accent-hive-wash: rgba(242, 184, 75, 0.28);
+  --accent-teal-wash: rgba(14, 140, 127, 0.16);
+  --accent-violet-wash: rgba(109, 74, 199, 0.12);
+
+  /* The accent in force. Overridden per surface with [data-accent]. */
+  --accent: var(--accent-blue);
+  --accent-surface: var(--accent-blue-surface);
+  --accent-line: var(--accent-blue-line);
 
   /* ---- Typography ---- */
   --font-sans:
@@ -43,6 +97,8 @@
   --text-h2-leading: 1.2;
   --text-h3: 1.125rem; /* 18px */
   --text-h3-leading: 1.25;
+  --text-display: 2.25rem; /* 36px */
+  --text-display-leading: 1.06;
   --text-button: 0.875rem; /* 14px */
   --text-button-leading: 1.2;
 
@@ -61,38 +117,167 @@
   --space-10: 40px;
   --space-12: 48px;
   --space-16: 64px;
+  --space-20: 80px;
 
   --page-padding: var(--space-4);
   --card-gap: var(--space-3);
   --content-max: 1200px;
   --reading-max: 720px;
   --rail-width: 240px;
+  --rail-width-collapsed: 76px;
 
   /* ---- Shape & elevation ---- */
   --radius-card: 16px;
   --radius-control: 10px;
   --radius-pill: 999px;
   --shadow-card: 0 8px 24px rgba(20, 33, 61, 0.08);
+  --shadow-lift: 0 14px 34px rgba(20, 33, 61, 0.13);
 
   /* ---- Motion ---- */
   --motion-fast: 150ms;
   --motion-base: 180ms;
   --motion-slow: 220ms;
   --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-soft: cubic-bezier(0.4, 0, 0.2, 1);
+  /* Entrance animations are slower than interaction feedback, because they
+     explain a state change rather than confirm a click. */
+  --motion-enter: 520ms;
+  --stagger-1: 60ms;
+  --stagger-2: 120ms;
+  --stagger-3: 180ms;
+  --stagger-4: 240ms;
 
   /* ---- Focus ---- */
   --focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.28);
   --focus-border: 1px solid var(--color-information);
+  /* Focus on a coloured surface, where the blue ring would disappear. */
+  --focus-ring-on-accent: 0 0 0 3px rgba(255, 255, 255, 0.45);
+  /* Scrim behind a drawer or a modal. */
+  --color-scrim: rgba(20, 33, 61, 0.45);
 
   /* ---- Workspace accents ---- */
-  --workspace-customer: var(--color-information);
-  --workspace-qualification: var(--color-success);
-  --workspace-collaboration: var(--color-hive-deep);
-  --workspace-supply: var(--color-ink);
+  --workspace-customer: var(--accent-blue);
+  --workspace-qualification: var(--accent-green);
+  --workspace-collaboration: var(--accent-violet);
+  --workspace-supply: var(--accent-amber);
 
   /* ---- Layout constants ---- */
   --bottom-nav-height: 64px;
   --tap-target: 44px;
+}
+
+/* ---- Accent assignment -------------------------------------------------
+ * Any surface can set its accent by declaring data-accent. Everything inside
+ * then reads --accent, --accent-surface and --accent-line.
+ */
+[data-accent='blue'] {
+  --accent: var(--accent-blue);
+  --accent-surface: var(--accent-blue-surface);
+  --accent-line: var(--accent-blue-line);
+}
+
+[data-accent='teal'] {
+  --accent: var(--accent-teal);
+  --accent-surface: var(--accent-teal-surface);
+  --accent-line: var(--accent-teal-line);
+}
+
+[data-accent='green'] {
+  --accent: var(--accent-green);
+  --accent-surface: var(--accent-green-surface);
+  --accent-line: var(--accent-green-line);
+}
+
+[data-accent='amber'] {
+  --accent: var(--accent-amber);
+  --accent-surface: var(--accent-amber-surface);
+  --accent-line: var(--accent-amber-line);
+}
+
+[data-accent='coral'] {
+  --accent: var(--accent-coral);
+  --accent-surface: var(--accent-coral-surface);
+  --accent-line: var(--accent-coral-line);
+}
+
+[data-accent='violet'] {
+  --accent: var(--accent-violet);
+  --accent-surface: var(--accent-violet-surface);
+  --accent-line: var(--accent-violet-line);
+}
+
+[data-accent='plum'] {
+  --accent: var(--accent-plum);
+  --accent-surface: var(--accent-plum-surface);
+  --accent-line: var(--accent-plum-line);
+}
+
+/* ---- Dark mode -------------------------------------------------------- */
+[data-theme='dark'] {
+  color-scheme: dark;
+
+  --color-ink: #e8edf5;
+  --color-ink-muted: #9aa8bd;
+  --color-canvas: #0e1420;
+  --color-surface: #161e2c;
+  --color-surface-raised: #1c2637;
+  --color-surface-sunken: #111927;
+  --color-border: #2a3648;
+  --color-border-strong: #3a485e;
+  --color-hive: #f2b84b;
+  --color-hive-deep: #e9a93c;
+  --color-success: #4fbe8b;
+  --color-warning: #e0a545;
+  --color-danger: #ec6a5c;
+  --color-information: #6ea0f5;
+  --color-disabled: #5a667a;
+  --color-on-accent: #0e1420;
+
+  --color-success-surface: #12271f;
+  --color-warning-surface: #2a2113;
+  --color-danger-surface: #2d1917;
+  --color-information-surface: #152135;
+  --color-hive-surface: #2a2314;
+
+  --accent-blue: #6ea0f5;
+  --accent-blue-surface: #16223a;
+  --accent-blue-line: #263a5e;
+
+  --accent-teal: #4fc9b8;
+  --accent-teal-surface: #0f2b28;
+  --accent-teal-line: #1d4741;
+
+  --accent-green: #4fbe8b;
+  --accent-green-surface: #12271f;
+  --accent-green-line: #1e4234;
+
+  --accent-amber: #e9a93c;
+  --accent-amber-surface: #2a2314;
+  --accent-amber-line: #4a3a1a;
+
+  --accent-coral: #f08a63;
+  --accent-coral-surface: #2e1a13;
+  --accent-coral-line: #4d2c1f;
+
+  --accent-violet: #a98cf5;
+  --accent-violet-surface: #1f1935;
+  --accent-violet-line: #342a58;
+
+  --accent-plum: #e889c0;
+  --accent-plum-surface: #2c1424;
+  --accent-plum-line: #4a2439;
+
+  --accent-hive-wash: rgba(242, 184, 75, 0.16);
+  --accent-teal-wash: rgba(79, 201, 184, 0.14);
+  --accent-violet-wash: rgba(169, 140, 245, 0.14);
+
+  --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.45);
+  --shadow-lift: 0 14px 34px rgba(0, 0, 0, 0.55);
+
+  --focus-ring: 0 0 0 3px rgba(110, 160, 245, 0.38);
+  --focus-border: 1px solid var(--color-information);
+  --focus-ring-on-accent: 0 0 0 3px rgba(14, 20, 32, 0.45);
+  --color-scrim: rgba(6, 10, 18, 0.66);
 }
 
 @media (min-width: 640px) {
@@ -107,5 +292,7 @@
     --page-padding: var(--space-8);
     --text-h1: 2rem; /* 32px */
     --text-h1-leading: 1.1;
+    --text-display: 3rem; /* 48px */
+    --text-display-leading: 1.04;
   }
 }

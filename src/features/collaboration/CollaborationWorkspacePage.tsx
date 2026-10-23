@@ -26,7 +26,6 @@ export const CollaborationWorkspacePage = () => {
     <>
       <WorkspaceShell
         workspace="collaboration"
-        accent={config.accent}
         title={config.title}
         purpose={config.purpose}
         searchValue={browser.search}

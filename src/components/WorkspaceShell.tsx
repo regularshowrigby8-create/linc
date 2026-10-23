@@ -3,7 +3,23 @@ import type { Workspace } from '@/data/types';
 import { Button } from '@/components/Button';
 import { Chip } from '@/components/Badge';
 import { EmptyState, ErrorState, Skeleton } from '@/components/States';
-import { FilterIcon, SearchIcon } from '@/components/icons';
+import {
+  BriefcaseIcon,
+  FilterIcon,
+  SearchIcon,
+  TruckIcon,
+  UsersIcon,
+  WrenchIcon,
+} from '@/components/icons';
+import { WORKSPACE_ACCENT, WORKSPACE_LABEL } from '@/state/selectors';
+
+/** Each workspace carries its own mark, so the place you are in is obvious. */
+const WORKSPACE_ICON: Record<Workspace, typeof WrenchIcon> = {
+  customer: WrenchIcon,
+  qualification: BriefcaseIcon,
+  collaboration: UsersIcon,
+  supply: TruckIcon,
+};
 
 export interface AppliedFilter {
   id: string;
@@ -13,7 +29,6 @@ export interface AppliedFilter {
 
 interface WorkspaceShellProps {
   workspace: Workspace;
-  accent: string;
   title: string;
   purpose: string;
   searchValue: string;
@@ -40,7 +55,6 @@ interface WorkspaceShellProps {
  */
 export const WorkspaceShell = ({
   workspace,
-  accent,
   title,
   purpose,
   searchValue,
@@ -60,13 +74,28 @@ export const WorkspaceShell = ({
   savedSection,
   children,
 }: WorkspaceShellProps) => (
-  <section className="lh-workspace" data-workspace={workspace}>
-    <header className="lh-workspace__header" style={{ borderLeftColor: accent }}>
-      <div className="lh-stack-sm">
-        <h1 className="lh-h1">{title}</h1>
-        <p className="lh-muted">{purpose}</p>
+  <section
+    className="lh-workspace"
+    data-workspace={workspace}
+    data-accent={WORKSPACE_ACCENT[workspace]}
+  >
+    <header className="lh-workspace__header">
+      <div className="lh-workspace__heading">
+        <span className="lh-workspace__mark" aria-hidden="true">
+          {(() => {
+            const Mark = WORKSPACE_ICON[workspace];
+            return <Mark />;
+          })()}
+        </span>
+        <div className="lh-stack-sm">
+          <span className="lh-workspace__eyebrow">{WORKSPACE_LABEL[workspace]}</span>
+          <h1 className="lh-h1">{title}</h1>
+          <p className="lh-muted">{purpose}</p>
+        </div>
       </div>
-      <Button onClick={primaryAction.onClick}>{primaryAction.label}</Button>
+      <Button variant="accent" onClick={primaryAction.onClick}>
+        {primaryAction.label}
+      </Button>
     </header>
 
     <div className="lh-workspace__query">

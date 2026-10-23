@@ -3,11 +3,12 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Badge } from '@/components/Badge';
 import { Button } from '@/components/Button';
 import { Card } from '@/components/Card';
+import { Disclosure } from '@/components/Disclosure';
 import { EmptyState } from '@/components/States';
 import { RequestWizard } from '@/features/requests/RequestWizard';
 import { ReportModal } from '@/features/requests/ReportModal';
 import { useActions, useStore } from '@/state/store';
-import { selectListingById, selectIsSaved } from '@/state/selectors';
+import { WORKSPACE_ACCENT, selectListingById, selectIsSaved } from '@/state/selectors';
 import { formatRating, formatResponseTime, titleCase } from '@/utils/format';
 
 export const CustomerListingDetailPage = () => {
@@ -38,19 +39,21 @@ export const CustomerListingDetailPage = () => {
   const visibility = user?.contactVisibility ?? 'private';
 
   return (
-    <div className="lh-page lh-detail">
+    <div className="lh-page lh-detail" data-accent={WORKSPACE_ACCENT.customer}>
       <Card as="article" className="lh-detail__main">
         <div className="lh-stack">
-          <div className="lh-spread">
+          <div className="lh-stack-sm">
             <h1 className="lh-h1">{listing.title}</h1>
-            <Badge tone="information">{titleCase(listing.serviceCategory)}</Badge>
+            <p className="lh-listing__byline">
+              <span>{listing.ownerName}</span>
+              <span aria-hidden="true">·</span>
+              <span>{listing.location}</span>
+              <span aria-hidden="true">·</span>
+              <span>{titleCase(listing.reach)}</span>
+            </p>
           </div>
 
-          <p className="lh-muted">
-            {listing.ownerName} · {listing.location} · {titleCase(listing.reach)}
-          </p>
-
-          <div className="lh-row">
+          <div className="lh-row lh-listing__badges">
             {listing.verificationBadges.map((badge) => (
               <Badge
                 key={badge.id}
@@ -69,80 +72,72 @@ export const CustomerListingDetailPage = () => {
 
           <p className="lh-listing__description">{listing.description}</p>
 
-          <dl className="lh-listing__facts">
-            <div>
-              <dt className="lh-label">Price</dt>
-              <dd>{listing.quoteRequired ? 'Quote required' : listing.priceLabel}</dd>
-            </div>
-            <div>
-              <dt className="lh-label">Availability</dt>
-              <dd>{listing.availability}</dd>
-            </div>
-            <div>
-              <dt className="lh-label">Service type</dt>
-              <dd>{titleCase(listing.serviceType)}</dd>
-            </div>
-            <div>
-              <dt className="lh-label">Response time</dt>
-              <dd>{formatResponseTime(listing.responseTimeHours)}</dd>
-            </div>
-            <div>
-              <dt className="lh-label">Rating</dt>
-              <dd>{formatRating(listing.rating, listing.reviewCount)}</dd>
-            </div>
-          </dl>
-
-          {listing.included.length > 0 ? (
-            <section className="lh-stack-sm">
-              <h2 className="lh-h3">What is included</h2>
-              <ul className="lh-list lh-muted">
-                {listing.included.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </section>
-          ) : null}
-
-          {listing.excluded.length > 0 ? (
-            <section className="lh-stack-sm">
-              <h2 className="lh-h3">What is not included</h2>
-              <ul className="lh-list lh-muted">
-                {listing.excluded.map((item) => (
-                  <li key={item}>{item}</li>
-                ))}
-              </ul>
-            </section>
-          ) : null}
-
-          <section className="lh-stack-sm">
-            <h2 className="lh-h3">Contact details</h2>
-            <p className="lh-muted">
-              {visibility === 'public'
-                ? 'This provider shares contact details publicly.'
-                : visibility === 'accepted_connections'
-                  ? 'Contact details are shared after a request is accepted.'
-                  : 'This provider keeps contact details private. Use a request instead.'}
-            </p>
-          </section>
+          <p className="lh-listing__price">
+            {listing.quoteRequired ? 'Quote required' : listing.priceLabel}
+          </p>
 
           <div className="lh-row">
-            <Button onClick={() => setWizardOpen(true)}>Send request</Button>
+            <Button variant="accent" onClick={() => setWizardOpen(true)}>
+              Send request
+            </Button>
             <Button variant="secondary" onClick={() => void actions.toggleSave(listing.id)}>
               {saved ? 'Remove from saved' : 'Save listing'}
             </Button>
-            <Button variant="ghost" onClick={() => setReportOpen(true)}>
-              Report
-            </Button>
-            <Button
-              variant="ghost"
-              onClick={() => {
-                void actions.blockTarget({ targetType: 'listing', targetId: listing.id });
-                navigate('/app/customer');
-              }}
-            >
-              Block
-            </Button>
           </div>
+
+          <Disclosure summary="What is included and how it works">
+            <dl className="lh-listing__facts">
+              <div>
+                <dt className="lh-label">Service type</dt>
+                <dd>{titleCase(listing.serviceType)}</dd>
+              </div>
+              <div>
+                <dt className="lh-label">Availability</dt>
+                <dd>{listing.availability}</dd>
+              </div>
+              <div>
+                <dt className="lh-label">Response time</dt>
+                <dd>{formatResponseTime(listing.responseTimeHours)}</dd>
+              </div>
+              <div>
+                <dt className="lh-label">Rating</dt>
+                <dd>{formatRating(listing.rating, listing.reviewCount)}</dd>
+              </div>
+            </dl>
+
+            {listing.included.length > 0 ? (
+              <section className="lh-stack-sm">
+                <h2 className="lh-h3">Included</h2>
+                <ul className="lh-list lh-muted">
+                  {listing.included.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+
+            {listing.excluded.length > 0 ? (
+              <section className="lh-stack-sm">
+                <h2 className="lh-h3">Not included</h2>
+                <ul className="lh-list lh-muted">
+                  {listing.excluded.map((item) => (
+                    <li key={item}>{item}</li>
+                  ))}
+                </ul>
+              </section>
+            ) : null}
+
+            <section className="lh-stack-sm">
+              <h2 className="lh-h3">Contact details</h2>
+              <p className="lh-muted">
+                {visibility === 'public'
+                  ? 'This provider shares contact details publicly.'
+                  : visibility === 'accepted_connections'
+                    ? 'Contact details are shared after a request is accepted.'
+                    : 'This provider keeps contact details private. Use a request instead.'}
+              </p>
+            </section>
+          </Disclosure>
 
           <p className="lh-caption">
             Payments are not available in this prototype. Agree the work and price in writing before
@@ -153,9 +148,25 @@ export const CustomerListingDetailPage = () => {
 
       <aside className="lh-detail__aside">
         <Card as="section" className="lh-stack-sm">
-          <h2 className="lh-h3">About this provider</h2>
-          <p className="lh-caption">{listing.ownerName}</p>
-          <p className="lh-caption">{listing.location}</p>
+          <h2 className="lh-h3">Something wrong?</h2>
+          <p className="lh-caption">
+            Report a listing and give a written reason. A moderation reviewer reads every report.
+          </p>
+          <div className="lh-row">
+            <Button variant="secondary" size="sm" onClick={() => setReportOpen(true)}>
+              Report listing
+            </Button>
+            <Button
+              variant="ghost"
+              size="sm"
+              onClick={() => {
+                void actions.blockTarget({ targetType: 'listing', targetId: listing.id });
+                navigate('/app/customer');
+              }}
+            >
+              Block provider
+            </Button>
+          </div>
           <Link className="lh-linkbutton lh-linkbutton--sm" to="/app/customer">
             Back to all services
           </Link>

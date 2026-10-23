@@ -38,7 +38,7 @@
 
 /* Keep focus rings from being clipped on dark or accent surfaces. */
 .lh-on-accent :focus-visible {
-  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.45);
+  box-shadow: var(--focus-ring-on-accent);
   border-color: var(--color-surface);
 }
 

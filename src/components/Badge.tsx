@@ -48,10 +48,34 @@ interface AvatarProps {
   initials: string;
   name: string;
   size?: 'sm' | 'md' | 'lg';
+  /**
+   * Abstract treatments only. Portraits are never shown, so a member can
+   * change the look without anyone being represented.
+   */
+  style?: 'initials' | 'blocks' | 'rings';
 }
 
-export const Avatar = ({ initials, name, size = 'md' }: AvatarProps) => (
-  <span className={`lh-avatar lh-avatar--${size}`} aria-hidden="true" title={name}>
-    {initials}
+export const Avatar = ({ initials, name, size = 'md', style = 'initials' }: AvatarProps) => (
+  <span
+    className={`lh-avatar lh-avatar--${size} lh-avatar--${style}`}
+    aria-hidden="true"
+    title={name}
+  >
+    {style === 'initials' ? initials : null}
+    {style === 'blocks' ? (
+      <span className="lh-avatar__blocks">
+        <span />
+        <span />
+        <span />
+        <span />
+      </span>
+    ) : null}
+    {style === 'rings' ? (
+      <span className="lh-avatar__rings">
+        <span />
+        <span />
+        <span />
+      </span>
+    ) : null}
   </span>
 );

@@ -9,6 +9,7 @@ import type {
   Listing,
   MessageThread,
   NotificationChannel,
+  ProfilePreferences,
   QuoteState,
   Report,
   ReportStatus,
@@ -56,6 +57,7 @@ export type StoreAction =
   | { type: 'update_quote'; id: string; state?: QuoteState }
   | { type: 'set_notification'; channel: NotificationChannel; enabled: boolean }
   | { type: 'set_verification_demo'; patch: Partial<DemoVerificationState> }
+  | { type: 'set_preferences'; patch: Partial<ProfilePreferences> }
   | { type: 'push_toast'; toast: ToastMessage }
   | { type: 'dismiss_toast'; id: string }
   | { type: 'set_pending'; key: string; active: boolean }
@@ -168,6 +170,11 @@ export const setNotification = (channel: NotificationChannel, enabled: boolean):
 
 export const setVerificationDemo = (patch: Partial<DemoVerificationState>): StoreAction => ({
   type: 'set_verification_demo',
+  patch,
+});
+
+export const setPreferences = (patch: Partial<ProfilePreferences>): StoreAction => ({
+  type: 'set_preferences',
   patch,
 });
 

@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import type { Workspace } from '@/data/types';
 import { HomeIcon, MessagesIcon, ProfileIcon, RequestsIcon } from '@/components/icons';
-import { WORKSPACE_HOME_ROUTE, WORKSPACE_LABEL } from '@/state/selectors';
+import { NAV_ACCENT, WORKSPACE_HOME_ROUTE, WORKSPACE_LABEL } from '@/state/selectors';
 
 interface BottomNavProps {
   workspace: Workspace;
@@ -13,6 +13,7 @@ export const BottomNav = ({ workspace, pendingRequestCount }: BottomNavProps) =>
   <nav className="lh-bottomnav" aria-label="Primary">
     <NavLink
       to={WORKSPACE_HOME_ROUTE[workspace]}
+      data-accent={NAV_ACCENT.home}
       className={({ isActive }) =>
         `lh-bottomnav__item${isActive ? ' lh-bottomnav__item--active' : ''}`
       }
@@ -24,6 +25,7 @@ export const BottomNav = ({ workspace, pendingRequestCount }: BottomNavProps) =>
 
     <NavLink
       to="/app/requests"
+      data-accent={NAV_ACCENT.requests}
       className={({ isActive }) =>
         `lh-bottomnav__item${isActive ? ' lh-bottomnav__item--active' : ''}`
       }
@@ -40,6 +42,7 @@ export const BottomNav = ({ workspace, pendingRequestCount }: BottomNavProps) =>
 
     <NavLink
       to="/app/messages"
+      data-accent={NAV_ACCENT.messages}
       className={({ isActive }) =>
         `lh-bottomnav__item${isActive ? ' lh-bottomnav__item--active' : ''}`
       }
@@ -50,6 +53,7 @@ export const BottomNav = ({ workspace, pendingRequestCount }: BottomNavProps) =>
 
     <NavLink
       to="/app/profile"
+      data-accent={NAV_ACCENT.profile}
       className={({ isActive }) =>
         `lh-bottomnav__item${isActive ? ' lh-bottomnav__item--active' : ''}`
       }

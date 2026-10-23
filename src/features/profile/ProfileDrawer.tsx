@@ -2,7 +2,9 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Workspace } from '@/data/types';
 import { Avatar, Badge } from '@/components/Badge';
+import { AccentPicker } from '@/components/AccentPicker';
 import { Button } from '@/components/Button';
+import { ThemeSwitch } from '@/components/ThemeSwitch';
 import { Drawer } from '@/components/Overlay';
 import { useActions, useStore } from '@/state/store';
 import {
@@ -13,7 +15,7 @@ import {
   selectUnregisteredWorkspaces,
 } from '@/state/selectors';
 
-type Panel = 'menu' | 'account' | 'language' | 'help' | 'add_workspace';
+type Panel = 'menu' | 'account' | 'appearance' | 'language' | 'help' | 'add_workspace';
 
 interface ProfileDrawerProps {
   open: boolean;
@@ -38,6 +40,7 @@ export const ProfileDrawer = ({ open, onClose }: ProfileDrawerProps) => {
   const user = state.app.user;
   const registered = selectRegisteredWorkspaces(state);
   const unregistered = selectUnregisteredWorkspaces(state);
+  const preferences = state.app.preferences;
 
   const closeAll = () => {
     setPanel('menu');
@@ -61,13 +64,15 @@ export const ProfileDrawer = ({ open, onClose }: ProfileDrawerProps) => {
   const panelTitle =
     panel === 'account'
       ? 'Account settings'
-      : panel === 'language'
-        ? 'Language'
-        : panel === 'help'
-          ? 'Help and safety'
-          : panel === 'add_workspace'
-            ? 'Add workspace'
-            : 'Your account';
+      : panel === 'appearance'
+        ? 'Appearance'
+        : panel === 'language'
+          ? 'Language'
+          : panel === 'help'
+            ? 'Help and safety'
+            : panel === 'add_workspace'
+              ? 'Add workspace'
+              : 'Your account';
 
   return (
     <Drawer open={open} title={panelTitle} onClose={onClose}>
@@ -102,6 +107,21 @@ export const ProfileDrawer = ({ open, onClose }: ProfileDrawerProps) => {
             </button>
             <button type="button" className="lh-drawer__row" onClick={() => setPanel('account')}>
               <span>Account settings</span>
+            </button>
+            <button
+              type="button"
+              className="lh-drawer__row"
+              onClick={() => setPanel('appearance')}
+              data-testid="open-appearance"
+            >
+              <span>Appearance</span>
+              <span className="lh-drawer__row-note">
+                {preferences.theme === 'system'
+                  ? 'System'
+                  : preferences.theme === 'dark'
+                    ? 'Dark'
+                    : 'Light'}
+              </span>
             </button>
             <button
               type="button"
@@ -278,6 +298,35 @@ export const ProfileDrawer = ({ open, onClose }: ProfileDrawerProps) => {
               <span>Payouts</span>
               <span className="lh-drawer__row-note">Not available in this prototype</span>
             </button>
+          </div>
+
+          <Button variant="secondary" onClick={() => setPanel('menu')}>
+            Back
+          </Button>
+        </div>
+      ) : panel === 'appearance' ? (
+        <div className="lh-stack">
+          <div className="lh-stack-sm">
+            <span className="lh-label">Colour mode</span>
+            <ThemeSwitch
+              value={preferences.theme}
+              onChange={(theme) => void actions.setTheme(theme)}
+              idPrefix="drawer-theme"
+              label="Colour mode"
+            />
+            <p className="lh-caption">System follows the light or dark setting on this device.</p>
+          </div>
+
+          <div className="lh-stack-sm">
+            <span className="lh-label">Your accent</span>
+            <AccentPicker
+              value={preferences.accent}
+              onChange={(accent) => void actions.setAccent(accent)}
+              idPrefix="drawer-accent"
+            />
+            <p className="lh-caption">
+              Your accent colours the badges and highlights that belong to you.
+            </p>
           </div>
 
           <Button variant="secondary" onClick={() => setPanel('menu')}>

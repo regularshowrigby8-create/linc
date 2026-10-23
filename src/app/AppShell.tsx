@@ -8,6 +8,7 @@ import { DesktopRail } from '@/components/DesktopRail';
 import { BellIcon, MenuIcon, SearchIcon } from '@/components/icons';
 import { ProfileDrawer } from '@/features/profile/ProfileDrawer';
 import { useActions, useStore } from '@/state/store';
+import { useAppliedTheme } from '@/state/theme';
 import {
   WORKSPACE_HOME_ROUTE,
   WORKSPACE_LABEL,
@@ -27,6 +28,10 @@ export const AppShell = () => {
   const workspace = selectActiveWorkspace(state);
   const registered = selectRegisteredWorkspaces(state);
   const pendingRequestCount = user ? selectPendingRequestCount(state, user.id) : 0;
+  const preferences = state.app.preferences;
+
+  // Keeps the <html> colour mode in step with the stored preference.
+  useAppliedTheme(preferences.theme);
 
   const switchTo = async (target: (typeof registered)[number]) => {
     const result = await actions.switchWorkspace(target);
@@ -85,6 +90,10 @@ export const AppShell = () => {
           workspace={workspace}
           pendingRequestCount={pendingRequestCount}
           onOpenSwitcher={() => setSwitcherOpen(true)}
+          collapsed={preferences.navCollapsed}
+          onToggleCollapsed={() => {
+            void actions.setNavCollapsed(!preferences.navCollapsed);
+          }}
         />
         <main className="lh-app__main lh-skip-to-content" id="main">
           <Outlet />
