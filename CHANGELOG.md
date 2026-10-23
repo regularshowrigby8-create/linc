@@ -7,6 +7,40 @@ semantic versioning once the prototype graduates to a live product.
 
 ---
 
+## [0.4.0] — 2026-10-24
+
+Rebuilt the label and card system. The status bubbles around "Business (demo)" and
+"Qualification (pending)" were the loudest thing on a listing card, and the same treatment was
+sitting on the rest of the site. Everything below is a transfer of the principles behind a
+well-known professional network's design, not a copy of its stylesheet.
+
+### Added
+
+- **A status mark on every label.** A check circle, a hollow ring or a filled dot in front of the
+  words, so a label still reads without relying on colour.
+- **`.lh-card--raised`**, for the surfaces that genuinely float. Content cards no longer carry a
+  resting shadow.
+- **Five new tests** that keep the label rules from regressing: no filled or saturated badge
+  background, no coloured bar on a content block, no shadow on a content card, and a rendered label
+  must keep both its mark and its text.
+
+### Changed
+
+- A status label is now a **tag**: 6px radius, a 1px neutral hairline, a white surface and ink
+  text. Colour lives on the mark alone. The label text itself is unchanged.
+- Chips follow the same tight treatment instead of the pill shape.
+- Listing and request titles are 20px at weight 600 with slight negative tracking, instead of the
+  bold heading weight.
+- The workspace eyebrow is muted ink. Colour stays on the workspace mark and the primary action.
+- The written reason on a request is a neutral quote block. The coloured left bar is gone.
+- Avatars are neutral, with a hairline border and ink initials.
+- The "South Africa first" eyebrow is muted text with a small amber dot rather than a coloured
+  bubble.
+- The landing headline is large and light, and the section headings are weight 500.
+- 120 tests across six suites.
+
+---
+
 ## [0.3.0] — 2026-10-24
 
 Overhauled the interface so it reads as a live product: less on every screen, colour that means

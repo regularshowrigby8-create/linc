@@ -400,6 +400,73 @@ accent picker, the mark picker, saving a headline, the exact future-feature labe
 behaviour, the product tour tabs, the collapsing rail, and a new audit that keeps every raw
 colour inside `tokens.css`.
 
+## 4d. Label and card system (v0.4.0)
+
+The third brief pointed at one specific thing: the little bubbles and accents around the
+"Business (demo)" and "Qualification (pending)" labels were wrong. The label text itself was fine.
+The treatment around it was not, and the same treatment was sitting on the rest of the site.
+
+### What was actually wrong
+
+Every status label was three loud objects stacked on top of each other: a saturated background, a
+saturated border in the same hue, and text in that hue again, all at pill radius. On a listing card
+that meant three coloured objects in a row, and the label was louder than the listing title.
+
+### What the label became
+
+A **tag**: 6px radius, a 1px neutral hairline, a white surface and ink text. The status is carried
+by a small mark in front of the words — a check circle for verified, a hollow ring for neutral and
+pending, a filled dot for the rest — so it still reads without relying on colour.
+
+| Before | After |
+| --- | --- |
+| Filled background in the status colour | White surface, no fill |
+| Border in the status colour | 1px neutral hairline |
+| Text in the status colour | Ink text, colour only on the mark |
+| Pill radius (999px) | 6px radius (`--radius-tag`) |
+| Status shown by colour alone | Text plus a redundant mark |
+
+### What changed across the site
+
+The same principles were applied everywhere rather than to the labels alone.
+
+| Area | Change |
+| --- | --- |
+| Content cards | Flat. The hairline border does the separating. The shadow is kept only for surfaces that float — overlays, toasts, the hero, the tour panel — and exposed as `.lh-card--raised` |
+| Listing and request titles | 20px at weight 600 with `-0.01em` tracking, instead of the bold heading weight |
+| Chips | Tight, 6px radius, hairline border, ink text — a filter chip rather than a button |
+| Workspace header | The eyebrow is muted ink. Colour stays on the workspace mark and the primary action |
+| Request reason | A neutral bordered quote block. The coloured left bar is gone, because it was decoration on a piece of content |
+| Avatars | Neutral surface, hairline border, ink initials, weight 600 |
+| "South Africa first" eyebrow | Muted uppercase text with a small amber dot, not a coloured bubble |
+| Achievement marks | 32px rounded squares rather than filled circles |
+| Profile verification badges | The same tag treatment |
+| Landing headline | Display size at weight 500 with `-0.03em` tracking and balanced wrapping |
+| Landing and carousel headings | Weight 500 rather than bold |
+
+### The reference, and what was left out of it
+
+The brief was to study LinkedIn and apply its design, better. That was read as a transfer of
+principles rather than a copy of a stylesheet.
+
+Taken: one brand colour reserved for action and primary buttons; hairline borders for everything
+else; hierarchy from spacing and contrast rather than elevation; weights stopping at 600; a system
+sans with no webfont; content itself as the argument.
+
+Left out: the exact blue, the 24px radius on every rounded element, and the padded panel grid.
+LinkHive keeps its own token set, its own accent system for workspaces and tabs, and its own
+rounded scale (16px cards, 10px controls, 6px tags).
+
+### Tests added
+
+Five new tests, across `src/tests/personalisation.test.tsx` and `src/tests/safety.test.tsx`:
+
+- The badge stylesheet must not reintroduce a filled or saturated background or border.
+- A content block must not regain a coloured left bar.
+- A content card must stay free of a resting shadow.
+- A rendered label must carry its status mark and keep its text in its own span.
+- A verified label and a pending label must be distinguishable by tone.
+
 
 ---
 
@@ -476,9 +543,9 @@ Nothing in the prototype assumes an answer to any of these.
 | Host              | Vercel                                                                 |
 | Project           | `linkhive` (`prj_YK60TMsrBy7uHdRZ8ahsgTFluENg`)                      |
 | **Live address**  | **https://linkhive-chi.vercel.app**                                    |
-| Deployment        | `dpl_DuXhg4LPkCPj9t47RyduMnqymPym` — READY, PROMOTED, production      |
+| Deployment        | `dpl_5yMiyeH1qXmYegCBYQm9gbGRcV5s` — READY, PROMOTED, production      |
 | Source            | GitHub `regularshowrigby8-create/linc`, branch `arena/9f751416-linc`   |
-| Commit deployed   | `2a5a7b6cce4932767f22379693ab789d7847b577`                            |
+| Commit deployed   | `9795987113f4fdea057bf5768d93b1938efb8890`                            |
 | Framework         | Vite 7, Node 24                                                        |
 | Build             | `npm run build` → `dist/`                                              |
 | Routing           | `vercel.json` rewrite: every path except `/assets/*` → `/index.html`   |
@@ -492,11 +559,14 @@ Each of these was fetched from the deployed address, not from a local build:
 | `/` renders the hero, the live preview, the four steps and the workspace tiles    | Pass   |
 | `/app/profile` shows the badge grid, the accent picker, the mark picker and the colour mode | Pass |
 | `/app/customer` renders the result stream with the secondary facts behind **More details** | Pass |
+| `/app/requests` renders the seven state tabs with the correct state actions     | Pass   |
 | `/app/verification/demo` shows the `DEMO` label and **no** development result selector | Pass |
 | `/app/admin/review` shows `Preview only`, not `Mock admin surface`                | Pass   |
 | `/manus-routes.json` is served as JSON and is **not** rewritten to the app shell  | Pass   |
 | The production bundle contains **no** occurrence of "Development result selector" | Pass   |
 | The production bundle contains the dark theme block and the no-flash script       | Pass   |
+| The deployed stylesheet is the built one: its content hash `index-GYhab8Pp.css` matches the local `npm run build` output | Pass |
+| The deployed stylesheet carries the new tag tokens (`--radius-tag`, `--weight-semibold`, `--text-title`) | Pass |
 
 ### A note on the team's deployment protection
 

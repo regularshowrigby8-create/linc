@@ -260,6 +260,52 @@ what to do next.
 A member's own preferences, their accent and their headline are stored, because those are
 choices rather than facts.
 
+### D-026 — A status label is a quiet tag, not a bubble
+
+The status labels around "Business (demo)" and "Qualification (pending)" were the loudest thing on
+the page: a saturated fill, a saturated border and matching coloured text, all at pill radius. On a
+listing card that is three loud objects in a row, and the label ends up competing with the listing
+it belongs to.
+
+The label is now a **tag**. 6px radius (`--radius-tag`), a 1px neutral hairline, a white surface and
+ink text. The status is carried by a small mark in front of the text — a check circle, a hollow ring
+or a filled dot — so the label still reads without relying on colour. This keeps D-014 intact: the
+status is still carried by text, and the mark is a second, redundant signal rather than the only one.
+
+The rules behind it:
+
+- One brand voltage. Colour is reserved for things a person can act on. A label describing someone
+  else's status is not actionable, so it stays neutral.
+- Hierarchy comes from spacing and contrast, not elevation. Content cards are flat, with a hairline
+  border doing the separating. The single shadow is kept for surfaces that genuinely float —
+  overlays, toasts, the hero, the tour panel — and exposed as `.lh-card--raised`.
+- A label is not a button. It gets a 6px radius, never a pill radius.
+- Weights stop at 600. A label is not a heading.
+- No coloured bars on content. A written reason is content, so it gets a neutral bordered quote
+  block, not a coloured left strip. The same goes for the workspace header, the avatar and the
+  "South Africa first" eyebrow.
+
+### D-027 — The reference was used for its principles, not its pixels
+
+The brief was to apply LinkedIn's website design to LinkHive, better. That was treated as a
+transfer of principles, not a copy of a stylesheet.
+
+What was taken: one brand colour reserved for action, hairline borders for everything else, soft
+pill chips for filter chips only, a 24px display size at weight 400, section headings at weight
+400 to 500, system sans with no webfont, and content itself as the argument.
+
+What was deliberately not taken: the exact blue, the 24px radius on every rounded element, and the
+padded panel grid. LinkHive has its own token set, its own accent system for workspaces and tabs,
+and its own rounded scale (16px cards, 10px controls, 6px tags). The result is a tag that reads as
+a label on this site rather than a chip copied from another one.
+
+### D-028 — The label rules are covered by tests
+
+The rules in D-026 are enforced by tests, because a stylesheet is easy to regress by hand. The
+stylesheet must not reintroduce a filled or saturated background on a badge, content blocks must not
+regain a coloured left bar, and content cards must stay free of a resting shadow. A rendered label
+must keep both its status mark and its text.
+
 ---
 
 ## 3. Open decisions

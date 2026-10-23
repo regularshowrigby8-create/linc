@@ -140,6 +140,19 @@ A surface declares its accent with `data-accent`, and everything inside it reads
 `--accent-surface` and `--accent-line`. Colour is only used where it carries meaning: a status, a
 workspace, the area you are in, or the action belonging to that area.
 
+### Labels and cards
+
+A status label is a **tag**, not a bubble. It has a 6px radius (`--radius-tag`), a 1px neutral
+hairline, a white surface and ink text. The status is carried by a small mark in front of the
+words, so it reads without relying on colour, and the label text is always there as well.
+
+Colour is reserved for things a person can act on. A label describing someone else's status is
+not actionable, so it stays neutral and the accent colour belongs to the primary action instead.
+
+Content cards are flat. The hairline border does the separating, and the single shadow is kept for
+surfaces that genuinely float — overlays, toasts, the hero and the tour panel — with
+`.lh-card--raised` for anything else that needs to sit above the page.
+
 ### Responsive rules
 
 - **Mobile (375px):** 16px body side padding, 44px minimum tap targets, 16px card radius, 64px
@@ -172,7 +185,7 @@ explanation.
 npm run test
 ```
 
-115 tests across six suites:
+120 tests across six suites:
 
 | Suite                   | Covers                                                              |
 | ----------------------- | ------------------------------------------------------------------- |
@@ -180,8 +193,8 @@ npm run test
 | `routeSmoke.test.tsx`   | All 18 routes render with the right heading and never hit the error boundary |
 | `transitions.test.tsx`  | Valid and invalid state transitions, double submit, persistence, corrupt-state recovery |
 | `flows.test.tsx`        | Registration, workspace selection, navigation, wizard, requests, messages, notifications |
-| `safety.test.tsx`       | No dead code, no file input, no camera, no payment or currency claims, no raw colour outside `tokens.css`, and nothing development-only in the production bundle |
-| `personalisation.test.tsx` | Colour mode, the account appearance panel, badge states, the accent and mark pickers, disclosure behaviour, the product tour and the collapsing rail |
+| `safety.test.tsx`       | No dead code, no file input, no camera, no payment or currency claims, no raw colour outside `tokens.css`, no filled status bubbles, no coloured bars on content, no resting shadow on a content card, and nothing development-only in the production bundle |
+| `personalisation.test.tsx` | Colour mode, the account appearance panel, badge states, label marks and tones, the accent and mark pickers, disclosure behaviour, the product tour and the collapsing rail |
 
 A button is not considered done until its click behaviour is covered.
 
