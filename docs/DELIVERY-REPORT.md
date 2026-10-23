@@ -476,9 +476,9 @@ Nothing in the prototype assumes an answer to any of these.
 | Host              | Vercel                                                                 |
 | Project           | `linkhive` (`prj_YK60TMsrBy7uHdRZ8ahsgTFluENg`)                      |
 | **Live address**  | **https://linkhive-chi.vercel.app**                                    |
-| Deployment        | `dpl_6uN33pSnbmbNzTSWy3ysCaEPFtpP` — READY, PROMOTED, production      |
+| Deployment        | `dpl_DuXhg4LPkCPj9t47RyduMnqymPym` — READY, PROMOTED, production      |
 | Source            | GitHub `regularshowrigby8-create/linc`, branch `arena/9f751416-linc`   |
-| Commit deployed   | `aff8f4478b472185021b8bf19e55c8e75c8107ce`                            |
+| Commit deployed   | `2a5a7b6cce4932767f22379693ab789d7847b577`                            |
 | Framework         | Vite 7, Node 24                                                        |
 | Build             | `npm run build` → `dist/`                                              |
 | Routing           | `vercel.json` rewrite: every path except `/assets/*` → `/index.html`   |
@@ -489,11 +489,14 @@ Each of these was fetched from the deployed address, not from a local build:
 
 | Check                                                                            | Result |
 | -------------------------------------------------------------------------------- | ------ |
-| `/` renders the hero, the three steps and the four workspace tiles                | Pass   |
-| `/app/customer` renders the result stream, the badges and the filters             | Pass   |
+| `/` renders the hero, the live preview, the four steps and the workspace tiles    | Pass   |
+| `/app/profile` shows the badge grid, the accent picker, the mark picker and the colour mode | Pass |
+| `/app/customer` renders the result stream with the secondary facts behind **More details** | Pass |
 | `/app/verification/demo` shows the `DEMO` label and **no** development result selector | Pass |
 | `/app/admin/review` shows `Preview only`, not `Mock admin surface`                | Pass   |
 | `/manus-routes.json` is served as JSON and is **not** rewritten to the app shell  | Pass   |
+| The production bundle contains **no** occurrence of "Development result selector" | Pass   |
+| The production bundle contains the dark theme block and the no-flash script       | Pass   |
 
 ### A note on the team's deployment protection
 
