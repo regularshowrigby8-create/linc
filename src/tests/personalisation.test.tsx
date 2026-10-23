@@ -178,30 +178,27 @@ describe('status labels', () => {
   });
 });
 
-describe('product tour on the landing page', () => {
+describe('landing showcase', () => {
   beforeEach(() => window.localStorage.clear());
 
-  it('shows each workspace on its own tab', async () => {
+  it('shows the marketing showcase without a data table', async () => {
     renderApp('/');
-
-    const tabs = screen.getByRole('tablist', { name: /workspaces in the preview/i });
-    expect(within(tabs).getByRole('tab', { name: /customer service/i })).toBeInTheDocument();
-    expect(within(tabs).getByRole('tab', { name: /supply/i })).toBeInTheDocument();
+    // Visual-first: showcase media + copy, not a row-heavy product table
+    expect(screen.getByText(/see it working/i)).toBeInTheDocument();
+    expect(
+      screen.queryByRole('tablist', { name: /workspaces in the preview/i }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.getByRole('heading', { name: /a workspace for each kind of work/i }),
+    ).toBeInTheDocument();
   });
 
-  it('changes the preview when another workspace is chosen', async () => {
-    const user = userEvent.setup();
+  it('keeps the four workspaces visually advertised', async () => {
     renderApp('/');
-
-    const tabs = screen.getByRole('tablist', { name: /workspaces in the preview/i });
-    await user.click(within(tabs).getByRole('tab', { name: /supply/i }));
-
-    await waitFor(() => {
-      expect(within(tabs).getByRole('tab', { name: /supply/i })).toHaveAttribute(
-        'aria-selected',
-        'true',
-      );
-    });
+    expect(screen.getByRole('link', { name: /customer service/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /supply/i })).toBeInTheDocument();
+    // Showcase has an explicit CTA
+    expect(screen.getByRole('button', { name: /open a workspace/i })).toBeInTheDocument();
   });
 });
 

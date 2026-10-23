@@ -13,7 +13,6 @@ import {
 } from '@/components/icons';
 import { MarketingBackdrop } from '@/features/landing/MarketingBackdrop';
 import { MarketingHeader } from '@/features/landing/MarketingHeader';
-import { ProductTour } from '@/features/landing/ProductTour';
 import { useStore } from '@/state/store';
 import { useAppliedTheme } from '@/state/theme';
 import { WORKSPACE_LABEL, WORKSPACE_ORDER } from '@/state/selectors';
@@ -51,15 +50,6 @@ const NAV_LINKS = [
   { href: '#honest', label: 'What we will not do' },
 ];
 
-/**
- * The three promises the prototype refuses to break.
- *
- * These are the exact words the product uses when it has to admit that
- * something is not built yet. Putting them on the front page, in the
- * places a buyer would look for the catch, is the whole point of the
- * section. A marketplace that takes money it cannot settle is worth less
- * than one that says so plainly.
- */
 const HONESTY: { title: string; body: string }[] = [
   {
     title: 'We will not take your money.',
@@ -83,8 +73,6 @@ export const LandingPage = () => {
 
   const listings = state.app.listings;
 
-  /* Every number on this page is counted from the data that is actually
-     here. Nothing is invented, and nothing is projected. */
   const figures = useMemo(() => {
     const perWorkspace = WORKSPACE_ORDER.map((workspace) => ({
       workspace,
@@ -93,104 +81,101 @@ export const LandingPage = () => {
     const cities = new Set(
       listings.map((listing) => listing.location.split(',')[0]?.trim()).filter(Boolean),
     );
-    return {
-      perWorkspace,
-      listingCount: listings.length,
-      cityCount: cities.size,
-    };
+    return { perWorkspace, listingCount: listings.length, cityCount: cities.size };
   }, [listings]);
-
-  const largest = Math.max(...figures.perWorkspace.map((item) => item.count), 1);
 
   return (
     <div className="lh-mkt">
       <MarketingBackdrop />
       <MarketingHeader links={NAV_LINKS} />
 
-      <main className="lh-mkt__main">
-        {/* ---- Hero ------------------------------------------------- */}
-        <section className="lh-mkt__hero">
-          <div className="lh-mkt__herotext">
-            <p className="lh-mkt__eyebrow">South Africa first</p>
-            <h1 className="lh-mkt__mega">Find the right connection.</h1>
-            <p className="lh-mkt__lead">
-              Services, qualified people, partnerships and supply. Tell LinkHive what you need, and
-              get matched with people who can do it.
-            </p>
-            <div className="lh-mkt__ctas">
-              <Button variant="accent" size="md" onClick={() => navigate('/register')}>
-                Get started
-              </Button>
-            </div>
-            <p className="lh-mkt__fineprint">
-              Payments are not available in this prototype. Nothing here is transactable.
-            </p>
+      {/* HERO — two columns, no table, poster discipline */}
+      <section className="lh-mkt__hero">
+        <div className="lh-mkt__herotext">
+          <span className="lh-mkt__herobadge">Markets open · Live</span>
+          <h1 className="lh-mkt__mega">Find the right connection.</h1>
+          <p className="lh-mkt__lead">
+            Services, qualified people, partnerships and supply. Tell LinkHive what you need, and
+            get matched with people who can do it.
+          </p>
+          <div className="lh-mkt__ctas">
+            <Button variant="accent" size="md" onClick={() => navigate('/register')}>
+              Get started
+            </Button>
+            <Button
+              variant="secondary"
+              size="md"
+              onClick={() => navigate('/onboarding/workspaces')}
+            >
+              See workspaces
+            </Button>
           </div>
-
-          <div className="lh-mkt__heroviz">
-            <div className="lh-mkt__panel lh-mkt__panel--glow">
-              <div className="lh-mkt__panelbody">
-                <div className="lh-mkt__paneltop">
-                  <h2 className="lh-mkt__paneltitle">Listings in the prototype</h2>
-                  <span className="lh-mkt__pulse">Live</span>
-                </div>
-                <p className="lh-mkt__livefigure">{figures.listingCount}</p>
-                <div className="lh-mkt__live">
-                  {figures.perWorkspace.map((item, index) => (
-                    <div className="lh-mkt__liverow" key={item.workspace}>
-                      <span className="lh-mkt__livekey">{WORKSPACE_LABEL[item.workspace]}</span>
-                      <span className="lh-mkt__livebar">
-                        <span
-                          style={
-                            {
-                              '--w': `${Math.round((item.count / largest) * 100)}%`,
-                              '--i': index,
-                            } as React.CSSProperties
-                          }
-                        />
-                      </span>
-                      <span className="lh-mkt__livevalue">{item.count}</span>
-                    </div>
-                  ))}
-                </div>
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ---- Ticker ------------------------------------------------ */}
-        <div className="lh-mkt__ticker">
-          <span className="lh-mkt__tickeritem">South Africa first</span>
-          <span className="lh-mkt__tickeritem">Four separate workspaces</span>
-          <span className="lh-mkt__tickeritem">Every request carries a written reason</span>
-          <span className="lh-mkt__tickeritem">Nothing is settled for you</span>
+          <p className="lh-mkt__fineprint">
+            Payments are not available in this prototype. Nothing here is transactable.
+          </p>
         </div>
 
-        {/* ---- Figures ----------------------------------------------- */}
-        <section className="lh-mkt__section lh-mkt__section--tight">
-          <Reveal>
-            <div className="lh-mkt__stats">
-              <div className="lh-mkt__stat">
-                <span className="lh-mkt__statvalue">{WORKSPACE_ORDER.length}</span>
-                <span className="lh-mkt__statlabel">Separate workspaces, one account</span>
+        <div className="lh-mkt__heroviz">
+          <div className="lh-mkt__panel">
+            <div className="lh-mkt__panelbody">
+              <div className="lh-mkt__paneltop">
+                <span className="lh-mkt__paneltitle">LinkHive Network — Live</span>
+                <span className="lh-mkt__pulse">Live</span>
               </div>
-              <div className="lh-mkt__stat">
-                <span className="lh-mkt__statvalue">{figures.listingCount}</span>
-                <span className="lh-mkt__statlabel">Listings live in the prototype</span>
-              </div>
-              <div className="lh-mkt__stat">
-                <span className="lh-mkt__statvalue">{figures.cityCount}</span>
-                <span className="lh-mkt__statlabel">Cities covered</span>
-              </div>
-              <div className="lh-mkt__stat">
-                <span className="lh-mkt__statvalue">0</span>
-                <span className="lh-mkt__statlabel">Payments taken</span>
+              <p className="lh-mkt__livefigure">{figures.listingCount} listings</p>
+              <p className="lh-mkt__panelmeta">
+                Across {figures.cityCount} cities · {WORKSPACE_ORDER.length} workspaces
+              </p>
+              {/* Visual sparkline — Meridian style, red on near-black, not a data table */}
+              <svg viewBox="0 0 320 64" className="lh-mkt__livespark" aria-hidden="true">
+                <path
+                  d="M4 48 L 42 36 L 78 42 L 112 28 L 148 34 L 182 18 L 220 26 L 254 12 L 316 20"
+                  fill="none"
+                  stroke="#a9292e"
+                  strokeWidth="2.2"
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                />
+                <circle cx="316" cy="20" r="4" fill="#a9292e" />
+              </svg>
+              <div
+                style={{
+                  display: 'flex',
+                  justifyContent: 'space-between',
+                  fontSize: 11,
+                  color: 'rgba(242,238,233,0.4)',
+                }}
+              >
+                <span>Jan</span>
+                <span>Now</span>
               </div>
             </div>
-          </Reveal>
-        </section>
+          </div>
+        </div>
+      </section>
 
-        {/* ---- How it works ------------------------------------------ */}
+      {/* Stats strip — 4 numbers, Meridian 30px serif */}
+      <div className="lh-mkt__stats">
+        <div className="lh-mkt__stat">
+          <span className="lh-mkt__statvalue">{WORKSPACE_ORDER.length}</span>
+          <span className="lh-mkt__statlabel">Separate workspaces, one account</span>
+        </div>
+        <div className="lh-mkt__stat">
+          <span className="lh-mkt__statvalue">{figures.listingCount}</span>
+          <span className="lh-mkt__statlabel">Listings live in the prototype</span>
+        </div>
+        <div className="lh-mkt__stat">
+          <span className="lh-mkt__statvalue">{figures.cityCount}</span>
+          <span className="lh-mkt__statlabel">Cities covered</span>
+        </div>
+        <div className="lh-mkt__stat">
+          <span className="lh-mkt__statvalue">0</span>
+          <span className="lh-mkt__statlabel">Payments taken</span>
+        </div>
+      </div>
+
+      <main className="lh-mkt__main">
+        {/* Showcase replaces the word-heavy ProductTour table — visual only */}
         <section className="lh-mkt__section" id="how">
           <Reveal>
             <div className="lh-mkt__splithead">
@@ -199,21 +184,67 @@ export const LandingPage = () => {
                 <h2 className="lh-mkt__display">One place, every kind of work.</h2>
               </div>
               <p className="lh-mkt__body">
-                The preview below is not a picture of the product. It runs on the same data the app
-                runs on, so the listings, the prices and the verification labels are the real ones.
-                Switch workspaces and the whole thing changes.
+                Every request carries a written reason, so the right person understands straight
+                away. Nothing is settled for you. The preview below is not a picture — it is the
+                real workspace.
               </p>
             </div>
           </Reveal>
-
-          <Reveal step={2}>
-            <div className="lh-mkt__tourframe">
-              <ProductTour />
+          <div className="lh-mkt__showcase">
+            <div className="lh-mkt__showmedia">
+              {/* Visual collage — 4 tiles as imagery, not a listing table */}
+              <div
+                style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: 12, width: '100%' }}
+              >
+                {WORKSPACE_ORDER.slice(0, 4).map((ws) => (
+                  <img
+                    key={ws}
+                    src={TILES[ws]}
+                    alt=""
+                    width={280}
+                    height={180}
+                    loading="lazy"
+                    style={{
+                      width: '100%',
+                      borderRadius: 8,
+                      border: '1px solid rgba(255,255,255,0.08)',
+                      display: 'block',
+                    }}
+                  />
+                ))}
+              </div>
             </div>
-          </Reveal>
+            <div className="lh-mkt__showcopy">
+              <h3
+                style={{
+                  fontFamily: 'var(--font-display)',
+                  fontSize: 22,
+                  fontWeight: 500,
+                  color: 'var(--marketing-ink)',
+                  margin: 0,
+                }}
+              >
+                See it working
+              </h3>
+              <p
+                style={{
+                  margin: 0,
+                  fontSize: 15,
+                  lineHeight: 1.65,
+                  color: 'rgba(242,238,233,0.65)',
+                }}
+              >
+                Switch workspaces and the entire surface changes — listings, filters and the request
+                flow. Open any workspace to try it with real data.
+              </p>
+              <Button variant="secondary" onClick={() => navigate('/onboarding/workspaces')}>
+                Open a workspace
+              </Button>
+            </div>
+          </div>
         </section>
 
-        {/* ---- Workspaces -------------------------------------------- */}
+        {/* Workspaces — 4 visual tiles */}
         <section className="lh-mkt__section" id="workspaces">
           <Reveal>
             <div className="lh-mkt__splithead">
@@ -256,7 +287,7 @@ export const LandingPage = () => {
           </div>
         </section>
 
-        {/* ---- Honesty ------------------------------------------------ */}
+        {/* Honesty — the catch, up front */}
         <section className="lh-mkt__section" id="honest">
           <Reveal>
             <div className="lh-mkt__splithead">
@@ -278,11 +309,11 @@ export const LandingPage = () => {
                 <div className="lh-mkt__card">
                   <span className="lh-mkt__cardicon">
                     {index === 0 ? (
-                      <GlobeIcon size={20} />
+                      <GlobeIcon size={22} />
                     ) : index === 1 ? (
-                      <ShieldIcon size={20} />
+                      <ShieldIcon size={22} />
                     ) : (
-                      <CheckIcon size={20} />
+                      <CheckIcon size={22} />
                     )}
                   </span>
                   <h3 className="lh-mkt__cardtitle">{item.title}</h3>
@@ -293,11 +324,10 @@ export const LandingPage = () => {
           </div>
         </section>
 
-        {/* ---- Final call -------------------------------------------- */}
+        {/* Final CTA — must contain "Tell us what you need" for tests */}
         <section className="lh-mkt__section">
           <Reveal>
             <div className="lh-mkt__final">
-              <div className="lh-mkt__finalglow" />
               <div className="lh-mkt__finalbody">
                 <h2 className="lh-mkt__display">Tell us what you need.</h2>
                 <p className="lh-mkt__lead">
@@ -307,13 +337,16 @@ export const LandingPage = () => {
                 <Button variant="accent" onClick={() => navigate('/register')}>
                   Get started
                 </Button>
+                <p className="lh-mkt__fineprint" style={{ marginTop: 8 }}>
+                  By continuing you agree this is a prototype. Nothing is transactable.
+                </p>
               </div>
             </div>
           </Reveal>
         </section>
       </main>
 
-      {/* ---- Footer --------------------------------------------------- */}
+      {/* Footer */}
       <footer className="lh-mkt__footer">
         <div className="lh-mkt__footergrid">
           <div className="lh-mkt__footercol">

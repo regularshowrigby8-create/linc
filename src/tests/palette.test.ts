@@ -64,13 +64,36 @@ const tint = (hex: string, amount = 0.08): string => {
   return `#${channels.map((channel) => channel.toString(16).padStart(2, '0')).join('')}`;
 };
 
-/** The value of a token in one block of the stylesheet. */
+/** Blend a foreground over a background at alpha, for muted rgba tokens. */
+const blend = (fg: string, bg: string, alpha: number): string => {
+  const fh = fg.replace('#', '');
+  const bh = bg.replace('#', '');
+  const channels = [0, 2, 4].map((offset) => {
+    const f = parseInt(fh.slice(offset, offset + 2), 16);
+    const b = parseInt(bh.slice(offset, offset + 2), 16);
+    return Math.round(alpha * f + (1 - alpha) * b);
+  });
+  return `#${channels.map((c) => c.toString(16).padStart(2, '0')).join('')}`;
+};
+
+/** The value of a token in one block of the stylesheet (hex or rgba). */
 const token = (name: string, block: 'light' | 'dark'): string => {
-  // The block opening, not the comment that names it further up the file.
   const scoped = block === 'dark' ? TOKENS.slice(TOKENS.indexOf("[data-theme='dark'] {")) : TOKENS;
-  const match = scoped.match(new RegExp(`${name}:\\s*(#[0-9a-fA-F]{6})`));
-  if (!match) throw new Error(`${name} is not defined in the ${block} block`);
-  return match[1];
+  const hexMatch = scoped.match(new RegExp(`${name}:\\s*(#[0-9a-fA-F]{6})`));
+  if (hexMatch) return hexMatch[1];
+  // rgba token — resolve to blended hex against its canvas so contrast is real
+  const rgbaMatch = scoped.match(new RegExp(`${name}:\\s*rgba\\(([^)]+)\\)`));
+  if (rgbaMatch) {
+    const parts = rgbaMatch[1].split(',').map((s) => s.trim());
+    const r = Math.round(parseFloat(parts[0]));
+    const g = Math.round(parseFloat(parts[1]));
+    const b = Math.round(parseFloat(parts[2]));
+    const a = parseFloat(parts[3]);
+    const bg = token('--marketing-canvas', block);
+    const fgHex = `#${[r, g, b].map((v) => v.toString(16).padStart(2, '0')).join('')}`;
+    return blend(fgHex, bg, a);
+  }
+  throw new Error(`${name} is not defined in the ${block} block`);
 };
 
 describe('the accent palette', () => {
