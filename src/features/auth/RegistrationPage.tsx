@@ -156,16 +156,14 @@ export const RegistrationPage = () => {
             <button
               type="button"
               className="lh-linkbutton lh-linkbutton--sm"
-              onClick={() => setNotice('Password reset is not connected in this prototype.')}
+              onClick={() => setNotice('Password reset is not connected yet.')}
             >
               Forgot password
             </button>
             <button
               type="button"
               className="lh-linkbutton lh-linkbutton--sm"
-              onClick={() =>
-                setNotice('Sign in is a mock path in this prototype. Create an account instead.')
-              }
+              onClick={() => setNotice('Sign in is not available yet. Create an account instead.')}
             >
               Sign in
             </button>

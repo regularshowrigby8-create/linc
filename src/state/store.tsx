@@ -345,7 +345,7 @@ const loadPersistedState = (): { state: StoreState; notice: string | null } => {
   } catch {
     return {
       state: fallback,
-      notice: 'Saved prototype data could not be read, so the demo was reset.',
+      notice: 'Your saved details could not be read, so the demo was reset.',
     };
   }
 };
@@ -604,7 +604,7 @@ export const ActionsProvider = ({ children }: { children: ReactNode }) => {
             dispatch({ type: 'reset_all', state: createInitialState() });
             return { ok: true, data: undefined };
           },
-          'Prototype data reset.',
+          'Demo data reset.',
         );
       },
 
@@ -1036,7 +1036,7 @@ export const ActionsProvider = ({ children }: { children: ReactNode }) => {
             dispatch(updateQuote(quoteId, 'selected'));
             return { ok: true, data: undefined };
           },
-          'Quote selected. No payment is taken in this prototype.',
+          'Quote selected. No payment is taken.',
         );
       },
 

@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it } from 'vitest';
-import { readdirSync, readFileSync, statSync } from 'node:fs';
+import { existsSync, readdirSync, readFileSync, statSync } from 'node:fs';
 import { join } from 'node:path';
 import { screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
@@ -95,6 +95,33 @@ describe('payment and currency safety', () => {
       expect(content, file).not.toMatch(/cash out/i);
       expect(content, file).not.toMatch(/withdraw to bank/i);
       expect(content, file).not.toMatch(/guaranteed exchange rate/i);
+    }
+  });
+});
+
+describe('production bundle', () => {
+  const assetsDir = join(process.cwd(), 'dist', 'assets');
+
+  it('ships no development-only controls or copy', () => {
+    if (!existsSync(assetsDir)) return; // The bundle has not been built yet.
+    const bundles = readdirSync(assetsDir).filter((file) => file.endsWith('.js'));
+    expect(bundles.length).toBeGreaterThan(0);
+    for (const file of bundles) {
+      const content = readFileSync(join(assetsDir, file), 'utf8');
+      expect(content, file).not.toContain('Development result selector');
+      expect(content, file).not.toContain('preview purposes only');
+      expect(content, file).not.toMatch(/mock result:/);
+      expect(content, file).not.toMatch(/mock checks/);
+    }
+  });
+
+  it('ships no engineering notes in the page copy', () => {
+    if (!existsSync(assetsDir)) return;
+    const bundles = readdirSync(assetsDir).filter((file) => file.endsWith('.js'));
+    for (const file of bundles) {
+      const content = readFileSync(join(assetsDir, file), 'utf8');
+      expect(content, file).not.toContain('linkhive-build-spec');
+      expect(content, file).not.toContain('It does not');
     }
   });
 });

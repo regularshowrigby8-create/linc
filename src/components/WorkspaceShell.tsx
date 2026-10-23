@@ -110,7 +110,7 @@ export const WorkspaceShell = ({
 
     {status === 'loading' ? <Skeleton lines={4} label="Loading results" /> : null}
     {status === 'error' ? (
-      <ErrorState onRetry={onRetry} description="Results could not be loaded in this prototype." />
+      <ErrorState onRetry={onRetry} description="Results could not be loaded. Try again." />
     ) : null}
     {status === 'ready' && isEmpty ? (
       <EmptyState title={emptyTitle} description={emptyDescription} actions={emptyActions} />

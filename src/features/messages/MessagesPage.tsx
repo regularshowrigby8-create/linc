@@ -106,12 +106,8 @@ export const MessagesPage = () => {
                   placeholder="Write a message"
                 />
                 <div className="lh-row lh-spread">
-                  <Button
-                    variant="ghost"
-                    disabled
-                    title="Attachments are not connected in this prototype"
-                  >
-                    Attachments are not connected in this prototype
+                  <Button variant="ghost" disabled title="Attachments are not connected yet">
+                    Attachments are not connected yet
                   </Button>
                   <div className="lh-row">
                     <Button variant="ghost" onClick={() => setReportOpen(true)}>

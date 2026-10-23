@@ -12,7 +12,7 @@ Built from: `docs/linkhive-build-spec/` (21 files, branch `The-plan`)
 | Install          | `npm install`    | 270 packages                              |
 | Start            | `npm run dev`    | Vite on `0.0.0.0:5173`                    |
 | Build            | `npm run build`  | `tsc -b` clean, `dist/` built in ~2s      |
-| Test             | `npm run test`   | **93 passed / 93 total, 5 suites**        |
+| Test             | `npm run test`   | **97 passed / 97 total, 5 suites**        |
 | Type check       | `npm run typecheck` | Clean, strict mode                       |
 | Lint             | `npm run lint`   | Clean, 0 errors, 0 warnings               |
 | Format check     | `npm run format:check` | Clean                              |
@@ -147,7 +147,7 @@ heading, and asserts the global error boundary is **not** what the person sees.
 └── tsconfig.{json,app.json,node.json}
 ```
 
-69 TypeScript files, 10,543 lines of source.
+69 TypeScript files, 10,543 lines of source, plus five generated illustrations in `src/assets/`.
 
 ---
 
@@ -272,6 +272,56 @@ A button is not complete until its click behaviour is tested.
 
 No demo step offers a file input, a camera permission or a network upload. The `DEMO` label is
 present on every step. Both facts are asserted by test, not just by inspection.
+
+---
+
+## 4b. Consumer refinement (v0.2.0)
+
+The brief was a modern, simple product surface with little to no engineering visible to a person.
+The changes below serve that brief without weakening any honesty requirement.
+
+### Engineering removed from the interface
+
+| Was                                                        | Now                                                    | Why                                                     |
+| ---------------------------------------------------------- | ------------------------------------------------------ | ------------------------------------------------------- |
+| A "Development result selector" card on the verification page | Compiled out of the production build entirely        | The spec asks for that selector *only for development*   |
+| The landing page's "It does / It does not" section          | Replaced with a three-step "how it works" section       | A product page explains the product, not the build        |
+| "LinkHive prototype. Built from docs/linkhive-build-spec."  | "LinkHive does not hold money, convert currency or collect identity documents." | Naming the build folder is engineering shown to a user |
+| The error boundary printing `Reason: <raw message>`         | A plain apology, a retry and a way back                | A raw error reason is engineering shown to a user         |
+| "Mock admin surface"                                        | "Preview only"                                          | The build rules require that wording for fake admin data  |
+| "Prototype. Payments and currency are not available."        | "Payments and currency are not available."              | Same                                                    |
+| "This part of the prototype could not load."                 | "This section could not be loaded."                      | Same                                                    |
+| "Sign in is a mock path in this prototype."                 | "Sign in is not available yet."                          | Same                                                    |
+
+### Preserved on purpose
+
+- The five mandated labels are still exact and still disabled:
+  `Payments are not available in this prototype`,
+  `Wallet is planned for a later release`,
+  `International settlement model is still under research`,
+  `Real document verification is not connected`,
+  `Delivery cost is estimated until a route is confirmed`.
+- The profile drawer's money rows still read **Not available in this prototype**, as the menu
+  specification requires.
+- The `DEMO` label is still on every verification step, and there is still no file input, camera
+  API or upload anywhere.
+
+### Modernised
+
+- The landing page is now a product page: a hero with an abstract illustration, a short lead, two
+  calls to action, a three-step "how it works" strip, four workspace tiles with artwork, and a
+  clean footer.
+- Imagery is five generated abstract illustrations in the design-system palette, quantised and
+  resized to 292 kB in total. No photography, no faces, no logos.
+- The colour palette, radii, the single shadow, the type scale and the breakpoints are unchanged,
+  because the design system fixes them.
+
+### Guaranteed by test, not by inspection
+
+`src/tests/safety.test.tsx` greps the built bundle in `dist/assets/` and fails if it finds
+`Development result selector`, `preview purposes only`, `mock result:`, `mock checks`,
+`linkhive-build-spec` or `It does not`. CI builds before it tests, so the bundle always exists.
+
 
 ---
 

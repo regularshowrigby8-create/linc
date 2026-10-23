@@ -145,7 +145,7 @@ explanation.
 npm run test
 ```
 
-93 tests across five suites:
+97 tests across five suites:
 
 | Suite                   | Covers                                                              |
 | ----------------------- | ------------------------------------------------------------------- |
@@ -153,7 +153,7 @@ npm run test
 | `routeSmoke.test.tsx`   | All 18 routes render with the right heading and never hit the error boundary |
 | `transitions.test.tsx`  | Valid and invalid state transitions, double submit, persistence, corrupt-state recovery |
 | `flows.test.tsx`        | Registration, workspace selection, navigation, wizard, requests, messages, notifications |
-| `safety.test.tsx`       | No dead code, no file input, no camera, no payment or currency claims |
+| `safety.test.tsx`       | No dead code, no file input, no camera, no payment or currency claims, and nothing development-only in the production bundle |
 
 A button is not considered done until its click behaviour is covered.
 
@@ -166,6 +166,20 @@ A button is not considered done until its click behaviour is covered.
 - `docs/linkhive-build-spec/` — the authoritative build specification this prototype follows.
 - `CONTRIBUTING.md` — how to work on this repository.
 - `AGENTS.md` — the rules an automated agent must follow here.
+
+---
+
+## Deployment
+
+`vercel.json` sets the Vite build, the `dist` output directory and the SPA rewrite that lets deep
+links such as `/app/customer` resolve on a static host.
+
+```bash
+npm run build   # produces dist/
+```
+
+The project is deployed to Vercel from the `arena/9f751416-linc` branch. See
+`docs/DELIVERY-REPORT.md` for the live address.
 
 ---
 

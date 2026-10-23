@@ -21,7 +21,7 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
   override componentDidCatch(error: Error, info: ErrorInfo): void {
     // Prototype logging only. No identifiers or payloads are sent anywhere.
-    console.error('LinkHive prototype error:', error.message, info.componentStack);
+    console.error('LinkHive error:', error.message, info.componentStack);
   }
 
   handleRetry = (): void => {
@@ -33,12 +33,11 @@ export class ErrorBoundary extends Component<ErrorBoundaryProps, ErrorBoundarySt
 
     return (
       <div className="lh-page lh-errorpage">
-        <h1 className="lh-h1">This screen could not be shown</h1>
+        <h1 className="lh-h1">Something went wrong</h1>
         <p className="lh-muted">
-          The prototype hit an unexpected state. Reloading usually clears it. Nothing was saved and
-          no real data is affected.
+          This screen could not be shown. Your saved details are still here. Try again, or go back
+          to your workspace.
         </p>
-        {this.state.message ? <p className="lh-caption">Reason: {this.state.message}</p> : null}
         <div className="lh-row">
           <button
             type="button"

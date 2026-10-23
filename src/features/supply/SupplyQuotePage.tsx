@@ -119,8 +119,8 @@ export const SupplyQuotePage = () => {
           <section className="lh-stack-sm">
             <h2 className="lh-h3">What happens next</h2>
             <p className="lh-muted">
-              Selecting a quote records your choice in the prototype. Delivery cost is estimated
-              until a route is confirmed, and no payment is taken.
+              Selecting a quote records your choice. Delivery cost is estimated until a route is
+              confirmed, and no payment is taken.
             </p>
           </section>
 

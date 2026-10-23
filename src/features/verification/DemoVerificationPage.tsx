@@ -14,7 +14,7 @@ type DemoResult = 'passed' | 'manual_review' | 'mismatch' | 'rejected';
 const RESULT_COPY: Record<DemoResult, { title: string; body: string; cta?: string }> = {
   passed: {
     title: 'Demo checks passed. This is not real verification.',
-    body: 'The sample passed the mock checks. Nothing about this account is genuinely verified.',
+    body: 'The sample passed the demo checks. Nothing about this account is genuinely verified.',
   },
   manual_review: {
     title: 'The demo needs a human reviewer.',
@@ -23,12 +23,12 @@ const RESULT_COPY: Record<DemoResult, { title: string; body: string; cta?: strin
   },
   mismatch: {
     title: 'The name did not match in this demo.',
-    body: 'The mock sample names did not match, so it goes to manual review instead of failing outright.',
+    body: 'The sample names did not match, so it goes to manual review instead of failing outright.',
     cta: 'Request manual review',
   },
   rejected: {
     title: 'The demo document could not be accepted.',
-    body: 'The sample failed the mock checks and was not accepted.',
+    body: 'The sample failed the demo checks and was not accepted.',
     cta: 'Return to profile',
   },
 };
@@ -128,9 +128,9 @@ export const DemoVerificationPage = () => {
               ))}
             </div>
             <ul className="lh-list lh-muted">
-              <li>Image quality — mock result: passed</li>
-              <li>Text extraction — mock result: sample read</li>
-              <li>Security checks — mock result: no issues found</li>
+              <li>Image quality — demo result: passed</li>
+              <li>Text extraction — demo result: sample read</li>
+              <li>Security checks — demo result: no issues found</li>
             </ul>
             <div className="lh-row">
               <Button
@@ -157,8 +157,8 @@ export const DemoVerificationPage = () => {
               <span className="lh-selfie__label">DEMO SELFIE</span>
             </div>
             <ul className="lh-list lh-muted">
-              <li>Liveness — mock result: face detected</li>
-              <li>Face match — mock result: sample matched</li>
+              <li>Liveness — demo result: face detected</li>
+              <li>Face match — demo result: sample matched</li>
             </ul>
             <p className="lh-caption">
               No camera permission is requested and no image is captured.
@@ -227,28 +227,32 @@ export const DemoVerificationPage = () => {
         ) : null}
       </Card>
 
-      <Card as="section" className="lh-stack lh-demo-dev">
-        <h2 className="lh-h3">Development result selector</h2>
-        <p className="lh-caption">
-          Visible for demo purposes only. In the user-facing flow the default result is manual
-          review.
-        </p>
-        <div className="lh-row">
-          {(['passed', 'manual_review', 'mismatch', 'rejected'] as const).map((option) => (
-            <Button
-              key={option}
-              size="sm"
-              variant={devResult === option ? 'primary' : 'secondary'}
-              onClick={() => {
-                setDevResult(option);
-                void actions.setDemoResult(option);
-              }}
-            >
-              {option.replace(/_/g, ' ')}
-            </Button>
-          ))}
-        </div>
-      </Card>
+      {/* The result selector is a development tool. The guard is here, at the
+          call site, so the whole branch is removed from a production build. */}
+      {import.meta.env.DEV ? (
+        <Card as="section" className="lh-stack lh-demo-dev">
+          <h2 className="lh-h3">Development result selector</h2>
+          <p className="lh-caption">
+            Visible for demo purposes only. In the user-facing flow the default result is manual
+            review.
+          </p>
+          <div className="lh-row">
+            {(['passed', 'manual_review', 'mismatch', 'rejected'] as const).map((option) => (
+              <Button
+                key={option}
+                size="sm"
+                variant={devResult === option ? 'primary' : 'secondary'}
+                onClick={() => {
+                  setDevResult(option);
+                  void actions.setDemoResult(option);
+                }}
+              >
+                {option.replace(/_/g, ' ')}
+              </Button>
+            ))}
+          </div>
+        </Card>
+      ) : null}
 
       <Button variant="ghost" onClick={() => navigate('/app/profile')}>
         Leave the demo

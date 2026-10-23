@@ -30,10 +30,10 @@ export const AdminReviewPage = () => {
   return (
     <div className="lh-page lh-stack">
       <div className="lh-notice lh-notice--warning" role="note">
-        <strong className="lh-notice__title">Mock admin surface</strong>
+        <strong className="lh-notice__title">Preview only</strong>
         <p className="lh-caption">
-          This is a prototype view of the moderation queue. It is not connected to a real
-          administration system, and no identity documents are shown anywhere.
+          This queue shows how reports would be reviewed. Nothing here reaches a real moderation
+          team, and no identity documents are shown anywhere.
         </p>
       </div>
 

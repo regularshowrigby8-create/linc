@@ -7,6 +7,50 @@ semantic versioning once the prototype graduates to a live product.
 
 ---
 
+## [0.2.0] — 2026-10-23
+
+Refined the prototype into a consumer product surface, and prepared it for deployment.
+
+### Added
+
+- A modern landing page: a hero with an abstract illustration, a three-step "how it works"
+  section, and four workspace tiles with artwork.
+- Abstract generated imagery for the hero and the workspace tiles — geometry in the design-system
+  palette, no photography, no faces, no logos.
+- `vercel.json` with the SPA rewrite, so deep links such as `/app/customer` resolve on a static
+  host.
+- A `Node >= 22` engine declaration so the deployment target matches the build environment.
+- Tests that grep the production bundle and fail if any development-only control, mock copy or
+  build note ships to a person.
+
+### Changed
+
+- The landing page no longer carries an "it does / it does not" section. It explains the product,
+  and the honest notice about payments stays as a single quiet line.
+- The footer no longer names the specification folder.
+- The error boundary speaks like a product: a plain apology, a retry, and a way back. It no longer
+  prints a raw error reason.
+- The admin review queue is labelled "Preview only", as the build rules require for fake admin
+  data.
+- Copy across the app reads as product copy. "Not available yet" replaces "not available in this
+  prototype" where the specification does not require the longer wording.
+- The workspace pages show a "Register to unlock" notice when a workspace is not registered.
+
+### Fixed
+
+- The development-only result selector is now guarded at the call site, so the whole branch is
+  removed from a production build. It was previously compiled into the bundle even though it
+  never rendered.
+
+### Unchanged
+
+- The five mandated future-capability labels are still exact.
+- The demo verification flow still uses fake `DEMO ID FRONT`, `DEMO ID BACK` and `DEMO SELFIE`
+  samples, with the `DEMO` label on every step and no file input, camera API or upload.
+- All 18 routes, the route manifest and the 93 existing tests still pass, now 97 in total.
+
+---
+
 ## [0.1.0] — 2026-10-23
 
 The first complete pass of the website prototype, built against the 21-file build specification in

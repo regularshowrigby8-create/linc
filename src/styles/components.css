@@ -1289,17 +1289,26 @@
   min-height: 100%;
   display: flex;
   flex-direction: column;
+  background: var(--color-canvas);
 }
 
 .lh-landing__header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: var(--space-4);
   flex-wrap: wrap;
-  padding: var(--space-4);
+  padding: var(--space-3) var(--page-padding);
   border-bottom: 1px solid var(--color-border);
   background: var(--color-surface);
+}
+
+.lh-landing__brand {
+  display: inline-flex;
+  text-decoration: none;
 }
 
 .lh-landing__nav {
@@ -1318,6 +1327,7 @@
   margin: var(--space-4) auto 0;
   max-width: var(--content-max);
   width: 100%;
+  padding: var(--space-3) var(--page-padding);
 }
 
 .lh-landing__main {
@@ -1328,10 +1338,18 @@
   padding: var(--page-padding);
   display: flex;
   flex-direction: column;
-  gap: var(--space-12);
+  gap: var(--space-16);
 }
 
+/* Hero ------------------------------------------------------------------ */
 .lh-landing__hero {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-8);
+  align-items: center;
+}
+
+.lh-landing__herotext {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -1339,38 +1357,155 @@
   max-width: var(--reading-max);
 }
 
+.lh-eyebrow {
+  display: inline-flex;
+  padding: var(--space-1) var(--space-3);
+  border-radius: var(--radius-pill);
+  background: var(--color-hive-surface);
+  color: var(--color-hive-deep);
+  font-size: var(--text-label);
+  line-height: var(--text-label-leading);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.lh-display {
+  margin: 0;
+  font-size: var(--text-h1);
+  line-height: var(--text-h1-leading);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.02em;
+  color: var(--color-ink);
+}
+
 .lh-landing__lead {
+  margin: 0;
   font-size: var(--text-h3);
   line-height: var(--text-h3-leading);
   color: var(--color-ink-muted);
 }
 
-.lh-landing__workspaces,
-.lh-landing__principles {
-  display: flex;
-  flex-direction: column;
-  gap: var(--space-4);
+.lh-landing__ctas {
+  gap: var(--space-3);
+  flex-wrap: wrap;
 }
 
-.lh-landing__card {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  gap: var(--space-3);
-  padding: var(--space-5);
+.lh-landing__herotile {
+  width: 100%;
+  overflow: hidden;
   border: 1px solid var(--color-border);
   border-radius: var(--radius-card);
   background: var(--color-surface);
   box-shadow: var(--shadow-card);
 }
 
+.lh-landing__heroimage {
+  display: block;
+  width: 100%;
+  height: auto;
+}
+
+/* How it works ---------------------------------------------------------- */
+.lh-landing__steps {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+.lh-step {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-5);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+}
+
+.lh-step__number {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  border-radius: var(--radius-pill);
+  background: var(--color-hive);
+  color: var(--color-ink);
+  font-size: var(--text-caption);
+  font-weight: var(--weight-bold);
+}
+
+/* Workspaces ------------------------------------------------------------ */
+.lh-landing__workspaces {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+}
+
+.lh-landing__sectionhead {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  max-width: var(--reading-max);
+}
+
+.lh-landing__workspacegrid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: var(--space-4);
+}
+
+.lh-workspacetile {
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-card);
+  background: var(--color-surface);
+  box-shadow: var(--shadow-card);
+  transition:
+    transform var(--motion-fast) var(--ease-out),
+    box-shadow var(--motion-fast) var(--ease-out);
+}
+
+.lh-workspacetile:hover {
+  transform: translateY(-2px);
+}
+
+.lh-workspacetile__image {
+  display: block;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 3 / 2;
+  object-fit: cover;
+}
+
+.lh-workspacetile__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-2);
+  padding: var(--space-4);
+}
+
+/* Footer ---------------------------------------------------------------- */
 .lh-landing__footer {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
-  padding: var(--space-6) var(--page-padding);
+  gap: var(--space-4);
+  padding: var(--space-8) var(--page-padding);
   border-top: 1px solid var(--color-border);
   background: var(--color-surface);
+}
+
+.lh-landing__footerlinks {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  flex-wrap: wrap;
 }
 
 .lh-landing__footer-links {
@@ -1670,6 +1805,14 @@
   .lh-listing__facts {
     grid-template-columns: repeat(3, minmax(0, 1fr));
   }
+
+  .lh-landing__steps {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+  }
+
+  .lh-landing__workspacegrid {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
 }
 
 @media (min-width: 1024px) {
@@ -1709,5 +1852,14 @@
   .lh-landing__workspaces {
     display: grid;
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .lh-landing__hero {
+    grid-template-columns: minmax(0, 1.05fr) minmax(0, 1fr);
+    gap: var(--space-12);
+  }
+
+  .lh-landing__workspacegrid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 }

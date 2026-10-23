@@ -36,7 +36,7 @@ interface ErrorStateProps {
 
 export const ErrorState = ({
   title = 'Something went wrong',
-  description = 'This part of the prototype could not load. Try again.',
+  description = 'This section could not be loaded. Try again.',
   onRetry,
   retryLabel = 'Retry',
 }: ErrorStateProps) => (

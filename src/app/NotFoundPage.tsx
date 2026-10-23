@@ -11,9 +11,7 @@ export const NotFoundPage = () => {
     <div className="lh-page">
       <Card as="section" className="lh-stack">
         <h1 className="lh-h1">That page does not exist</h1>
-        <p className="lh-muted">
-          The link may be out of date, or the page may have been renamed during the prototype.
-        </p>
+        <p className="lh-muted">The link may be out of date, or the page may have moved.</p>
         <div className="lh-row">
           <Link className="lh-btn lh-btn--primary lh-btn--md" to={WORKSPACE_HOME_ROUTE[workspace]}>
             Back to my workspace

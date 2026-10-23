@@ -21,6 +21,21 @@ describe('landing page', () => {
       screen.getAllByText(/not available yet|not available in this prototype/i).length,
     ).toBeGreaterThan(0);
   });
+
+  it('shows the product rather than the build notes', () => {
+    renderApp('/');
+    // A consumer page explains what the product does, not what the build left out.
+    expect(screen.queryByText(/what this prototype does and does not do/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/it does not/i)).not.toBeInTheDocument();
+    expect(screen.queryByText(/linkhive-build-spec/i)).not.toBeInTheDocument();
+    expect(screen.getByText(/tell us what you need/i)).toBeInTheDocument();
+  });
+
+  it('shows the four workspaces with a clear way in', () => {
+    renderApp('/');
+    expect(screen.getByRole('button', { name: /use customer service/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /use supply/i })).toBeInTheDocument();
+  });
 });
 
 describe('registration', () => {

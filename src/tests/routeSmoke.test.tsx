@@ -32,7 +32,7 @@ const EXPECTED_HEADING: Record<string, RegExp> = {
   '/app/admin/review': /report review/i,
 };
 
-const ERROR_BOUNDARY_TEXT = /the prototype hit an unexpected state/i;
+const ERROR_BOUNDARY_TEXT = /something went wrong/i;
 
 describe('every declared route renders', () => {
   beforeEach(() => window.localStorage.clear());

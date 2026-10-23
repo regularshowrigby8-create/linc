@@ -168,7 +168,7 @@ export const ProfileDrawer = ({ open, onClose }: ProfileDrawerProps) => {
               onClick={() =>
                 setDetail({
                   title: 'Personal details',
-                  message: 'Personal details are shown on your profile page in this prototype.',
+                  message: 'Your personal details are on your profile page.',
                 })
               }
             >
@@ -181,7 +181,7 @@ export const ProfileDrawer = ({ open, onClose }: ProfileDrawerProps) => {
                 onClick={() =>
                   setDetail({
                     title: 'Business details',
-                    message: 'Business details are shown on your profile page in this prototype.',
+                    message: 'Your business details are on your profile page.',
                   })
                 }
               >
@@ -194,7 +194,7 @@ export const ProfileDrawer = ({ open, onClose }: ProfileDrawerProps) => {
               onClick={() =>
                 setDetail({
                   title: 'Location',
-                  message: `Your prototype location is ${user?.location ?? 'not set'}.`,
+                  message: `Your location is ${user?.location ?? 'not set'}.`,
                 })
               }
             >
@@ -222,7 +222,7 @@ export const ProfileDrawer = ({ open, onClose }: ProfileDrawerProps) => {
               onClick={() =>
                 setDetail({
                   title: 'Password',
-                  message: 'Password changes are not connected in this prototype.',
+                  message: 'Password changes are not connected yet.',
                 })
               }
             >
@@ -234,7 +234,7 @@ export const ProfileDrawer = ({ open, onClose }: ProfileDrawerProps) => {
               onClick={() =>
                 setDetail({
                   title: 'Sessions',
-                  message: 'Session management is not available in this prototype.',
+                  message: 'Session management is not available yet.',
                 })
               }
             >
@@ -246,7 +246,7 @@ export const ProfileDrawer = ({ open, onClose }: ProfileDrawerProps) => {
               onClick={() =>
                 setDetail({
                   title: 'Delete or deactivate account',
-                  message: 'Account deletion is not available in this prototype.',
+                  message: 'Account deletion is not available yet.',
                 })
               }
             >
@@ -287,7 +287,8 @@ export const ProfileDrawer = ({ open, onClose }: ProfileDrawerProps) => {
       ) : panel === 'language' ? (
         <div className="lh-stack">
           <p className="lh-muted">
-            The prototype ships with one language. Other languages are planned for a later release.
+            English is the only language available right now. Others are planned for a later
+            release.
           </p>
           <div className="lh-drawer__list">
             {['English', 'Afrikaans', 'isiZulu', 'Sesotho'].map((option) => (
@@ -317,7 +318,7 @@ export const ProfileDrawer = ({ open, onClose }: ProfileDrawerProps) => {
               onOpen={() =>
                 setDetail({
                   title: 'Safety tips',
-                  message: 'Safety guidance is not available in this prototype.',
+                  message: 'Safety guidance is not available yet.',
                 })
               }
             />
@@ -347,7 +348,7 @@ export const ProfileDrawer = ({ open, onClose }: ProfileDrawerProps) => {
                 setDetail({
                   title: 'Blocked users',
                   message:
-                    'Blocking is recorded in the prototype state. A blocked-users list view is not part of this release.',
+                    'Blocking is recorded on your account. A blocked-users list is not available yet.',
                 })
               }
             />
@@ -356,7 +357,7 @@ export const ProfileDrawer = ({ open, onClose }: ProfileDrawerProps) => {
               onOpen={() =>
                 setDetail({
                   title: 'Community rules',
-                  message: 'Community rules are not available in this prototype.',
+                  message: 'Community rules are not available yet.',
                 })
               }
             />
@@ -365,8 +366,7 @@ export const ProfileDrawer = ({ open, onClose }: ProfileDrawerProps) => {
               onOpen={() =>
                 setDetail({
                   title: 'Terms',
-                  message:
-                    'Terms are not available in this prototype. No placeholder legal wording is shown on purpose.',
+                  message: 'Terms are not available yet.',
                 })
               }
             />
@@ -375,8 +375,7 @@ export const ProfileDrawer = ({ open, onClose }: ProfileDrawerProps) => {
               onOpen={() =>
                 setDetail({
                   title: 'Privacy',
-                  message:
-                    'Privacy information is not available in this prototype. No placeholder legal wording is shown on purpose.',
+                  message: 'Privacy information is not available yet.',
                 })
               }
             />

@@ -151,6 +151,39 @@ the token file.
 
 **Why.** The specification fixes these values.
 
+### D-016 — The development result selector is compiled out of production builds
+
+**Decision.** The verification demo's result selector is guarded at the call site with
+`import.meta.env.DEV ? (...) : null`, not with a wrapper component.
+
+**Why.** The build specification requires a visible result selector *only for development*, and the
+default result in the user-facing flow is manual review. A wrapper component still evaluates its
+children at the call site, so the branch survives minification. Guarding at the call site lets
+the bundler remove the whole branch, and a test greps the production bundle to prove the control
+and its copy are absent.
+
+### D-017 — Abstract generated imagery, no photography and no faces
+
+**Decision.** The landing page uses one abstract hero image and four abstract workspace tiles. All
+are geometric illustrations in the design-system palette. No generated photograph, no human
+likeness and no logo.
+
+**Why.** The build specification forbids realistic identity photos and unlicensed logos, and asks
+for portraits as initials or abstract shapes. Abstract geometry gives the product a modern feel
+without introducing anything that could be mistaken for a real person, a real supplier or a real
+brand.
+
+### D-018 — The product copy speaks like a product, not like a build
+
+**Decision.** The interface does not describe the build. The landing page no longer has an "it
+does / it does not" section, the footer no longer names the specification folder, the error
+boundary no longer prints a raw error reason, and the admin queue is labelled "Preview only" as
+the build rules require for fake admin data.
+
+**Why.** A person using the product should read it as a product. The honesty requirements are
+unaffected: the five mandated labels stay verbatim, unavailable capabilities stay disabled with an
+explanation, and no screen implies that a money or identity feature is live.
+
 ---
 
 ## 3. Open decisions
@@ -218,6 +251,13 @@ business listing is reviewed at all, who reviews it, and what the person sees wh
 The prototype offers in-app, email, SMS, WhatsApp and push, with in-app locked as essential. The
 decision is needed on which channels are legally or commercially required in South Africa, and on
 consent capture for SMS and WhatsApp.
+
+### OPEN_DECISION-11 — Should the workspace tiles become photographs?
+
+The tiles are abstract geometry. Real photography of real suppliers would be the obvious next step
+for a live product, but it needs a decision on where the imagery comes from, who supplies it, how
+it is licensed, and what happens when a supplier has no photo. Until then, abstract tiles are the
+honest choice.
 
 ---
 

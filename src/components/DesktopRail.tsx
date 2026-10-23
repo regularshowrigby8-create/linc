@@ -68,6 +68,6 @@ export const DesktopRail = ({
       </NavLink>
     </nav>
 
-    <p className="lh-rail__note">Prototype. Payments and currency are not available.</p>
+    <p className="lh-rail__note">Payments and currency are not available.</p>
   </aside>
 );

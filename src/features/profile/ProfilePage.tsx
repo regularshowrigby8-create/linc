@@ -104,14 +104,31 @@ export const ProfilePage = () => {
       </Card>
 
       <Card as="section" className="lh-stack">
-        <h2 className="lh-h3">Prototype notice</h2>
-        <p className="lh-muted">
-          Payments, wallet balances, currency conversion and cash-out are not available in this
-          prototype. The international settlement model is still under research.
-        </p>
-        <Button variant="secondary" disabled title="Not available in this prototype">
-          Payment and wallet settings are not available in this prototype
-        </Button>
+        <h2 className="lh-h3">Not available yet</h2>
+        <div className="lh-settingrow">
+          <div className="lh-stack-sm">
+            <strong>Payments</strong>
+            <span className="lh-caption">
+              Payments are not available in this prototype. Agree the work and the price in writing
+              before you commit.
+            </span>
+          </div>
+          <Button variant="secondary" size="sm" disabled>
+            Not available yet
+          </Button>
+        </div>
+        <div className="lh-settingrow">
+          <div className="lh-stack-sm">
+            <strong>Wallet</strong>
+            <span className="lh-caption">
+              Wallet is planned for a later release. International settlement model is still under
+              research.
+            </span>
+          </div>
+          <Button variant="secondary" size="sm" disabled>
+            Not available yet
+          </Button>
+        </div>
       </Card>
     </div>
   );
