@@ -162,3 +162,9 @@ a:hover {
   background: var(--color-border);
   border: 0;
 }
+
+/* Anchor links on the marketing pages move smoothly. The reduced motion
+   block in a11y.css turns this off again. */
+html {
+  scroll-behavior: smooth;
+}

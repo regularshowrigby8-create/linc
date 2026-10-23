@@ -98,7 +98,7 @@ describe('design token discipline', () => {
   it('defines both colour modes and the accent set', () => {
     const tokens = read(join(styleDir, 'tokens.css'));
     expect(tokens).toContain("[data-theme='dark']");
-    for (const accent of ['blue', 'teal', 'green', 'amber', 'coral', 'violet', 'plum']) {
+    for (const accent of ['blue', 'teal', 'green', 'amber', 'clay', 'violet', 'plum']) {
       expect(tokens, accent).toContain(`--accent-${accent}:`);
     }
   });

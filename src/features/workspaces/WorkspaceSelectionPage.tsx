@@ -1,12 +1,11 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import type { Workspace } from '@/data/types';
-import { Badge } from '@/components/Badge';
 import { Button } from '@/components/Button';
-import { Card } from '@/components/Card';
-import { Logo } from '@/components/Logo';
+import { CheckIcon } from '@/components/icons';
+import { FunnelShell } from '@/features/onboarding/FunnelShell';
 import { useActions } from '@/state/store';
-import { WORKSPACE_LABEL, WORKSPACE_PURPOSE } from '@/state/selectors';
+import { WORKSPACE_LABEL, WORKSPACE_ORDER, WORKSPACE_PURPOSE } from '@/state/selectors';
 
 const PURPOSE_OPTIONS: { id: string; label: string; workspaces: Workspace[] }[] = [
   { id: 'need-service', label: 'I need a service', workspaces: ['customer'] },
@@ -17,8 +16,6 @@ const PURPOSE_OPTIONS: { id: string; label: string; workspaces: Workspace[] }[] 
   { id: 'supply-products', label: 'I supply products', workspaces: ['supply'] },
 ];
 
-const WORKSPACE_ORDER: Workspace[] = ['customer', 'qualification', 'collaboration', 'supply'];
-
 const NEXT_STEP: Record<Workspace, string> = {
   customer:
     'Workspace registration, then a verification review before the workspace is fully active.',
@@ -27,6 +24,13 @@ const NEXT_STEP: Record<Workspace, string> = {
   supply: 'Workspace registration, then a supplier review.',
 };
 
+/**
+ * Choosing which workspaces to open.
+ *
+ * The account is one identity, and a workspace is one door into it. Picking
+ * a workspace never starts a verification on its own, and the page says so
+ * before the reader picks anything.
+ */
 export const WorkspaceSelectionPage = () => {
   const actions = useActions();
   const navigate = useNavigate();
@@ -61,76 +65,80 @@ export const WorkspaceSelectionPage = () => {
   };
 
   return (
-    <div className="lh-auth">
-      <header className="lh-auth__header">
-        <Logo />
-      </header>
+    <FunnelShell step={2} steps={['You', 'Your account', 'Your name']}>
+      <div className="lh-funnel__intro">
+        <p className="lh-mkt__eyebrow">Workspaces</p>
+        <h1 className="lh-mkt__display">What do you want to use LinkHive for first?</h1>
+        <p className="lh-mkt__body">
+          Each workspace is separate, and you only see what is relevant to the work you are doing.
+          Selecting a workspace never creates a verification automatically.
+        </p>
+      </div>
 
-      <main className="lh-auth__main lh-auth__main--wide">
-        <div className="lh-stack">
-          <div className="lh-stack-sm">
-            <h1 className="lh-h1">What do you want to use LinkHive for first?</h1>
-            <p className="lh-muted">
-              Choose one or more workspaces. Selecting a workspace never creates a verification
-              automatically.
-            </p>
-          </div>
+      <div className="lh-funnel__cards lh-funnel__purposes">
+        {PURPOSE_OPTIONS.map((option) => (
+          <button
+            key={option.id}
+            type="button"
+            className="lh-funnel__purpose"
+            onClick={() => applyPurpose(option.workspaces)}
+          >
+            {option.label}
+          </button>
+        ))}
+      </div>
 
-          <div className="lh-row">
-            {PURPOSE_OPTIONS.map((option) => (
+      <div className="lh-funnel__choices">
+        {WORKSPACE_ORDER.map((workspace) => {
+          const isSelected = selected.includes(workspace);
+          return (
+            <section
+              key={workspace}
+              className={`lh-funnel__choice${isSelected ? ' lh-funnel__choice--chosen' : ''}`}
+              aria-labelledby={`workspace-${workspace}`}
+            >
+              <div className="lh-funnel__sidehead">
+                <h2 className="lh-funnel__choicetitle" id={`workspace-${workspace}`}>
+                  {WORKSPACE_LABEL[workspace]}
+                </h2>
+                <p className="lh-funnel__choicebody">{WORKSPACE_PURPOSE[workspace]}</p>
+              </div>
+              <p className="lh-mkt__fineprint">
+                <strong>What happens next:</strong> {NEXT_STEP[workspace]}
+              </p>
               <button
-                key={option.id}
                 type="button"
-                className="lh-purposechip"
-                onClick={() => applyPurpose(option.workspaces)}
+                className="lh-funnel__sidepick"
+                data-testid={`workspace-toggle-${workspace}`}
+                aria-pressed={isSelected}
+                onClick={() => toggle(workspace)}
               >
-                {option.label}
+                <span className="lh-funnel__picklabel">
+                  {isSelected ? 'Selected' : 'Not selected'}
+                </span>
+                <span className="lh-funnel__choosemark" aria-hidden="true">
+                  <CheckIcon size={15} />
+                </span>
               </button>
-            ))}
-          </div>
+            </section>
+          );
+        })}
+      </div>
 
-          <div className="lh-grid-cards">
-            {WORKSPACE_ORDER.map((workspace) => {
-              const isSelected = selected.includes(workspace);
-              return (
-                <Card key={workspace} as="article" className="lh-workspacecard">
-                  <button
-                    type="button"
-                    className="lh-workspacecard__toggle"
-                    data-testid={`workspace-toggle-${workspace}`}
-                    aria-pressed={isSelected}
-                    onClick={() => toggle(workspace)}
-                  >
-                    <span className="lh-h3">{WORKSPACE_LABEL[workspace]}</span>
-                    <Badge tone={isSelected ? 'success' : 'neutral'}>
-                      {isSelected ? 'Selected' : 'Not selected'}
-                    </Badge>
-                  </button>
-                  <p className="lh-muted">{WORKSPACE_PURPOSE[workspace]}</p>
-                  <p className="lh-caption">
-                    <strong>Required next step:</strong> {NEXT_STEP[workspace]}
-                  </p>
-                </Card>
-              );
-            })}
-          </div>
+      {error ? (
+        <p className="lh-field__error" role="alert">
+          {error}
+        </p>
+      ) : null}
 
-          {error ? (
-            <p className="lh-field__error" role="alert">
-              {error}
-            </p>
-          ) : null}
-
-          <div className="lh-row lh-spread">
-            <Button variant="ghost" onClick={() => navigate('/')}>
-              Back
-            </Button>
-            <Button onClick={handleContinue} loading={busy} disabled={busy}>
-              Continue to my workspace
-            </Button>
-          </div>
-        </div>
-      </main>
-    </div>
+      <div className="lh-funnel__actions">
+        <Button variant="ghost" onClick={() => navigate('/')}>
+          Back
+        </Button>
+        <Button variant="accent" onClick={handleContinue} loading={busy} disabled={busy}>
+          Continue to my workspace
+        </Button>
+      </div>
+    </FunnelShell>
   );
 };

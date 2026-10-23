@@ -1,248 +1,366 @@
-import { useState } from 'react';
+import { useMemo } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { Button } from '@/components/Button';
-import { CardCarousel } from '@/components/CardCarousel';
-import { Logo } from '@/components/Logo';
 import { Reveal } from '@/components/Reveal';
-import { ThemeSwitch } from '@/components/ThemeSwitch';
+import {
+  BriefcaseIcon,
+  CheckIcon,
+  GlobeIcon,
+  ShieldIcon,
+  TruckIcon,
+  UsersIcon,
+  WrenchIcon,
+} from '@/components/icons';
+import { MarketingBackdrop } from '@/features/landing/MarketingBackdrop';
+import { MarketingHeader } from '@/features/landing/MarketingHeader';
 import { ProductTour } from '@/features/landing/ProductTour';
-import { useActions, useStore } from '@/state/store';
+import { useStore } from '@/state/store';
 import { useAppliedTheme } from '@/state/theme';
-import { WORKSPACE_ACCENT, WORKSPACE_LABEL, WORKSPACE_PURPOSE } from '@/state/selectors';
-import heroImage from '@/assets/hero.png';
-import customerImage from '@/assets/workspace-customer.png';
-import qualificationImage from '@/assets/workspace-qualification.png';
-import collaborationImage from '@/assets/workspace-collaboration.png';
-import supplyImage from '@/assets/workspace-supply.png';
+import { WORKSPACE_LABEL, WORKSPACE_ORDER } from '@/state/selectors';
+import type { Workspace } from '@/data/types';
 
-const WORKSPACE_CARDS = [
-  {
-    id: 'customer' as const,
-    title: 'Customer Service',
-    body: 'Find someone who provides an everyday service, or offer your own.',
-    image: customerImage,
-  },
-  {
-    id: 'qualification' as const,
-    title: 'Qualification / Jobs',
-    body: 'Show what you are qualified to do, and find qualified people.',
-    image: qualificationImage,
-  },
-  {
-    id: 'collaboration' as const,
-    title: 'Collaboration',
-    body: 'Form joint work, group projects and capacity arrangements.',
-    image: collaborationImage,
-  },
-  {
-    id: 'supply' as const,
-    title: 'Supply',
-    body: 'Compare suppliers, routes and who is responsible for each part.',
-    image: supplyImage,
-  },
+import customerTile from '@/assets/workspace-customer.png';
+import qualificationTile from '@/assets/workspace-qualification.png';
+import collaborationTile from '@/assets/workspace-collaboration.png';
+import supplyTile from '@/assets/workspace-supply.png';
+
+const TILES: Record<Workspace, string> = {
+  customer: customerTile,
+  qualification: qualificationTile,
+  collaboration: collaborationTile,
+  supply: supplyTile,
+};
+
+const WORKSPACE_ICONS = {
+  customer: WrenchIcon,
+  qualification: BriefcaseIcon,
+  collaboration: UsersIcon,
+  supply: TruckIcon,
+} as const;
+
+const WORKSPACE_LINE: Record<Workspace, string> = {
+  customer: 'Find or offer everyday services.',
+  qualification: 'Connect qualified people with opportunities.',
+  collaboration: 'Build a team or a partnership.',
+  supply: 'Find supply options and compare routes.',
+};
+
+const NAV_LINKS = [
+  { href: '#how', label: 'How it works' },
+  { href: '#workspaces', label: 'Workspaces' },
+  { href: '#honest', label: 'What we will not do' },
 ];
 
-const STEPS = [
+/**
+ * The three promises the prototype refuses to break.
+ *
+ * These are the exact words the product uses when it has to admit that
+ * something is not built yet. Putting them on the front page, in the
+ * places a buyer would look for the catch, is the whole point of the
+ * section. A marketplace that takes money it cannot settle is worth less
+ * than one that says so plainly.
+ */
+const HONESTY: { title: string; body: string }[] = [
   {
-    title: 'Tell us what you need',
-    body: 'Describe what you are looking for. Every request carries a written reason, so the right person understands straight away.',
+    title: 'We will not take your money.',
+    body: 'Payments are not available in this prototype. You agree the work and the price in writing, on your own terms.',
   },
   {
-    title: 'Get matched',
-    body: 'Browse services, qualified people, partners and suppliers in one place, with the detail you need to compare them fairly.',
+    title: 'We will not collect your identity documents.',
+    body: 'Real document verification is not connected. The demo flow shows how a review would work, and it never asks for a file.',
   },
   {
-    title: 'Know where you stand',
-    body: 'See what is verified, what is still pending and who is responsible for each part of the job before you commit.',
-  },
-  {
-    title: 'Compare before you commit',
-    body: 'Every quote shows its cost on its own line, and every estimate is labelled. Nothing is settled for you.',
+    title: 'We will not call an estimate a price.',
+    body: 'Delivery cost is estimated until a route is confirmed, and every quote shows its cost on its own line.',
   },
 ];
 
 export const LandingPage = () => {
   const { state } = useStore();
-  const actions = useActions();
   const navigate = useNavigate();
-  const [language, setLanguage] = useState('English');
-  const [notice, setNotice] = useState<string | null>(null);
   const preferences = state.app.preferences;
-
   useAppliedTheme(preferences.theme);
 
+  const listings = state.app.listings;
+
+  /* Every number on this page is counted from the data that is actually
+     here. Nothing is invented, and nothing is projected. */
+  const figures = useMemo(() => {
+    const perWorkspace = WORKSPACE_ORDER.map((workspace) => ({
+      workspace,
+      count: listings.filter((listing) => listing.workspace === workspace).length,
+    }));
+    const cities = new Set(
+      listings.map((listing) => listing.location.split(',')[0]?.trim()).filter(Boolean),
+    );
+    return {
+      perWorkspace,
+      listingCount: listings.length,
+      cityCount: cities.size,
+    };
+  }, [listings]);
+
+  const largest = Math.max(...figures.perWorkspace.map((item) => item.count), 1);
+
   return (
-    <div className="lh-landing">
-      <header className="lh-landing__header">
-        <Link to="/" aria-label="LinkHive home" className="lh-landing__brand">
-          <Logo />
-        </Link>
-        <nav className="lh-landing__nav" aria-label="Account">
-          <ThemeSwitch
-            value={preferences.theme}
-            onChange={(theme) => void actions.setTheme(theme)}
-            idPrefix="landing-theme"
-            label="Colour mode"
-          />
-          <label className="lh-landing__language">
-            <span className="lh-sr-only">Language</span>
-            <select
-              className="lh-input lh-select"
-              value={language}
-              onChange={(event) => {
-                setLanguage(event.target.value);
-                if (event.target.value !== 'English') {
-                  setNotice('English is the only language available right now.');
-                } else {
-                  setNotice(null);
-                }
-              }}
-            >
-              <option value="English">English</option>
-              <option value="Afrikaans">Afrikaans</option>
-              <option value="isiZulu">isiZulu</option>
-            </select>
-          </label>
-          <Button variant="secondary" onClick={() => navigate('/register')}>
-            Sign in
-          </Button>
-          <Button onClick={() => navigate('/register')}>Create account</Button>
-        </nav>
-      </header>
+    <div className="lh-mkt">
+      <MarketingBackdrop />
+      <MarketingHeader links={NAV_LINKS} />
 
-      {notice ? (
-        <p className="lh-notice lh-notice--info lh-landing__notice" role="status">
-          {notice}
-        </p>
-      ) : null}
-
-      <main className="lh-landing__main">
-        <section className="lh-landing__hero">
-          <div className="lh-landing__herotext">
-            <span className="lh-eyebrow lh-enter lh-enter--1">South Africa first</span>
-            <h1 className="lh-display lh-enter lh-enter--2">Find the right connection.</h1>
-            <p className="lh-landing__lead lh-enter lh-enter--3">
+      <main className="lh-mkt__main">
+        {/* ---- Hero ------------------------------------------------- */}
+        <section className="lh-mkt__hero">
+          <div className="lh-mkt__herotext">
+            <p className="lh-mkt__eyebrow">South Africa first</p>
+            <h1 className="lh-mkt__mega">Find the right connection.</h1>
+            <p className="lh-mkt__lead">
               Services, qualified people, partnerships and supply. Tell LinkHive what you need, and
               get matched with people who can do it.
             </p>
-            <div className="lh-row lh-landing__ctas lh-enter lh-enter--4">
-              <Button onClick={() => navigate('/register')}>Create a free account</Button>
-              <Button variant="secondary" onClick={() => navigate('/onboarding/workspaces')}>
-                Explore the workspaces
+            <div className="lh-mkt__ctas">
+              <Button variant="accent" size="md" onClick={() => navigate('/register')}>
+                Get started
               </Button>
             </div>
-            <p className="lh-caption lh-enter lh-enter--4">
-              Payments are not available in this prototype.
+            <p className="lh-mkt__fineprint">
+              Payments are not available in this prototype. Nothing here is transactable.
             </p>
           </div>
-          <div className="lh-landing__herotile" aria-hidden="true">
-            <span className="lh-landing__wash" />
-            <img src={heroImage} alt="" className="lh-landing__heroimage" />
+
+          <div className="lh-mkt__heroviz">
+            <div className="lh-mkt__panel lh-mkt__panel--glow">
+              <div className="lh-mkt__panelbody">
+                <div className="lh-mkt__paneltop">
+                  <h2 className="lh-mkt__paneltitle">Listings in the prototype</h2>
+                  <span className="lh-mkt__pulse">Live</span>
+                </div>
+                <p className="lh-mkt__livefigure">{figures.listingCount}</p>
+                <div className="lh-mkt__live">
+                  {figures.perWorkspace.map((item, index) => (
+                    <div className="lh-mkt__liverow" key={item.workspace}>
+                      <span className="lh-mkt__livekey">{WORKSPACE_LABEL[item.workspace]}</span>
+                      <span className="lh-mkt__livebar">
+                        <span
+                          style={
+                            {
+                              '--w': `${Math.round((item.count / largest) * 100)}%`,
+                              '--i': index,
+                            } as React.CSSProperties
+                          }
+                        />
+                      </span>
+                      <span className="lh-mkt__livevalue">{item.count}</span>
+                    </div>
+                  ))}
+                </div>
+              </div>
+            </div>
           </div>
         </section>
 
-        <Reveal as="section" className="lh-landing__tour">
-          <div className="lh-landing__sectionhead">
-            <h2 className="lh-h2">See it working</h2>
-            <p className="lh-muted">
-              This preview runs on the same data the app uses. Switch workspaces to see how each one
-              differs.
-            </p>
-          </div>
-          <ProductTour />
-        </Reveal>
+        {/* ---- Ticker ------------------------------------------------ */}
+        <div className="lh-mkt__ticker">
+          <span className="lh-mkt__tickeritem">South Africa first</span>
+          <span className="lh-mkt__tickeritem">Four separate workspaces</span>
+          <span className="lh-mkt__tickeritem">Every request carries a written reason</span>
+          <span className="lh-mkt__tickeritem">Nothing is settled for you</span>
+        </div>
 
-        <section className="lh-landing__how" aria-label="How LinkHive works">
-          <CardCarousel
-            ariaLabel="The steps of using LinkHive"
-            title="How it works"
-            description="Four steps, in order. Nothing happens behind your back."
-          >
-            {STEPS.map((step, index) => (
-              <article
-                key={step.title}
-                className="lh-step"
-                data-carousel-item
-                data-accent={(['blue', 'teal', 'violet', 'amber'] as const)[index]}
-              >
-                <span className="lh-step__number">{index + 1}</span>
-                <h3 className="lh-h3">{step.title}</h3>
-                <p className="lh-muted">{step.body}</p>
-              </article>
-            ))}
-          </CardCarousel>
+        {/* ---- Figures ----------------------------------------------- */}
+        <section className="lh-mkt__section lh-mkt__section--tight">
+          <Reveal>
+            <div className="lh-mkt__stats">
+              <div className="lh-mkt__stat">
+                <span className="lh-mkt__statvalue">{WORKSPACE_ORDER.length}</span>
+                <span className="lh-mkt__statlabel">Separate workspaces, one account</span>
+              </div>
+              <div className="lh-mkt__stat">
+                <span className="lh-mkt__statvalue">{figures.listingCount}</span>
+                <span className="lh-mkt__statlabel">Listings live in the prototype</span>
+              </div>
+              <div className="lh-mkt__stat">
+                <span className="lh-mkt__statvalue">{figures.cityCount}</span>
+                <span className="lh-mkt__statlabel">Cities covered</span>
+              </div>
+              <div className="lh-mkt__stat">
+                <span className="lh-mkt__statvalue">0</span>
+                <span className="lh-mkt__statlabel">Payments taken</span>
+              </div>
+            </div>
+          </Reveal>
         </section>
 
-        <Reveal as="section" className="lh-landing__workspaces" aria-label="LinkHive workspaces">
-          <div className="lh-landing__sectionhead">
-            <h2 className="lh-h2">Four ways to use LinkHive</h2>
-            <p className="lh-muted">
-              Each workspace is separate, so you only see what is relevant to you.
-            </p>
+        {/* ---- How it works ------------------------------------------ */}
+        <section className="lh-mkt__section" id="how">
+          <Reveal>
+            <div className="lh-mkt__splithead">
+              <div className="lh-mkt__sectionhead">
+                <p className="lh-mkt__eyebrow">How it works</p>
+                <h2 className="lh-mkt__display">One place, every kind of work.</h2>
+              </div>
+              <p className="lh-mkt__body">
+                The preview below is not a picture of the product. It runs on the same data the app
+                runs on, so the listings, the prices and the verification labels are the real ones.
+                Switch workspaces and the whole thing changes.
+              </p>
+            </div>
+          </Reveal>
+
+          <Reveal step={2}>
+            <div className="lh-mkt__tourframe">
+              <ProductTour />
+            </div>
+          </Reveal>
+        </section>
+
+        {/* ---- Workspaces -------------------------------------------- */}
+        <section className="lh-mkt__section" id="workspaces">
+          <Reveal>
+            <div className="lh-mkt__splithead">
+              <div className="lh-mkt__sectionhead">
+                <p className="lh-mkt__eyebrow">Four ways in</p>
+                <h2 className="lh-mkt__display">A workspace for each kind of work.</h2>
+              </div>
+              <p className="lh-mkt__body">
+                Each workspace is separate, so you only see what is relevant to you. You can
+                register for more later, and switch between them whenever the work changes.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="lh-mkt__grid lh-mkt__grid--4">
+            {WORKSPACE_ORDER.map((workspace, index) => {
+              const Icon = WORKSPACE_ICONS[workspace];
+              return (
+                <Reveal key={workspace} step={(index + 1) as 1 | 2 | 3 | 4}>
+                  <Link className="lh-mkt__tile" to="/onboarding/workspaces">
+                    <img
+                      className="lh-mkt__tileimage"
+                      src={TILES[workspace]}
+                      alt=""
+                      width={600}
+                      height={400}
+                      loading="lazy"
+                    />
+                    <div className="lh-mkt__tilebody">
+                      <span className="lh-mkt__cardicon">
+                        <Icon size={20} />
+                      </span>
+                      <h3 className="lh-mkt__cardtitle">{WORKSPACE_LABEL[workspace]}</h3>
+                      <p className="lh-mkt__cardbody">{WORKSPACE_LINE[workspace]}</p>
+                    </div>
+                  </Link>
+                </Reveal>
+              );
+            })}
           </div>
-          <div className="lh-landing__workspacegrid">
-            {WORKSPACE_CARDS.map((card, index) => (
-              <Reveal
-                key={card.id}
-                as="article"
-                step={(Math.min(index, 3) + 1) as 1 | 2 | 3 | 4}
-                className="lh-workspacetile"
-              >
-                <div data-accent={WORKSPACE_ACCENT[card.id]} className="lh-workspacetile__inner">
-                  <img src={card.image} alt="" className="lh-workspacetile__image" />
-                  <div className="lh-workspacetile__body">
-                    <h3 className="lh-h3">{card.title}</h3>
-                    <p className="lh-muted">{card.body}</p>
-                    <p className="lh-caption">{WORKSPACE_PURPOSE[card.id]}</p>
-                    <Button
-                      variant="secondary"
-                      size="sm"
-                      onClick={() => navigate('/register')}
-                      aria-label={`Register to use ${WORKSPACE_LABEL[card.id]}`}
-                    >
-                      Use {card.title}
-                    </Button>
-                  </div>
+        </section>
+
+        {/* ---- Honesty ------------------------------------------------ */}
+        <section className="lh-mkt__section" id="honest">
+          <Reveal>
+            <div className="lh-mkt__splithead">
+              <div className="lh-mkt__sectionhead">
+                <p className="lh-mkt__eyebrow">What we will not do</p>
+                <h2 className="lh-mkt__display">The catch, up front.</h2>
+              </div>
+              <p className="lh-mkt__body">
+                Most marketplaces will take your details and go quiet about the parts that are not
+                ready. These three are the parts that are not ready, written the way the product
+                writes them.
+              </p>
+            </div>
+          </Reveal>
+
+          <div className="lh-mkt__grid lh-mkt__grid--2">
+            {HONESTY.map((item, index) => (
+              <Reveal key={item.title} step={(index + 1) as 1 | 2 | 3 | 4}>
+                <div className="lh-mkt__card">
+                  <span className="lh-mkt__cardicon">
+                    {index === 0 ? (
+                      <GlobeIcon size={20} />
+                    ) : index === 1 ? (
+                      <ShieldIcon size={20} />
+                    ) : (
+                      <CheckIcon size={20} />
+                    )}
+                  </span>
+                  <h3 className="lh-mkt__cardtitle">{item.title}</h3>
+                  <p className="lh-mkt__cardbody">{item.body}</p>
                 </div>
               </Reveal>
             ))}
           </div>
-        </Reveal>
+        </section>
+
+        {/* ---- Final call -------------------------------------------- */}
+        <section className="lh-mkt__section">
+          <Reveal>
+            <div className="lh-mkt__final">
+              <div className="lh-mkt__finalglow" />
+              <div className="lh-mkt__finalbody">
+                <h2 className="lh-mkt__display">Tell us what you need.</h2>
+                <p className="lh-mkt__lead">
+                  Two questions, then your name. You will be inside a workspace before the page
+                  finishes loading.
+                </p>
+                <Button variant="accent" onClick={() => navigate('/register')}>
+                  Get started
+                </Button>
+              </div>
+            </div>
+          </Reveal>
+        </section>
       </main>
 
-      <footer className="lh-landing__footer">
-        <div className="lh-landing__footerlinks">
-          <Logo />
-          <nav className="lh-landing__footer-links" aria-label="Footer">
-            <button type="button" className="lh-linkbutton" onClick={() => navigate('/register')}>
-              Create an account
-            </button>
-            <button
-              type="button"
-              className="lh-linkbutton"
-              onClick={() => setNotice('Community rules are not available yet.')}
-            >
-              Community rules
-            </button>
-            <button
-              type="button"
-              className="lh-linkbutton"
-              onClick={() => setNotice('Terms are not available yet.')}
-            >
-              Terms
-            </button>
-            <button
-              type="button"
-              className="lh-linkbutton"
-              onClick={() => setNotice('Privacy information is not available yet.')}
-            >
-              Privacy
-            </button>
-          </nav>
+      {/* ---- Footer --------------------------------------------------- */}
+      <footer className="lh-mkt__footer">
+        <div className="lh-mkt__footergrid">
+          <div className="lh-mkt__footercol">
+            <span className="lh-mkt__brandname">LinkHive</span>
+            <p className="lh-mkt__cardbody">
+              A connection marketplace for the work that needs doing. South Africa first, and built
+              to travel.
+            </p>
+          </div>
+          <div className="lh-mkt__footercol">
+            <p className="lh-mkt__footerhead">Product</p>
+            <a className="lh-mkt__footerlink" href="#how">
+              How it works
+            </a>
+            <a className="lh-mkt__footerlink" href="#workspaces">
+              Workspaces
+            </a>
+            <a className="lh-mkt__footerlink" href="/onboarding/workspaces">
+              Choose a workspace
+            </a>
+          </div>
+          <div className="lh-mkt__footercol">
+            <p className="lh-mkt__footerhead">The prototype</p>
+            <a className="lh-mkt__footerlink" href="/app/verification/demo">
+              Demo verification
+            </a>
+            <a className="lh-mkt__footerlink" href="/app/admin/review">
+              Admin review
+            </a>
+            <Link className="lh-mkt__footerlink" to="/app">
+              Open the app
+            </Link>
+          </div>
+          <div className="lh-mkt__footercol">
+            <p className="lh-mkt__footerhead">Honest limits</p>
+            <span className="lh-mkt__footerlink">No payments taken</span>
+            <span className="lh-mkt__footerlink">No wallet</span>
+            <span className="lh-mkt__footerlink">Nothing is withdrawn</span>
+          </div>
         </div>
-        <p className="lh-caption">
-          LinkHive does not hold money, convert currency or collect identity documents.
-        </p>
+        <div className="lh-mkt__legal">
+          <span>© 2026 LinkHive. A prototype. Nothing on this site is transactable.</span>
+          <span>
+            Payments are not available in this prototype. Wallet is planned for a later release.
+            International settlement model is still under research.
+          </span>
+        </div>
       </footer>
     </div>
   );

@@ -2,7 +2,9 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import { AppShell } from '@/app/AppShell';
 import { NotFoundPage } from '@/app/NotFoundPage';
 import { AdminReviewPage } from '@/features/admin/AdminReviewPage';
-import { RegistrationPage } from '@/features/auth/RegistrationPage';
+import { AccountReadPage } from '@/features/onboarding/AccountReadPage';
+import { AccountTypePage } from '@/features/onboarding/AccountTypePage';
+import { IntentPage } from '@/features/onboarding/IntentPage';
 import { CollaborationDetailPage } from '@/features/collaboration/CollaborationDetailPage';
 import { CollaborationWorkspacePage } from '@/features/collaboration/CollaborationWorkspacePage';
 import { CustomerListingDetailPage } from '@/features/customer/CustomerListingDetailPage';
@@ -31,7 +33,9 @@ const WorkspaceLanding = () => {
 export const AppRoutes = () => (
   <Routes>
     <Route path="/" element={<LandingPage />} />
-    <Route path="/register" element={<RegistrationPage />} />
+    <Route path="/register" element={<IntentPage />} />
+    <Route path="/onboarding/account-type" element={<AccountTypePage />} />
+    <Route path="/onboarding/account" element={<AccountReadPage />} />
     <Route path="/onboarding/workspaces" element={<WorkspaceSelectionPage />} />
 
     <Route path="/app" element={<AppShell />}>

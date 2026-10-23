@@ -19,6 +19,8 @@ describe('route manifest', () => {
     const required = [
       '/',
       '/register',
+      '/onboarding/account-type',
+      '/onboarding/account',
       '/onboarding/workspaces',
       '/app',
       '/app/customer',

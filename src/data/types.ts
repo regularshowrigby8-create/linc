@@ -7,6 +7,13 @@
 export type Workspace = 'customer' | 'qualification' | 'collaboration' | 'supply';
 export type AccountType = 'personal' | 'business';
 
+/**
+ * Which side of the marketplace a person is on when they start.
+ * `buy` means they are looking for someone to do something for them.
+ * `sell` means they are offering something.
+ */
+export type Intent = 'buy' | 'sell';
+
 export type VerificationState =
   'not_started' | 'pending' | 'verified' | 'rejected' | 'manual_review';
 
@@ -338,7 +345,7 @@ export interface DemoVerificationState {
 export type ThemePreference = 'light' | 'dark' | 'system';
 
 /** The accent colours a member can choose for their own profile. */
-export type AccentName = 'blue' | 'teal' | 'green' | 'amber' | 'coral' | 'violet' | 'plum';
+export type AccentName = 'blue' | 'teal' | 'green' | 'amber' | 'clay' | 'violet' | 'plum';
 
 /** Abstract avatar treatments. Portraits are never shown. */
 export type AvatarStyle = 'initials' | 'blocks' | 'rings';
@@ -352,6 +359,16 @@ export interface ProfilePreferences {
   avatarStyle: AvatarStyle;
   /** Whether the desktop rail is reduced to icons. */
   navCollapsed: boolean;
+}
+
+/** The answers given during onboarding, before the account exists. */
+export interface OnboardingState {
+  /** Sell or buy, chosen on the first onboarding screen. */
+  intent: Intent | null;
+  /** Business or individual, chosen on the second screen. */
+  accountType: AccountType | null;
+  /** The workspace the account opens into. */
+  workspace: Workspace | null;
 }
 
 export interface AppState {
@@ -368,4 +385,5 @@ export interface AppState {
   notifications: NotificationSettings;
   verificationDemo: DemoVerificationState;
   preferences: ProfilePreferences;
+  onboarding: OnboardingState;
 }

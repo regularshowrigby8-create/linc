@@ -1,4 +1,4 @@
-import type { AccentName, AppState, Listing, Workspace } from '@/data/types';
+import type { AccentName, AccountType, AppState, Intent, Listing, Workspace } from '@/data/types';
 import type { StoreState } from '@/state/actions';
 
 export const WORKSPACE_ORDER: Workspace[] = [
@@ -37,10 +37,17 @@ export const WORKSPACE_ACCENT: Record<Workspace, AccentName> = {
   supply: 'amber',
 };
 
-/** The accent each primary navigation area carries. */
+/**
+ * The accent each primary navigation area carries.
+ *
+ * Every area is a different family, so a member can tell them apart at a
+ * glance, and the set was chosen so the hues stay separable under
+ * deuteranopia, protanopia and tritanopia. Warm, cool and deep families
+ * are spread across the four so the bar never reads as one colour.
+ */
 export const NAV_ACCENT = {
   home: 'blue',
-  requests: 'coral',
+  requests: 'clay',
   messages: 'teal',
   profile: 'plum',
 } as const satisfies Record<string, AccentName>;
@@ -51,10 +58,20 @@ export const ACCENT_CHOICES: { name: AccentName; label: string }[] = [
   { name: 'blue', label: 'Blue' },
   { name: 'teal', label: 'Teal' },
   { name: 'green', label: 'Green' },
-  { name: 'coral', label: 'Coral' },
+  { name: 'clay', label: 'Clay' },
   { name: 'violet', label: 'Violet' },
   { name: 'plum', label: 'Plum' },
 ];
+
+/**
+ * The workspace an account opens into, worked out from the two onboarding
+ * answers. It is a suggestion, not a rule: the account can register more
+ * workspaces later, and the rail lets them switch.
+ */
+export const workspaceForOnboarding = (intent: Intent, accountType: AccountType): Workspace => {
+  if (intent === 'buy') return accountType === 'business' ? 'collaboration' : 'customer';
+  return accountType === 'business' ? 'supply' : 'qualification';
+};
 
 export const WORKSPACE_HOME_ROUTE: Record<Workspace, string> = {
   customer: '/app/customer',

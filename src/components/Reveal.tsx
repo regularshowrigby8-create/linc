@@ -2,8 +2,8 @@ import { useEffect, useRef, useState, type HTMLAttributes, type ReactNode } from
 
 interface RevealProps extends HTMLAttributes<HTMLElement> {
   children: ReactNode;
-  /** Stagger step, 1 to 4. Each step waits one beat longer than the last. */
-  step?: 1 | 2 | 3 | 4;
+  /** Stagger step, 1 to 6. Each step waits one beat longer than the last. */
+  step?: 1 | 2 | 3 | 4 | 5 | 6;
   className?: string;
   as?: 'div' | 'li' | 'section' | 'article';
 }

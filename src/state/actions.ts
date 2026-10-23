@@ -9,6 +9,7 @@ import type {
   Listing,
   MessageThread,
   NotificationChannel,
+  OnboardingState,
   ProfilePreferences,
   QuoteState,
   Report,
@@ -58,6 +59,7 @@ export type StoreAction =
   | { type: 'set_notification'; channel: NotificationChannel; enabled: boolean }
   | { type: 'set_verification_demo'; patch: Partial<DemoVerificationState> }
   | { type: 'set_preferences'; patch: Partial<ProfilePreferences> }
+  | { type: 'set_onboarding'; patch: Partial<OnboardingState> }
   | { type: 'push_toast'; toast: ToastMessage }
   | { type: 'dismiss_toast'; id: string }
   | { type: 'set_pending'; key: string; active: boolean }
@@ -98,6 +100,11 @@ export const createUser = (
 export const setUser = (user: User): StoreAction => ({ type: 'set_user', user });
 
 export const addListing = (listing: Listing): StoreAction => ({ type: 'add_listing', listing });
+
+export const setOnboarding = (patch: Partial<OnboardingState>): StoreAction => ({
+  type: 'set_onboarding',
+  patch,
+});
 
 export const setWorkspaces = (workspaces: Workspace[]): StoreAction => ({
   type: 'set_workspaces',

@@ -7,6 +7,8 @@ interface ThemeSwitchProps {
   /** Names the group for assistive technology. */
   label?: string;
   idPrefix?: string;
+  /** Shows the icon only. The word stays, for assistive technology. */
+  compact?: boolean;
 }
 
 const OPTIONS: { value: ThemePreference; label: string; Icon: typeof SunIcon }[] = [
@@ -21,8 +23,13 @@ export const ThemeSwitch = ({
   onChange,
   label = 'Appearance',
   idPrefix = 'theme',
+  compact = false,
 }: ThemeSwitchProps) => (
-  <div className="lh-themeswitch" role="group" aria-label={label}>
+  <div
+    className={`lh-themeswitch${compact ? ' lh-themeswitch--compact' : ''}`}
+    role="group"
+    aria-label={label}
+  >
     {OPTIONS.map(({ value: option, label: optionLabel, Icon }) => {
       const active = option === value;
       return (
@@ -35,7 +42,7 @@ export const ThemeSwitch = ({
           onClick={() => onChange(option)}
         >
           <Icon size={16} />
-          <span>{optionLabel}</span>
+          {compact ? <span className="lh-sr-only">{optionLabel}</span> : <span>{optionLabel}</span>}
         </button>
       );
     })}

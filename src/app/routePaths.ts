@@ -5,6 +5,8 @@
 export const ROUTE_PATHS = [
   '/',
   '/register',
+  '/onboarding/account-type',
+  '/onboarding/account',
   '/onboarding/workspaces',
   '/app',
   '/app/customer',

@@ -9,11 +9,24 @@ describe('landing page', () => {
   it('shows the hero and the four workspaces', () => {
     renderApp('/');
     expect(screen.getByRole('heading', { name: /find the right connection/i })).toBeInTheDocument();
-    const workspaces = within(screen.getByRole('region', { name: /linkhive workspaces/i }));
-    expect(workspaces.getByText('Customer Service')).toBeInTheDocument();
-    expect(workspaces.getByText('Qualification / Jobs')).toBeInTheDocument();
-    expect(workspaces.getByText('Collaboration')).toBeInTheDocument();
-    expect(workspaces.getByText('Supply')).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /customer service/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /qualification \/ jobs/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /^collaboration$/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /^supply$/i })).toBeInTheDocument();
+  });
+
+  it('asks for one decision only', () => {
+    renderApp('/');
+    const calls = screen.getAllByRole('button', { name: /get started/i });
+    expect(calls.length).toBeGreaterThan(0);
+    // Every call to action on the page leads to the same place.
+    calls.forEach((call) => expect(call).toBeInTheDocument());
+    expect(
+      screen.queryByRole('button', { name: /create a free account/i }),
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByRole('button', { name: /explore the workspaces/i }),
+    ).not.toBeInTheDocument();
   });
 
   it('states that payments are not available', () => {
@@ -27,53 +40,117 @@ describe('landing page', () => {
     renderApp('/');
     // A consumer page explains what the product does, not what the build left out.
     expect(screen.queryByText(/what this prototype does and does not do/i)).not.toBeInTheDocument();
-    expect(screen.queryByText(/it does not/i)).not.toBeInTheDocument();
     expect(screen.queryByText(/linkhive-build-spec/i)).not.toBeInTheDocument();
     expect(screen.getByText(/tell us what you need/i)).toBeInTheDocument();
   });
 
+  it('puts the limits it will not cross in front of the reader', () => {
+    renderApp('/');
+    expect(screen.getByRole('heading', { name: /the catch, up front/i })).toBeInTheDocument();
+    expect(
+      screen.getAllByText(/payments are not available in this prototype/i).length,
+    ).toBeGreaterThan(0);
+    expect(
+      screen.getAllByText(/real document verification is not connected/i).length,
+    ).toBeGreaterThan(0);
+  });
+
   it('shows the four workspaces with a clear way in', () => {
     renderApp('/');
-    expect(screen.getByRole('button', { name: /use customer service/i })).toBeInTheDocument();
-    expect(screen.getByRole('button', { name: /use supply/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /customer service/i })).toBeInTheDocument();
+    expect(screen.getByRole('link', { name: /supply/i })).toBeInTheDocument();
   });
 });
 
-describe('registration', () => {
+describe('the get started flow', () => {
   beforeEach(() => window.localStorage.clear());
 
-  it('shows visible validation errors for an invalid form', async () => {
+  it('asks whether you are hiring or offering, and waits for an answer', async () => {
     const user = userEvent.setup();
     renderApp('/register');
 
-    await user.click(screen.getByRole('button', { name: /create account/i }));
+    expect(screen.getByRole('heading', { name: /what brings you here/i })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /continue/i })).toBeDisabled();
+
+    await user.click(screen.getByRole('button', { name: /i am looking to hire/i }));
+
+    expect(screen.getByRole('button', { name: /continue/i })).toBeEnabled();
+  });
+
+  it('brings the chosen side forward and lets the other recede', async () => {
+    const user = userEvent.setup();
+    renderApp('/register');
+
+    const hire = screen.getByRole('button', { name: /i am looking to hire/i });
+    await user.click(hire);
+
+    expect(hire.closest('.lh-funnel__side')).toHaveClass('lh-funnel__side--chosen');
+    const offer = screen.getByRole('button', { name: /i am offering my work/i });
+    expect(offer.closest('.lh-funnel__side')).toHaveClass('lh-funnel__side--faded');
+  });
+
+  it('moves to the account type after the choice', async () => {
+    const user = userEvent.setup();
+    renderApp('/register');
+
+    await user.click(screen.getByRole('button', { name: /i am looking to hire/i }));
+    await user.click(screen.getByRole('button', { name: /continue/i }));
+
+    expect(
+      await screen.findByRole('heading', { name: /which kind of account are you/i }),
+    ).toBeInTheDocument();
+  });
+
+  it('offers a business and an individual account, each with its own explanation', async () => {
+    const user = userEvent.setup();
+    renderApp('/onboarding/account-type');
+
+    expect(screen.getByRole('heading', { name: /a business account/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /an individual account/i })).toBeInTheDocument();
+    expect(
+      screen.getByText(/business listings are reviewed before they appear/i),
+    ).toBeInTheDocument();
+
+    await user.click(screen.getByRole('button', { name: /i am a business/i }));
+    expect(screen.getByRole('button', { name: /continue/i })).toBeEnabled();
+  });
+
+  it('explains the account in full before it asks for a name', () => {
+    renderApp('/onboarding/account');
+
+    expect(
+      screen.getByRole('heading', { name: /here is what you are getting/i }),
+    ).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /what this account is/i })).toBeInTheDocument();
+    expect(screen.getByRole('heading', { name: /what it does not do/i })).toBeInTheDocument();
+    expect(screen.getByLabelText(/your name/i)).toBeInTheDocument();
+  });
+
+  it('shows visible validation errors for an invalid form', async () => {
+    const user = userEvent.setup();
+    renderApp('/onboarding/account');
+
+    await user.click(screen.getByRole('button', { name: /create my account/i }));
 
     expect(await screen.findByText('Enter your name.')).toBeInTheDocument();
     expect(screen.getByText('Enter a valid email address.')).toBeInTheDocument();
     expect(screen.getByText('Use at least 8 characters.')).toBeInTheDocument();
   });
 
-  it('reveals the business name field only for a business account', async () => {
+  it('creates the account and shows what it made', async () => {
     const user = userEvent.setup();
-    renderApp('/register');
+    renderApp('/onboarding/account');
 
-    expect(screen.queryByLabelText(/business name/i)).not.toBeInTheDocument();
-    await user.selectOptions(screen.getByLabelText(/account type/i), 'business');
-    expect(screen.getByLabelText(/business name/i)).toBeInTheDocument();
-  });
-
-  it('creates the account and moves to workspace selection', async () => {
-    const user = userEvent.setup();
-    renderApp('/register');
-
-    await user.type(screen.getByLabelText(/^name/i), 'Thabo Molefe');
-    await user.type(screen.getByLabelText(/email/i), 'thabo@example.co.za');
-    await user.type(screen.getByLabelText(/password/i), 'password123');
-    await user.click(screen.getByRole('button', { name: /^create account$/i }));
+    await user.type(screen.getByLabelText(/^your name/i), 'Thabo Molefe');
+    await user.type(screen.getByLabelText(/email address/i), 'thabo@example.co.za');
+    await user.type(screen.getByLabelText(/^password/i), 'password123');
+    await user.click(screen.getByRole('button', { name: /create my account/i }));
 
     expect(
-      await screen.findByRole('heading', { name: /what do you want to use linkhive for/i }),
+      await screen.findByRole('heading', { name: /this is what you just made/i }),
     ).toBeInTheDocument();
+    expect(screen.getByText('Thabo Molefe')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: /open my workspace/i })).toBeInTheDocument();
   });
 });
 

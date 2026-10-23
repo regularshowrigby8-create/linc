@@ -19,6 +19,7 @@ import type {
   Listing,
   MessageThread,
   NotificationChannel,
+  OnboardingState,
   OpportunityType,
   Reach,
   ReportReason,
@@ -45,6 +46,7 @@ import {
   pushToast,
   setActiveWorkspace,
   setNotification,
+  setOnboarding,
   setPending,
   setPreferences,
   setReportStatus,
@@ -94,6 +96,7 @@ export const createInitialState = (): StoreState => ({
       avatarStyle: 'initials',
       navCollapsed: false,
     },
+    onboarding: { intent: null, accountType: null, workspace: null },
   },
   pending: [],
   toasts: [],
@@ -157,6 +160,12 @@ const reducer = (state: StoreState, action: StoreAction): StoreState => {
           activeWorkspace: action.workspace,
           user: state.app.user ? { ...state.app.user, lastUsedWorkspace: action.workspace } : null,
         },
+      };
+
+    case 'set_onboarding':
+      return {
+        ...state,
+        app: { ...state.app, onboarding: { ...state.app.onboarding, ...action.patch } },
       };
 
     case 'add_request':
@@ -432,6 +441,8 @@ export interface CreateListingInput {
 }
 
 export interface StoreActions {
+  /** Records an onboarding answer before the account exists. */
+  setOnboarding: (patch: Partial<OnboardingState>) => void;
   registerAccount: (input: {
     name: string;
     email: string;
@@ -1193,6 +1204,14 @@ export const ActionsProvider = ({ children }: { children: ReactNode }) => {
           },
           'Manual review requested.',
         );
+      },
+
+      /**
+       * Records an onboarding answer. It is a local answer, not a slow
+       * operation, so it lands immediately and the next screen can read it.
+       */
+      setOnboarding(patch) {
+        dispatch(setOnboarding(patch));
       },
 
       dismissToast(id) {

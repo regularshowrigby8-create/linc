@@ -35,6 +35,7 @@ export const Tabs = ({ items, activeId, onChange, ariaLabel, children }: TabsPro
             className={`lh-tabs__tab${active ? ' lh-tabs__tab--active' : ''}`}
             onClick={() => onChange(item.id)}
           >
+            {item.accent ? <span className="lh-tabs__dot" aria-hidden="true" /> : null}
             {item.label}
             {typeof item.count === 'number' ? (
               <span className="lh-tabs__count">{item.count}</span>

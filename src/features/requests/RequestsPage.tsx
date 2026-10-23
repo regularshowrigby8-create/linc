@@ -12,12 +12,12 @@ import { selectListingById } from '@/state/selectors';
 import type { RequestAction } from '@/state/requestTransitions';
 
 const TABS = [
-  { id: 'received', label: 'Received', accent: 'coral' as const },
+  { id: 'received', label: 'Received', accent: 'clay' as const },
   { id: 'sent', label: 'Sent', accent: 'blue' as const },
   { id: 'accepted', label: 'Accepted', accent: 'green' as const },
   { id: 'completed', label: 'Completed', accent: 'teal' as const },
   { id: 'closed', label: 'Expired', accent: 'amber' as const },
-  { id: 'reported', label: 'Reported', accent: 'coral' as const },
+  { id: 'reported', label: 'Reported', accent: 'violet' as const },
   { id: 'blocked', label: 'Blocked', accent: 'plum' as const },
 ];
 

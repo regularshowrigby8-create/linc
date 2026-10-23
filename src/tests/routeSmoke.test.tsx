@@ -13,7 +13,9 @@ const RESOLVED_ROUTES: Record<string, string> = {
 
 const EXPECTED_HEADING: Record<string, RegExp> = {
   '/': /find the right connection/i,
-  '/register': /create your account/i,
+  '/register': /what brings you here/i,
+  '/onboarding/account-type': /which kind of account are you/i,
+  '/onboarding/account': /here is what you are getting/i,
   '/onboarding/workspaces': /what do you want to use linkhive for/i,
   '/app': /find a service/i,
   '/app/customer': /find a service/i,
@@ -39,7 +41,7 @@ describe('every declared route renders', () => {
 
   it('covers exactly the routes in the manifest', () => {
     expect(Object.keys(RESOLVED_ROUTES).filter((key) => key.includes(':'))).toHaveLength(4);
-    expect(ROUTE_PATHS).toHaveLength(18);
+    expect(ROUTE_PATHS).toHaveLength(20);
   });
 
   for (const route of ROUTE_PATHS) {

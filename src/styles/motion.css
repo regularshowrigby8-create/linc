@@ -129,6 +129,14 @@
 .lh-reveal--step-3.lh-reveal--shown {
   transition-delay: var(--stagger-2);
 }
+.lh-reveal--step-5.lh-reveal--shown {
+  transition-delay: var(--stagger-5);
+}
+
+.lh-reveal--step-6.lh-reveal--shown {
+  transition-delay: var(--stagger-6);
+}
+
 .lh-reveal--step-4.lh-reveal--shown {
   transition-delay: var(--stagger-3);
 }

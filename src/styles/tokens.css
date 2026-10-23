@@ -8,6 +8,11 @@
  *   [data-theme='dark']   dark mode
  * The theme attribute is written on <html> before first paint by the inline
  * script in index.html, so there is no flash of the wrong mode.
+ *
+ * A third set of tokens describes the marketing surface. The app is a
+ * working surface; the landing page and the onboarding screens are a poster.
+ * The two are not inversions of each other. Light mode is warm paper with
+ * ink on it, dark mode is warm charcoal with light on it.
  */
 
 :root {
@@ -42,48 +47,98 @@
    * Each accent is a full set: a solid colour for text and icons, a faint
    * tint for surfaces, and a hairline for borders. Accents are only used on
    * things a person can act on, or on the one thing a section is about.
+   *
+   * The values were chosen from published colour-psychology and
+   * colour-vision research rather than by eye:
+   *   - Low chroma. Saturation, not hue, is what raises arousal. A muted
+   *     version of a warm colour feels calmer than a vivid version of a
+   *     cool one, so every accent here is pulled down in chroma.
+   *   - Cool hues carry the trust, and one warm hue carries the brand.
+   *   - Every solid clears 4.5:1 on white and 4.5:1 on its own tint, so
+   *     an accent can be used as text on a tinted active state.
+   *   - The seven were checked against deuteranopia, protanopia and
+   *     tritanopia simulations. The closest pair is amber against clay,
+   *     which is separated by lightness as well as hue. Colour is never
+   *     the only signal: every tab and workspace also carries an icon and
+   *     a word.
    */
-  --accent-blue: #2563eb;
-  --accent-blue-surface: #eaf0fe;
-  --accent-blue-line: #c3d5fb;
+  --accent-blue: #356bc9;
+  --accent-blue-surface: #eff3fb;
+  --accent-blue-line: #c5d6f2;
 
-  --accent-teal: #0e8c7f;
-  --accent-teal-surface: #e4f5f2;
-  --accent-teal-line: #b3e0d9;
+  --accent-teal: #0b5f57;
+  --accent-teal-surface: #ebf2f2;
+  --accent-teal-line: #b3d6d2;
 
-  --accent-green: #198754;
-  --accent-green-surface: #eaf6ef;
-  --accent-green-line: #b9e0cb;
+  --accent-green: #2d7a55;
+  --accent-green-surface: #eef4f1;
+  --accent-green-line: #b9dfcb;
 
-  --accent-amber: #b87313;
-  --accent-amber-surface: #fdf4e0;
-  --accent-amber-line: #f0d9a6;
+  --accent-amber: #8f6210;
+  --accent-amber-surface: #f6f2ec;
+  --accent-amber-line: #e6d4ae;
 
-  --accent-coral: #d2542e;
-  --accent-coral-surface: #fdeee8;
-  --accent-coral-line: #f6cdb9;
+  /* Was a saturated coral. A muted terracotta reads as warm without
+     carrying the alarm that saturated orange and red carry. */
+  --accent-clay: #8f3f24;
+  --accent-clay-surface: #f6f0ed;
+  --accent-clay-line: #e6cabd;
 
-  --accent-violet: #6d4ac7;
-  --accent-violet-surface: #efeafa;
-  --accent-violet-line: #d5c6f2;
+  --accent-violet: #5f47a8;
+  --accent-violet-surface: #f2f0f8;
+  --accent-violet-line: #d3cbee;
 
-  --accent-plum: #9c3a76;
-  --accent-plum-surface: #fbeaf3;
-  --accent-plum-line: #f0c9de;
+  --accent-plum: #a04a7c;
+  --accent-plum-surface: #f7f1f5;
+  --accent-plum-line: #e8cede;
 
   /* Soft washes used behind the hero. Low opacity, never behind text. */
   --accent-hive-wash: rgba(242, 184, 75, 0.28);
-  --accent-teal-wash: rgba(14, 140, 127, 0.16);
-  --accent-violet-wash: rgba(109, 74, 199, 0.12);
+  --accent-teal-wash: rgba(11, 95, 87, 0.14);
+  --accent-violet-wash: rgba(95, 71, 168, 0.12);
 
   /* The accent in force. Overridden per surface with [data-accent]. */
   --accent: var(--accent-blue);
   --accent-surface: var(--accent-blue-surface);
   --accent-line: var(--accent-blue-line);
 
+  /* ---- Marketing surface ----
+   * The landing page and the onboarding screens get their own canvas so
+   * they can be a poster rather than a working screen. Light mode is warm
+   * paper; dark mode is warm charcoal. Neither is a pure black or a pure
+   * white, because both are harsh to read against.
+   */
+  --marketing-canvas: #f5f1e8;
+  --marketing-surface: #fffdf7;
+  --marketing-surface-sunken: #ece6d8;
+  --marketing-ink: #1c1a16;
+  --marketing-ink-muted: #605a4e;
+  --marketing-border: #e0d9c8;
+  --marketing-border-strong: #cdc3ad;
+  /* The brand voltage: one honey colour, used on the primary action, the
+     live graphic and the glow behind the panels. Nothing else. */
+  --marketing-glow: rgba(242, 184, 75, 0.34);
+  --marketing-glow-strong: rgba(242, 184, 75, 0.6);
+  --marketing-honey: #8f6210;
+  --marketing-honey-bright: #f2b84b;
+  --marketing-on-honey: #fffdf7;
+  --marketing-lattice: rgba(28, 26, 22, 0.1);
+  --marketing-lattice-lit: rgba(184, 128, 26, 0.22);
+  --marketing-grain: rgba(28, 26, 22, 0.03);
+  --marketing-scrim: rgba(28, 26, 22, 0.5);
+  /* The marketing panels float, so they are the one place a shadow is
+     earned. Two strengths, because a hovered card lifts further. */
+  --shadow-marketing: 0 20px 48px rgba(28, 26, 22, 0.12);
+  --shadow-marketing-lift: 0 26px 62px rgba(28, 26, 22, 0.18);
+
   /* ---- Typography ---- */
   --font-sans:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  /* A system serif. No webfont, so there is no download to wait for and no
+     layout shift. It is used for the marketing headlines only. */
+  --font-display:
+    'Iowan Old Style', 'Palatino Linotype', Palatino, 'Book Antiqua', Georgia, 'Times New Roman',
+    serif;
 
   --text-body: 1rem; /* 16px */
   --text-body-leading: 1.5;
@@ -101,6 +156,11 @@
   --text-title-leading: 1.3;
   --text-display: 2.25rem; /* 36px */
   --text-display-leading: 1.06;
+  /* The marketing headline. Large enough to be a poster. */
+  --text-mega: clamp(2.75rem, 7.2vw, 5.5rem);
+  --text-mega-leading: 0.98;
+  --text-mega-wide: clamp(2.25rem, 5.4vw, 4rem);
+  --text-mega-wide-leading: 1.04;
   --text-button: 0.875rem; /* 14px */
   --text-button-leading: 1.2;
 
@@ -121,6 +181,8 @@
   --space-12: 48px;
   --space-16: 64px;
   --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 128px;
 
   --page-padding: var(--space-4);
   --card-gap: var(--space-3);
@@ -128,6 +190,8 @@
   --reading-max: 720px;
   --rail-width: 240px;
   --rail-width-collapsed: 76px;
+  /* Marketing pages are wider. A poster is not a column of text. */
+  --marketing-max: 1280px;
 
   /* ---- Shape & elevation ---- */
   --radius-card: 16px;
@@ -152,6 +216,8 @@
   --stagger-2: 120ms;
   --stagger-3: 180ms;
   --stagger-4: 240ms;
+  --stagger-5: 300ms;
+  --stagger-6: 360ms;
 
   /* ---- Focus ---- */
   --focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.28);
@@ -200,10 +266,10 @@
   --accent-line: var(--accent-amber-line);
 }
 
-[data-accent='coral'] {
-  --accent: var(--accent-coral);
-  --accent-surface: var(--accent-coral-surface);
-  --accent-line: var(--accent-coral-line);
+[data-accent='clay'] {
+  --accent: var(--accent-clay);
+  --accent-surface: var(--accent-clay-surface);
+  --accent-line: var(--accent-clay-line);
 }
 
 [data-accent='violet'] {
@@ -245,37 +311,39 @@
   --color-information-surface: #152135;
   --color-hive-surface: #2a2314;
 
-  --accent-blue: #6ea0f5;
-  --accent-blue-surface: #16223a;
-  --accent-blue-line: #263a5e;
+  /* The same seven hues, lightened and desaturated. A colour that is calm
+     on white is not automatically calm on charcoal, and vice versa. */
+  --accent-blue: #7ea9ea;
+  --accent-blue-surface: #15243d;
+  --accent-blue-line: #263d63;
 
-  --accent-teal: #4fc9b8;
-  --accent-teal-surface: #0f2b28;
-  --accent-teal-line: #1d4741;
+  --accent-teal: #4fbdae;
+  --accent-teal-surface: #0d2a27;
+  --accent-teal-line: #1c4a43;
 
-  --accent-green: #4fbe8b;
-  --accent-green-surface: #12271f;
-  --accent-green-line: #1e4234;
+  --accent-green: #5cbb8b;
+  --accent-green-surface: #12271e;
+  --accent-green-line: #1f4535;
 
-  --accent-amber: #e9a93c;
-  --accent-amber-surface: #2a2314;
-  --accent-amber-line: #4a3a1a;
+  --accent-amber: #dfa846;
+  --accent-amber-surface: #292113;
+  --accent-amber-line: #4b3a19;
 
-  --accent-coral: #f08a63;
-  --accent-coral-surface: #2e1a13;
-  --accent-coral-line: #4d2c1f;
+  --accent-clay: #dd8b67;
+  --accent-clay-surface: #2c1a13;
+  --accent-clay-line: #4c2d21;
 
-  --accent-violet: #a98cf5;
-  --accent-violet-surface: #1f1935;
-  --accent-violet-line: #342a58;
+  --accent-violet: #a48eee;
+  --accent-violet-surface: #1e1833;
+  --accent-violet-line: #332956;
 
-  --accent-plum: #e889c0;
-  --accent-plum-surface: #2c1424;
-  --accent-plum-line: #4a2439;
+  --accent-plum: #dd87ba;
+  --accent-plum-surface: #2a1422;
+  --accent-plum-line: #482339;
 
   --accent-hive-wash: rgba(242, 184, 75, 0.16);
-  --accent-teal-wash: rgba(79, 201, 184, 0.14);
-  --accent-violet-wash: rgba(169, 140, 245, 0.14);
+  --accent-teal-wash: rgba(79, 189, 174, 0.14);
+  --accent-violet-wash: rgba(164, 142, 238, 0.14);
 
   --shadow-card: 0 8px 24px rgba(0, 0, 0, 0.45);
   --shadow-lift: 0 14px 34px rgba(0, 0, 0, 0.55);
@@ -284,6 +352,30 @@
   --focus-border: 1px solid var(--color-information);
   --focus-ring-on-accent: 0 0 0 3px rgba(14, 20, 32, 0.45);
   --color-scrim: rgba(6, 10, 18, 0.66);
+
+  /* ---- Marketing surface, dark ----
+     Warm charcoal rather than black. A near-black with a warm cast takes
+     the honey glow without turning it into a lamp, and it is easier to
+     read against than a true black.
+  */
+  --marketing-canvas: #111010;
+  --marketing-surface: #1b1917;
+  --marketing-surface-sunken: #0b0a0a;
+  --marketing-ink: #f4efe4;
+  --marketing-ink-muted: #a29a8b;
+  --marketing-border: #302c27;
+  --marketing-border-strong: #443e37;
+  --marketing-glow: rgba(242, 184, 75, 0.2);
+  --marketing-glow-strong: rgba(242, 184, 75, 0.42);
+  --marketing-honey: #e8b04a;
+  --marketing-honey-bright: #f2b84b;
+  --marketing-on-honey: #14120f;
+  --marketing-lattice: rgba(244, 239, 228, 0.08);
+  --marketing-lattice-lit: rgba(242, 184, 75, 0.28);
+  --marketing-grain: rgba(244, 239, 228, 0.035);
+  --marketing-scrim: rgba(8, 7, 6, 0.62);
+  --shadow-marketing: 0 20px 48px rgba(0, 0, 0, 0.5);
+  --shadow-marketing-lift: 0 26px 62px rgba(0, 0, 0, 0.62);
 }
 
 @media (min-width: 640px) {
