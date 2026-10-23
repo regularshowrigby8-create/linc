@@ -1,0 +1,164 @@
+@import './tokens.css';
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#root {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-canvas);
+  color: var(--color-ink);
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: var(--text-body-leading);
+  -webkit-font-smoothing: antialiased;
+  overflow-wrap: break-word;
+}
+
+h1,
+h2,
+h3,
+h4,
+p,
+figure,
+blockquote,
+dl,
+dd {
+  margin: 0;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+img,
+svg {
+  display: block;
+  max-width: 100%;
+}
+
+button,
+input,
+select,
+textarea {
+  font: inherit;
+  color: inherit;
+}
+
+a {
+  color: var(--color-information);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ---- Typography helpers ---- */
+.lh-h1 {
+  font-size: var(--text-h1);
+  line-height: var(--text-h1-leading);
+  font-weight: var(--weight-bold);
+  letter-spacing: -0.01em;
+}
+
+.lh-h2 {
+  font-size: var(--text-h2);
+  line-height: var(--text-h2-leading);
+  font-weight: var(--weight-bold);
+}
+
+.lh-h3 {
+  font-size: var(--text-h3);
+  line-height: var(--text-h3-leading);
+  font-weight: var(--weight-bold);
+}
+
+.lh-label {
+  font-size: var(--text-label);
+  line-height: var(--text-label-leading);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-ink-muted);
+}
+
+.lh-caption {
+  font-size: var(--text-caption);
+  line-height: var(--text-caption-leading);
+  color: var(--color-ink-muted);
+}
+
+.lh-muted {
+  color: var(--color-ink-muted);
+}
+
+/* ---- Layout helpers ---- */
+.lh-page {
+  width: 100%;
+  max-width: var(--content-max);
+  margin: 0 auto;
+  padding: var(--page-padding);
+}
+
+.lh-stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+.lh-stack-sm {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.lh-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
+  flex-wrap: wrap;
+}
+
+.lh-spread {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  flex-wrap: wrap;
+}
+
+.lh-grid-cards {
+  display: grid;
+  gap: var(--card-gap);
+  grid-template-columns: 1fr;
+}
+
+@media (min-width: 640px) {
+  .lh-grid-cards {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+.lh-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.lh-divider {
+  height: 1px;
+  background: var(--color-border);
+  border: 0;
+}

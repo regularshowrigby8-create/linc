@@ -1,0 +1,63 @@
+/* Accessibility helpers — focus visibility, screen-reader text, reduced motion. */
+
+.lh-sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.lh-skip-link {
+  position: absolute;
+  left: var(--space-2);
+  top: -100px;
+  z-index: 100;
+  padding: var(--space-3) var(--space-4);
+  background: var(--color-surface);
+  border-radius: var(--radius-control);
+  box-shadow: var(--shadow-card);
+  font-weight: var(--weight-bold);
+  transition: top var(--motion-fast) var(--ease-out);
+}
+
+.lh-skip-link:focus {
+  top: var(--space-2);
+}
+
+:focus-visible {
+  outline: none;
+  box-shadow: var(--focus-ring);
+  border: var(--focus-border);
+  border-radius: var(--radius-control);
+}
+
+/* Keep focus rings from being clipped on dark or accent surfaces. */
+.lh-on-accent :focus-visible {
+  box-shadow: 0 0 0 3px rgba(255, 255, 255, 0.45);
+  border-color: var(--color-surface);
+}
+
+.lh-status-text {
+  font-size: var(--text-caption);
+  line-height: var(--text-caption-leading);
+}
+
+.lh-skip-to-content {
+  scroll-margin-top: var(--space-8);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}

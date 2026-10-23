@@ -1,0 +1,111 @@
+/*
+ * LinkHive design tokens.
+ * Single source of colour, type, spacing, shape and motion values.
+ * Raw values are only permitted inside this file. See docs/linkhive-build-spec/02-design/DESIGN-SYSTEM.md
+ */
+
+:root {
+  /* ---- Colour ---- */
+  --color-ink: #14213d;
+  --color-ink-muted: #536174;
+  --color-canvas: #f7f8fa;
+  --color-surface: #ffffff;
+  --color-border: #e3e8ef;
+  --color-hive: #f2b84b;
+  --color-hive-deep: #b87313;
+  --color-success: #198754;
+  --color-warning: #b7791f;
+  --color-danger: #c0392b;
+  --color-information: #2563eb;
+  --color-disabled: #a7b0be;
+
+  /* Tinted surfaces derived from tokens for status chips. */
+  --color-success-surface: #eaf6ef;
+  --color-warning-surface: #fbf3e4;
+  --color-danger-surface: #fbecea;
+  --color-information-surface: #eaf0fe;
+  --color-hive-surface: #fdf4e0;
+  --color-canvas-sunken: #eef1f5;
+
+  /* ---- Typography ---- */
+  --font-sans:
+    Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  --text-body: 1rem; /* 16px */
+  --text-body-leading: 1.5;
+  --text-label: 0.75rem; /* 12px */
+  --text-label-leading: 1.35;
+  --text-caption: 0.8125rem; /* 13px */
+  --text-caption-leading: 1.4;
+  --text-h1: 1.75rem; /* 28px */
+  --text-h1-leading: 1.15;
+  --text-h2: 1.5rem; /* 24px */
+  --text-h2-leading: 1.2;
+  --text-h3: 1.125rem; /* 18px */
+  --text-h3-leading: 1.25;
+  --text-button: 0.875rem; /* 14px */
+  --text-button-leading: 1.2;
+
+  --weight-regular: 400;
+  --weight-medium: 500;
+  --weight-bold: 700;
+
+  /* ---- Spacing (4px base) ---- */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+
+  --page-padding: var(--space-4);
+  --card-gap: var(--space-3);
+  --content-max: 1200px;
+  --reading-max: 720px;
+  --rail-width: 240px;
+
+  /* ---- Shape & elevation ---- */
+  --radius-card: 16px;
+  --radius-control: 10px;
+  --radius-pill: 999px;
+  --shadow-card: 0 8px 24px rgba(20, 33, 61, 0.08);
+
+  /* ---- Motion ---- */
+  --motion-fast: 150ms;
+  --motion-base: 180ms;
+  --motion-slow: 220ms;
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+
+  /* ---- Focus ---- */
+  --focus-ring: 0 0 0 3px rgba(37, 99, 235, 0.28);
+  --focus-border: 1px solid var(--color-information);
+
+  /* ---- Workspace accents ---- */
+  --workspace-customer: var(--color-information);
+  --workspace-qualification: var(--color-success);
+  --workspace-collaboration: var(--color-hive-deep);
+  --workspace-supply: var(--color-ink);
+
+  /* ---- Layout constants ---- */
+  --bottom-nav-height: 64px;
+  --tap-target: 44px;
+}
+
+@media (min-width: 640px) {
+  :root {
+    --page-padding: var(--space-6);
+    --card-gap: var(--space-4);
+  }
+}
+
+@media (min-width: 1024px) {
+  :root {
+    --page-padding: var(--space-8);
+    --text-h1: 2rem; /* 32px */
+    --text-h1-leading: 1.1;
+  }
+}

@@ -1,0 +1,114 @@
+LINKHIVE: THE PROBLEM WE ARE TRYING TO SOLVE
+
+LinkHive is a global platform designed to connect people and businesses who need something with people and businesses who can provide it.
+
+The platform would bring together four connected activities:
+
+1. Services
+People can find someone who provides a service they need.
+
+2. Qualifications and jobs
+People with qualifications can present what they are able to do and find work or service opportunities. The goal is to help qualified people who struggle to find employment.
+
+3. Collaboration
+Businesses and service providers can find one another for joint work. For example, a hotel could connect with a massage business to provide massages to hotel guests.
+
+4. Supply
+People and businesses can find local or international suppliers, compare options, and build a practical delivery route.
+
+The platform would begin in South Africa but would be available globally. South Africa would be the first fully supported country, while international supply and future international services could be added over time.
+
+THE MAIN PROBLEM WITH INTERNATIONAL PRICING
+
+Today, international prices are usually converted directly through foreign exchange rates. This creates unfair results because the value of money and the cost of living are different in every country.
+
+A service that is affordable in one country may become extremely expensive after direct currency conversion. A provider from a country with a strong currency may look automatically expensive, even when the service is reasonably priced in that provider’s economy. Meanwhile, a provider from a country with a weaker currency may appear cheap even when their local price is normal for their economy.
+
+We want buyers to see prices that make sense for their local economy, while providers are still treated fairly for the value of their work.
+
+WHY A SIMPLE PPP EXCHANGE RATE DOES NOT SOLVE IT
+
+Purchasing-power parity, or PPP, can help compare what money can buy in different countries. It can help LinkHive recommend prices that are more affordable locally.
+
+However, PPP cannot magically create money.
+
+For example, if a provider needs the equivalent of R500 for a service but a buyer’s local economy can only support a price equivalent to R300, there is a R200 gap. That gap must be paid by the buyer, accepted by the provider, funded by LinkHive, or removed by changing the service. A mathematical conversion rate cannot remove the gap.
+
+WHY AN UNSECURED CREDIT SYSTEM IS ALSO RISKY
+
+Another possible solution is to create internal credits that users can earn and spend with one another. This can reduce the need for foreign exchange, but it creates a risk.
+
+If the platform issues too many credits and providers cannot find useful things to buy with them, the credits may lose value. If the backing or activity of the network falls, the company could face large obligations that it cannot honour.
+
+THE PROPOSED SOLUTION: LINKHIVE TRADE UNITS
+
+The proposed solution is a fully funded internal trade unit called the LinkHive Trade Unit, or LTU.
+
+The LTU would not be presented as a normal foreign currency, cryptocurrency, or unlimited credit system. It would be an internal unit for trading and comparing value inside LinkHive.
+
+The unit would be based on a published basket of real goods and services, such as:
+
+- common local services;
+- basic business services;
+- communication;
+- transport;
+- common supplies;
+- representative labour and operating costs.
+
+The basket would help LinkHive compare purchasing power between countries without directly comparing Rand, Dollars, Euros, or other currencies for every transaction.
+
+HOW IT WOULD WORK
+
+1. A user deposits real money through a licensed payment or wallet provider.
+
+2. The user receives LinkHive Trade Units according to the current published value of the basket.
+
+3. Services and supplies inside LinkHive are priced in Trade Units.
+
+4. A buyer and provider can complete an internal transaction using Trade Units without converting the payment through foreign exchange at that moment.
+
+5. The provider can spend those units on other LinkHive services, supplies, collaborations, or approved platform expenses.
+
+6. A provider may request cash withdrawal only when there is real reserve backing available through the licensed financial partner.
+
+THE IMPORTANT SAFETY RULE
+
+LinkHive would never create unlimited units just because people want cheaper prices.
+
+The total amount of redeemable Trade Units must stay within the value of the real backing and verified marketplace value supporting them.
+
+In simple terms:
+
+Issued Trade Units must never be greater than the verified reserves and approved value behind them.
+
+There would be:
+
+- no unlimited negative balances;
+- no provider payout promises above available backing;
+- no artificial exchange rate that creates money from nothing;
+- no guarantee that one Trade Unit can always be withdrawn for the same amount of every national currency;
+- automatic limits or suspension of new issuance if backing becomes unsafe.
+
+WHAT THIS SOLVES
+
+This system would reduce the need to convert every international transaction through Forex. Users could trade inside one marketplace unit based on a common purchasing-power reference.
+
+It could make international comparisons fairer because the platform would compare the economic value of the service rather than only the nominal value of the currency.
+
+It could also make it easier for providers to use what they earn on other services and supplies inside the platform instead of immediately converting everything into cash.
+
+WHAT IT DOES NOT CLAIM TO SOLVE
+
+The system cannot make every provider receive a high-income-country cash payout while every buyer pays a lower-income-country price without funding the difference.
+
+If a provider wants immediate cash in their local currency, the cash must come from real reserves or a licensed payment provider. The LinkHive Trade Unit can reduce unnecessary Forex conversions, but it cannot remove the real economic differences between countries.
+
+THE SIMPLE VERSION
+
+LinkHive is trying to create a fairer way for people and businesses around the world to connect and trade.
+
+Instead of converting every price directly between national currencies, LinkHive would use a fully funded internal trade unit based on real purchasing power.
+
+The unit could circulate inside LinkHive for services, supplies, and collaborations. It would not be unlimited credit, and it would not promise a magical exchange rate. It would only be issued against real deposits, verified value, or approved reserves.
+
+The goal is not to pretend that money differences do not exist. The goal is to create a safer global trading environment where people compare and exchange real value more fairly, while keeping the system backed, transparent, and financially responsible.
