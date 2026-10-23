@@ -178,8 +178,11 @@ links such as `/app/customer` resolve on a static host.
 npm run build   # produces dist/
 ```
 
-The project is deployed to Vercel from the `arena/9f751416-linc` branch. See
-`docs/DELIVERY-REPORT.md` for the live address.
+The project is deployed to Vercel from the `arena/9f751416-linc` branch and is live at:
+
+**https://linkhive-chi.vercel.app**
+
+`docs/DELIVERY-REPORT.md` records the deployment identifiers and the live verification results.
 
 ---
 

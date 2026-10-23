@@ -388,3 +388,44 @@ All ten open items are listed in `docs/DECISIONS.md` under `OPEN_DECISION-01` to
 10. Notification channel requirements per country.
 
 Nothing in the prototype assumes an answer to any of these.
+
+---
+
+## 9. Deployment
+
+| Item              | Value                                                                 |
+| ----------------- | --------------------------------------------------------------------- |
+| Host              | Vercel                                                                 |
+| Project           | `linkhive` (`prj_YK60TMsrBy7uHdRZ8ahsgTFluENg`)                      |
+| **Live address**  | **https://linkhive-chi.vercel.app**                                    |
+| Deployment        | `dpl_6uN33pSnbmbNzTSWy3ysCaEPFtpP` — READY, PROMOTED, production      |
+| Source            | GitHub `regularshowrigby8-create/linc`, branch `arena/9f751416-linc`   |
+| Commit deployed   | `aff8f4478b472185021b8bf19e55c8e75c8107ce`                            |
+| Framework         | Vite 7, Node 24                                                        |
+| Build             | `npm run build` → `dist/`                                              |
+| Routing           | `vercel.json` rewrite: every path except `/assets/*` → `/index.html`   |
+
+### Verified on the live deployment
+
+Each of these was fetched from the deployed address, not from a local build:
+
+| Check                                                                            | Result |
+| -------------------------------------------------------------------------------- | ------ |
+| `/` renders the hero, the three steps and the four workspace tiles                | Pass   |
+| `/app/customer` renders the result stream, the badges and the filters             | Pass   |
+| `/app/verification/demo` shows the `DEMO` label and **no** development result selector | Pass |
+| `/app/admin/review` shows `Preview only`, not `Mock admin surface`                | Pass   |
+| `/manus-routes.json` is served as JSON and is **not** rewritten to the app shell  | Pass   |
+
+### A note on the team's deployment protection
+
+This Vercel team has `ssoProtection.deploymentType = all_except_custom_domains`. The project's own
+production alias, `linkhive-chi.vercel.app`, serves publicly. The team-scoped alias
+`linkhive-savage-coo.vercel.app` and the branch alias
+`linkhive-git-arena-9f751416-linc-savage-coo.vercel.app` both redirect to a Vercel sign-in page,
+because they are not custom domains.
+
+**Share `https://linkhive-chi.vercel.app`.** If the team-scoped address also has to serve
+publicly, the team owner needs to either relax `defaultDeploymentProtection` or attach a custom
+domain to the project. No domain exists on this account today, and none was invented for this
+deployment.

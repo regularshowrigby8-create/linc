@@ -19,6 +19,9 @@ Refined the prototype into a consumer product surface, and prepared it for deplo
   palette, no photography, no faces, no logos.
 - `vercel.json` with the SPA rewrite, so deep links such as `/app/customer` resolve on a static
   host.
+- Deployed to Vercel as project `linkhive` and live at **https://linkhive-chi.vercel.app**. The
+  landing page, the customer workspace, the demo verification page and the route manifest were
+  each fetched from the deployed address and verified.
 - A `Node >= 22` engine declaration so the deployment target matches the build environment.
 - Tests that grep the production bundle and fail if any development-only control, mock copy or
   build note ships to a person.
