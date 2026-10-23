@@ -4,6 +4,10 @@ import { fileURLToPath, URL } from 'node:url';
 
 export default defineConfig({
   plugins: [react()],
+  // The Vercel build serves from the root. The GitHub Pages demo build is
+  // served from a sub path, so the base is an environment value rather than
+  // a constant. Nothing hardcodes a host.
+  base: process.env.BASE_PATH ?? '/',
   resolve: {
     alias: {
       '@': fileURLToPath(new URL('./src', import.meta.url)),
