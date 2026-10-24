@@ -15,7 +15,7 @@ import { MarketingBackdrop } from '@/features/landing/MarketingBackdrop';
 import { MarketingHeader } from '@/features/landing/MarketingHeader';
 import { useStore } from '@/state/store';
 import { useAppliedTheme } from '@/state/theme';
-import { WORKSPACE_LABEL, WORKSPACE_ORDER } from '@/state/selectors';
+import { WORKSPACE_ACCENT, WORKSPACE_LABEL, WORKSPACE_ORDER } from '@/state/selectors';
 import type { Workspace } from '@/data/types';
 
 import customerTile from '@/assets/workspace-customer.png';
@@ -131,19 +131,19 @@ export const LandingPage = () => {
                 <path
                   d="M4 48 L 42 36 L 78 42 L 112 28 L 148 34 L 182 18 L 220 26 L 254 12 L 316 20"
                   fill="none"
-                  stroke="#a9292e"
+                  stroke="var(--marketing-accent)"
                   strokeWidth="2.2"
                   strokeLinecap="round"
                   strokeLinejoin="round"
                 />
-                <circle cx="316" cy="20" r="4" fill="#a9292e" />
+                <circle cx="316" cy="20" r="4" fill="var(--marketing-accent)" />
               </svg>
               <div
                 style={{
                   display: 'flex',
                   justifyContent: 'space-between',
                   fontSize: 11,
-                  color: 'rgba(242,238,233,0.4)',
+                  color: 'var(--marketing-ink-dim)',
                 }}
               >
                 <span>Jan</span>
@@ -207,7 +207,7 @@ export const LandingPage = () => {
                     style={{
                       width: '100%',
                       borderRadius: 8,
-                      border: '1px solid rgba(255,255,255,0.08)',
+                      border: '1px solid var(--marketing-border)',
                       display: 'block',
                     }}
                   />
@@ -231,7 +231,7 @@ export const LandingPage = () => {
                   margin: 0,
                   fontSize: 15,
                   lineHeight: 1.65,
-                  color: 'rgba(242,238,233,0.65)',
+                  color: 'var(--marketing-ink-muted)',
                 }}
               >
                 Switch workspaces and the entire surface changes — listings, filters and the request
@@ -262,9 +262,10 @@ export const LandingPage = () => {
           <div className="lh-mkt__grid lh-mkt__grid--4">
             {WORKSPACE_ORDER.map((workspace, index) => {
               const Icon = WORKSPACE_ICONS[workspace];
+              const accent = WORKSPACE_ACCENT[workspace];
               return (
                 <Reveal key={workspace} step={(index + 1) as 1 | 2 | 3 | 4}>
-                  <Link className="lh-mkt__tile" to="/onboarding/workspaces">
+                  <Link className="lh-mkt__tile" to="/onboarding/workspaces" data-accent={accent}>
                     <img
                       className="lh-mkt__tileimage"
                       src={TILES[workspace]}
