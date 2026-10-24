@@ -34,7 +34,7 @@ export const WORKSPACE_ACCENT: Record<Workspace, AccentName> = {
   customer: 'blue',
   qualification: 'green',
   collaboration: 'violet',
-  supply: 'amber',
+  supply: 'red',
 };
 
 /**

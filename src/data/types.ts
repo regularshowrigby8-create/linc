@@ -344,8 +344,8 @@ export interface DemoVerificationState {
 /** Light, dark, or follow the operating system. */
 export type ThemePreference = 'light' | 'dark' | 'system';
 
-/** The accent colours a member can choose for their own profile. */
-export type AccentName = 'blue' | 'teal' | 'green' | 'amber' | 'clay' | 'violet' | 'plum';
+/** The accent colours a member can choose for their own profile. Red is high-arousal and reserved for one profile only, at ≤5% area. */
+export type AccentName = 'blue' | 'teal' | 'green' | 'amber' | 'clay' | 'violet' | 'plum' | 'red';
 
 /** Abstract avatar treatments. Portraits are never shown. */
 export type AvatarStyle = 'initials' | 'blocks' | 'rings';
