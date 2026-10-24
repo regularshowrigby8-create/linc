@@ -294,14 +294,14 @@
 [data-theme='dark'] {
   color-scheme: dark;
 
-  --color-ink: #e8edf5;
-  --color-ink-muted: #9aa8bd;
-  --color-canvas: #0e1420;
-  --color-surface: #161e2c;
-  --color-surface-raised: #1c2637;
-  --color-surface-sunken: #111927;
-  --color-border: #2a3648;
-  --color-border-strong: #3a485e;
+  --color-ink: #f2eee9;
+  --color-ink-muted: rgba(242, 238, 233, 0.68);
+  --color-canvas: #0b0b0d;
+  --color-surface: rgba(255, 255, 255, 0.03);
+  --color-surface-raised: rgba(255, 255, 255, 0.06);
+  --color-surface-sunken: #0f0c0d;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-border-strong: rgba(255, 255, 255, 0.16);
   --color-hive: #f2b84b;
   --color-hive-deep: #e9a93c;
   --color-success: #4fbe8b;
