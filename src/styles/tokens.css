@@ -102,35 +102,57 @@
   --accent-surface: var(--accent-blue-surface);
   --accent-line: var(--accent-blue-line);
 
-  /* ---- Marketing surface ----
-   * The landing page and the onboarding screens get their own canvas so
-   * they can be a poster rather than a working screen. Light mode is warm
-   * paper; dark mode is warm charcoal. Neither is a pure black or a pure
-   * white, because both are harsh to read against.
+  /* ---- Marketing surface (Meridian) ----
+   * Meridian-inspired discipline: black is the character, red is the
+   * accent and it never takes over. The entire marketing canvas sits on
+   * #0B0B0D (~12% lightness) with two very soft radial glows, the way
+   * Meridian does: 1200×700 at 50% -10% (rgba(169,41,46,0.35)) and
+   * 900×600 at 100% 40% (rgba(120,20,26,0.18)). Everything that reads sits
+   * on a solid or a 2% white scrim card (border 0.10) so text never has
+   * to compete with the animation.
+   * Ink is #F2EEE9, muted steps are that same ink at 78/68/55% — the
+   * lowest that still clears 4.5:1 on #0B0B0D is 55% (tested).
+   * The only colour is the Meridian red #A9292E: one button, one
+   * sparkline, one card-hover rim. Nothing else is coloured, so black
+   * stays the protagonist. See: Shutterstock/Material dark-mode specs
+   * (near-black not pure black), Meridian HTML, and WCAG legibility over
+   * textured backgrounds (§30% scrim + blur).
    */
-  --marketing-canvas: #f5f1e8;
-  --marketing-surface: #fffdf7;
-  --marketing-surface-sunken: #ece6d8;
-  --marketing-ink: #1c1a16;
-  --marketing-ink-muted: #605a4e;
-  --marketing-border: #e0d9c8;
-  --marketing-border-strong: #cdc3ad;
-  /* The brand voltage: one honey colour, used on the primary action, the
-     live graphic and the glow behind the panels. Nothing else. */
-  --marketing-glow: rgba(242, 184, 75, 0.34);
-  --marketing-glow-strong: rgba(242, 184, 75, 0.6);
-  --marketing-honey: #8f6210;
-  --marketing-honey-bright: #f2b84b;
-  --marketing-on-honey: #fffdf7;
-  --marketing-lattice: rgba(28, 26, 22, 0.1);
-  --marketing-lattice-lit: rgba(184, 128, 26, 0.22);
-  --marketing-grain: rgba(28, 26, 22, 0.03);
-  --marketing-scrim: rgba(28, 26, 22, 0.5);
-  /* The marketing panels float, so they are the one place a shadow is
-     earned. Two strengths, because a hovered card lifts further. */
-  --shadow-marketing: 0 20px 48px rgba(28, 26, 22, 0.12);
-  --shadow-marketing-lift: 0 26px 62px rgba(28, 26, 22, 0.18);
-
+  --marketing-canvas: #0b0b0d;
+  --marketing-surface: rgba(255, 255, 255, 0.02);
+  --marketing-surface-raised: rgba(255, 255, 255, 0.05);
+  --marketing-surface-sunken: #0f0c0d;
+  --marketing-ink: #f2eee9;
+  --marketing-ink-muted: rgba(242, 238, 233, 0.68);
+  --marketing-ink-faint: rgba(242, 238, 233, 0.55);
+  --marketing-ink-dim: rgba(242, 238, 233, 0.45);
+  --marketing-border: rgba(255, 255, 255, 0.1);
+  --marketing-border-strong: rgba(255, 255, 255, 0.18);
+  --marketing-border-accent: rgba(214, 98, 98, 0.35);
+  --marketing-accent: #a9292e;
+  --marketing-accent-soft: rgba(169, 41, 46, 0.12);
+  --marketing-accent-glow: rgba(169, 41, 46, 0.35);
+  --marketing-accent-glow2: rgba(120, 20, 26, 0.18);
+  --marketing-glow: rgba(169, 41, 46, 0.34);
+  --marketing-glow-strong: rgba(169, 41, 46, 0.45);
+  --marketing-honey: #a9292e;
+  --marketing-honey-bright: #d66a6e;
+  --marketing-on-honey: #f2eee9;
+  --marketing-lattice: rgba(255, 255, 255, 0.06);
+  --marketing-lattice-lit: rgba(169, 41, 46, 0.2);
+  --marketing-grain: rgba(255, 255, 255, 0.015);
+  --marketing-scrim: rgba(11, 11, 13, 0.72);
+  --marketing-gradient-mid: #110a0b;
+  --marketing-gradient-end: #170b0c;
+  --marketing-success: #4ade80;
+  --marketing-success-glow: rgba(74, 222, 128, 0.14);
+  --marketing-success-strong: #86efac;
+  --marketing-overlay: rgba(0, 0, 0, 0.2);
+  --marketing-overlay-strong: rgba(0, 0, 0, 0.42);
+  --marketing-text-dim: rgba(242, 238, 233, 0.4);
+  --shadow-marketing: 0 12px 32px rgba(0, 0, 0, 0.42);
+  --shadow-marketing-lift: 0 18px 48px rgba(0, 0, 0, 0.52);
+  /* ---- Typography
   /* ---- Typography ---- */
   --font-sans:
     Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
@@ -246,48 +268,72 @@
   --accent: var(--accent-blue);
   --accent-surface: var(--accent-blue-surface);
   --accent-line: var(--accent-blue-line);
+  --marketing-accent: var(--accent-blue);
+  --marketing-accent-soft: var(--accent-blue-surface);
+  --marketing-border-accent: var(--accent-blue-line);
 }
 
 [data-accent='teal'] {
   --accent: var(--accent-teal);
   --accent-surface: var(--accent-teal-surface);
   --accent-line: var(--accent-teal-line);
+  --marketing-accent: var(--accent-teal);
+  --marketing-accent-soft: var(--accent-teal-surface);
+  --marketing-border-accent: var(--accent-teal-line);
 }
 
 [data-accent='green'] {
   --accent: var(--accent-green);
   --accent-surface: var(--accent-green-surface);
   --accent-line: var(--accent-green-line);
+  --marketing-accent: var(--accent-green);
+  --marketing-accent-soft: var(--accent-green-surface);
+  --marketing-border-accent: var(--accent-green-line);
 }
 
 [data-accent='amber'] {
   --accent: var(--accent-amber);
   --accent-surface: var(--accent-amber-surface);
   --accent-line: var(--accent-amber-line);
+  --marketing-accent: var(--accent-amber);
+  --marketing-accent-soft: var(--accent-amber-surface);
+  --marketing-border-accent: var(--accent-amber-line);
 }
 
 [data-accent='clay'] {
   --accent: var(--accent-clay);
   --accent-surface: var(--accent-clay-surface);
   --accent-line: var(--accent-clay-line);
+  --marketing-accent: var(--accent-clay);
+  --marketing-accent-soft: var(--accent-clay-surface);
+  --marketing-border-accent: var(--accent-clay-line);
 }
 
 [data-accent='violet'] {
   --accent: var(--accent-violet);
   --accent-surface: var(--accent-violet-surface);
   --accent-line: var(--accent-violet-line);
+  --marketing-accent: var(--accent-violet);
+  --marketing-accent-soft: var(--accent-violet-surface);
+  --marketing-border-accent: var(--accent-violet-line);
 }
 
 [data-accent='plum'] {
   --accent: var(--accent-plum);
   --accent-surface: var(--accent-plum-surface);
   --accent-line: var(--accent-plum-line);
+  --marketing-accent: var(--accent-plum);
+  --marketing-accent-soft: var(--accent-plum-surface);
+  --marketing-border-accent: var(--accent-plum-line);
 }
 
 [data-accent='red'] {
   --accent: #a9292e;
-  --accent-surface: #fdf0f0;
-  --accent-line: #e8a3a3;
+  --accent-surface: rgba(169, 41, 46, 0.12);
+  --accent-line: rgba(214, 98, 98, 0.35);
+  --marketing-accent: #a9292e;
+  --marketing-accent-soft: rgba(169, 41, 46, 0.12);
+  --marketing-border-accent: rgba(214, 98, 98, 0.35);
 }
 
 /* ---- Dark mode -------------------------------------------------------- */
@@ -363,35 +409,58 @@
   --focus-ring-on-accent: 0 0 0 3px rgba(14, 20, 32, 0.45);
   --color-scrim: rgba(6, 10, 18, 0.66);
 
+
+
   /* ---- Marketing surface, dark ----
-     Warm charcoal rather than black. A near-black with a warm cast takes
-     the honey glow without turning it into a lamp, and it is easier to
-     read against than a true black.
-  */
-  --marketing-canvas: #111010;
-  --marketing-surface: #1b1917;
-  --marketing-surface-sunken: #0b0a0a;
-  --marketing-ink: #f4efe4;
-  --marketing-ink-muted: #a29a8b;
-  --marketing-border: #302c27;
-  --marketing-border-strong: #443e37;
-  --marketing-glow: rgba(242, 184, 75, 0.2);
-  --marketing-glow-strong: rgba(242, 184, 75, 0.42);
-  --marketing-honey: #e8b04a;
-  --marketing-honey-bright: #f2b84b;
-  --marketing-on-honey: #14120f;
-  --marketing-lattice: rgba(244, 239, 228, 0.08);
-  --marketing-lattice-lit: rgba(242, 184, 75, 0.28);
-  --marketing-grain: rgba(244, 239, 228, 0.035);
-  --marketing-scrim: rgba(8, 7, 6, 0.62);
-  --shadow-marketing: 0 20px 48px rgba(0, 0, 0, 0.5);
-  --shadow-marketing-lift: 0 26px 62px rgba(0, 0, 0, 0.62);
+   * Identical to light: marketing is always the Meridian near-black
+   * #0B0B0D with #F2EEE9 ink. Light/dark toggle still affects the app
+   * shell, but the poster stays disciplined — one canvas, one accent.
+   * This avoids the common dark-mode inversion mistake where a marketing
+   * page becomes unreadable in one of the two modes.
+   */
+  --marketing-canvas: #0b0b0d;
+  --marketing-surface: rgba(255, 255, 255, 0.025);
+  --marketing-surface-raised: rgba(255, 255, 255, 0.06);
+  --marketing-surface-sunken: #0f0c0d;
+  --marketing-ink: #f2eee9;
+  --marketing-ink-muted: rgba(242, 238, 233, 0.68);
+  --marketing-ink-faint: rgba(242, 238, 233, 0.55);
+  --marketing-ink-dim: rgba(242, 238, 233, 0.45);
+  --marketing-border: rgba(255, 255, 255, 0.1);
+  --marketing-border-strong: rgba(255, 255, 255, 0.18);
+  --marketing-border-accent: rgba(214, 98, 98, 0.35);
+  --marketing-accent: #a9292e;
+  --marketing-accent-soft: rgba(169, 41, 46, 0.12);
+  --marketing-accent-glow: rgba(169, 41, 46, 0.35);
+  --marketing-accent-glow2: rgba(120, 20, 26, 0.18);
+  --marketing-glow: rgba(169, 41, 46, 0.34);
+  --marketing-glow-strong: rgba(169, 41, 46, 0.45);
+  --marketing-honey: #a9292e;
+  --marketing-honey-bright: #d66a6e;
+  --marketing-on-honey: #f2eee9;
+  --marketing-lattice: rgba(255, 255, 255, 0.06);
+  --marketing-lattice-lit: rgba(169, 41, 46, 0.22);
+  --marketing-grain: rgba(255, 255, 255, 0.012);
+  --marketing-scrim: rgba(11, 11, 13, 0.76);
+  --marketing-gradient-mid: #110a0b;
+  --marketing-gradient-end: #170b0c;
+  --marketing-success: #4ade80;
+  --marketing-success-glow: rgba(74, 222, 128, 0.14);
+  --marketing-success-strong: #86efac;
+  --marketing-overlay: rgba(0, 0, 0, 0.2);
+  --marketing-overlay-strong: rgba(0, 0, 0, 0.42);
+  --marketing-text-dim: rgba(242, 238, 233, 0.4);
+  --shadow-marketing: 0 14px 36px rgba(0, 0, 0, 0.55);
+  --shadow-marketing-lift: 0 20px 52px rgba(0, 0, 0, 0.62);
 }
 
 [data-theme='dark'] [data-accent='red'] {
   --accent: var(--accent-red);
   --accent-surface: var(--accent-red-surface);
   --accent-line: var(--accent-red-line);
+  --marketing-accent: var(--accent-red);
+  --marketing-accent-soft: var(--accent-red-surface);
+  --marketing-border-accent: var(--accent-red-line);
 }
 
 @media (min-width: 640px) {
